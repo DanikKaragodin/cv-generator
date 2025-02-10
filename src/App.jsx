@@ -1,10 +1,11 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// import { useState } from 'react'
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import { NavLink } from "react-router";
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
 
   return (
     <>
@@ -18,18 +19,30 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <NavLink className="nav-link" to="/">
+          <button> Press Here to link to main page</button>
+        </NavLink>
+        <NavLink className="nav-link" to="/create-cv">
+          <button> Press Here to link to generator page</button>
+        </NavLink>
+        <NavLink className="nav-link" to="/login">
+          <button> Press Here to link to login page</button>
+        </NavLink>
+        <NavLink className="nav-link" to="/user-settings">
+          <button> Press Here to link to settings page</button>
+        </NavLink>
+        {/* <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
-        </button>
-        <p>
+        </button> */}
+        {/* <p>
           Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        </p> */}
       </div>
-      <p className="read-the-docs">
+      {/* <p className="read-the-docs">
         Click on the Vite and React logos to learn more
-      </p>
+      </p> */}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
