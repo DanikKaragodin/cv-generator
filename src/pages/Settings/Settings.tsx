@@ -1,3 +1,4 @@
+import React from "react";
 import { NavLink } from "react-router";
 import "./Settings.css";
 function Settings() {

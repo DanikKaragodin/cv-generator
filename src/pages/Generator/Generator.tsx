@@ -1,9 +1,10 @@
 import { NavLink } from "react-router";
-import "./Login.css";
-function Login() {
+import "./Generator.css";
+import React from "react";
+function Generator() {
   return (
     <>
-      <div className="logo_check"> Login</div>
+      <div className="logo_check"> Generator</div>
       <NavLink className="nav-link" to="/">
         <button> Press Here to link to main page</button>
       </NavLink>
@@ -20,4 +21,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Generator;
