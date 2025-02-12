@@ -1,4 +1,4 @@
-import { IRoute } from "@types/IRoute";
+import { IRoute } from "@common/types/IRoute";
 import { Link } from "react-router";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
