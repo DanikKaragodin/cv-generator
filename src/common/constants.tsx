@@ -6,7 +6,17 @@ import { IRoute } from "@common/types/Route.tsx";
 
 export const routes: IRoute[] = [
   { page: "Главная", href: "/", isSettings: false, component: <Dashboard /> },
-  { page: "Создать резюме", href: "/create-cv", isSettings: false, component: <Generator/> },
-  { page: "Настройки", href: "/user-settings", isSettings: true, component: <Settings/> },
+  {
+    page: "Создать резюме",
+    href: "/create-cv",
+    isSettings: false,
+    component: <Generator />,
+  },
+  {
+    page: "Настройки",
+    href: "/user-settings",
+    isSettings: true,
+    component: <Settings />,
+  },
   { page: "Выйти", href: "/login", isSettings: true, component: <Login /> },
 ];
