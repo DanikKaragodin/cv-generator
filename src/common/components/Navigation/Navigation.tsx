@@ -9,7 +9,6 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import "./Navigation.css";
-import { routes } from "@common/constants.tsx";
 import NavigationLinks from "./NavigationLinks";
 
 function Navigation() {
@@ -66,7 +65,6 @@ function Navigation() {
               sx={{ display: { xs: "block", md: "none" } }}
             >
               <NavigationLinks
-                routes={routes}
                 isSettings={false}
                 keySuffix="mobile"
                 handleCloseNavMenu={handleCloseNavMenu}
@@ -76,7 +74,6 @@ function Navigation() {
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <NavigationLinks
-              routes={routes}
               isSettings={false}
               keySuffix="desktop"
               handleCloseNavMenu={handleCloseNavMenu}
@@ -105,7 +102,11 @@ function Navigation() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <NavigationLinks routes={routes} isSettings={true} keySuffix="avatar" handleCloseNavMenu={handleCloseUserMenu}/>
+              <NavigationLinks
+                isSettings={true}
+                keySuffix="avatar"
+                handleCloseNavMenu={handleCloseUserMenu}
+              />
             </Menu>
           </Box>
         </Toolbar>

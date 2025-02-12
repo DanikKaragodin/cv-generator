@@ -1,11 +1,4 @@
 {
-  "compilerOptions": {
-    //absolute import
-    "baseUrl": "./",
-    "paths": {
-      "@common": ["src/common"],
-    }
-  },
   "files": [],
   "references": [{
       "path": "./tsconfig.app.json"
