@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    //absolute import
+    "baseUrl": "",
+    "paths": {
+      "@/*": ["./*"],
+      "@": ["src"],
+      "@assets": ["src/assets"],
+      "@common": ["src/common"],
+      "@components": ["src/common/components"],
+      "@theme": ["src/common/theme"],
+      "@utils": ["src/common/utils"],
+      "@types": ["src/common/types"],
+      "@pages": ["src/pages"],
+    }
+  },
+  "files": [],
+  "references": [{
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}
