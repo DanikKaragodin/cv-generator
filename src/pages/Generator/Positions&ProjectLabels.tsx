@@ -211,7 +211,7 @@ const PositionsLabel = ({
                             positionIndex={positionIndex}
                             projectIndex={projectIndex}
                             onRemove={() => projects.remove(projectIndex)}
-                            errors={errors}
+                            // errors={errors}
                         />
                     ))}
                 </Grid2>
