@@ -75,6 +75,7 @@ function Generator() {
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
+                                        sx={{ width: '95%' }}
                                         error={!!errors.name}
                                         helperText={errors.name?.message}
                                         required
@@ -93,6 +94,7 @@ function Generator() {
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
+                                        sx={{ width: '95%' }}
                                         error={!!errors.lastName}
                                         helperText={errors.lastName?.message}
                                         label="Фамилия"
@@ -117,6 +119,7 @@ function Generator() {
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
+                                        sx={{ width: '95%' }}
                                         error={!!errors.email}
                                         helperText={errors.email?.message}
                                         label="E-mail"
@@ -140,6 +143,7 @@ function Generator() {
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
+                                        sx={{ width: '95%' }}
                                         error={!!errors.telephone}
                                         helperText={errors.telephone?.message}
                                         label="Телефон"
@@ -149,7 +153,7 @@ function Generator() {
                             />
                         </CenteredGrid>
 
-                        <CenteredGrid size={11}>
+                        <CenteredGrid size={12}>
                             <Controller
                                 name="aboutMe"
                                 control={control}
@@ -170,7 +174,7 @@ function Generator() {
                                         id="user-about_me"
                                         fullWidth
                                         rows={4}
-                                        sx={{ width: '100%' }}
+                                        sx={{ width: '95%' }}
                                     />
                                 )}
                             />
@@ -203,47 +207,49 @@ function Generator() {
                     </Grid2>
                     <Divider />
                     <CardHeader title="Технические навыки" />
-                    <Controller
-                        name="technicalSkills"
-                        control={control}
-                        rules={{
-                            required: 'Необходимо от 2 навыков',
-                            validate: (value) => {
-                                if (value.length < 2) return 'Необходимо от 2 навыков';
-                            },
-                        }}
-                        render={({ field }) => (
-                            <Autocomplete
-                                sx={{ paddingX: 1 }}
-                                multiple
-                                id="user-technical-skills"
-                                options={[]}
-                                value={field.value || []}
-                                freeSolo
-                                onChange={(_, newValue) => field.onChange(newValue)} // такой формат для добавления тегов в массив
-                                renderTags={(value, getTagProps) =>
-                                    value.map((option: string, index: number) => (
-                                        <Chip
+                    <CenteredGrid size={12}>
+                        <Controller
+                            name="technicalSkills"
+                            control={control}
+                            rules={{
+                                required: 'Необходимо от 2 навыков',
+                                validate: (value) => {
+                                    if (value.length < 2) return 'Необходимо от 2 навыков';
+                                },
+                            }}
+                            render={({ field }) => (
+                                <Autocomplete
+                                    sx={{ paddingX: 0, width: '95%' }}
+                                    multiple
+                                    id="user-technical-skills"
+                                    options={[]}
+                                    value={field.value || []}
+                                    freeSolo
+                                    onChange={(_, newValue) => field.onChange(newValue)} // такой формат для добавления тегов в массив
+                                    renderTags={(value, getTagProps) =>
+                                        value.map((option: string, index: number) => (
+                                            <Chip
+                                                variant="outlined"
+                                                label={option}
+                                                {...getTagProps({ index })}
+                                                key={option}
+                                            />
+                                        ))
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
                                             variant="outlined"
-                                            label={option}
-                                            {...getTagProps({ index })}
-                                            key={option}
+                                            label="Технические навыки"
+                                            placeholder="Технические навыки"
+                                            error={!!errors.technicalSkills}
+                                            helperText={errors.technicalSkills?.message}
                                         />
-                                    ))
-                                }
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="outlined"
-                                        label="Технические навыки"
-                                        placeholder="Технические навыки"
-                                        error={!!errors.technicalSkills}
-                                        helperText={errors.technicalSkills?.message}
-                                    />
-                                )}
-                            />
-                        )}
-                    />
+                                    )}
+                                />
+                            )}
+                        />
+                    </CenteredGrid>
                 </Paper>
             </Container>
 

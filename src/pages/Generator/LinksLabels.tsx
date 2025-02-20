@@ -36,7 +36,12 @@ const LinkLabel = ({
                         name={`socialLinks.${index}.name`}
                         control={control}
                         render={({ field }) => (
-                            <TextField {...field} id={`user-link-name-${index}`} label={`Название Соц.Сети`} />
+                            <TextField
+                                {...field}
+                                sx={{ width: '95%' }}
+                                id={`user-link-name-${index}`}
+                                label={`Название Соц.Сети`}
+                            />
                         )}
                     />
                 </CenteredGrid>
@@ -54,6 +59,7 @@ const LinkLabel = ({
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                sx={{ width: '95%' }}
                                 error={!!errors.socialLinks?.[index]?.url}
                                 helperText={errors.socialLinks?.[index]?.url?.message}
                                 id={`user-link-url-${index}`}

@@ -33,7 +33,7 @@ const ProjectLabel = ({
                             Удалить
                         </Button>
                     </CenteredGrid>
-                    <CenteredGrid size={11}>
+                    <CenteredGrid size={12}>
                         <Controller
                             name={`positionLinks.${positionIndex}.projects.${projectIndex}.description`}
                             control={control}
@@ -46,6 +46,7 @@ const ProjectLabel = ({
                             render={({ field }) => (
                                 <TextField
                                     {...field}
+                                    sx={{ width: '95%' }}
                                     multiline
                                     id={`user-project-text-${positionIndex}-${projectIndex}`}
                                     rows={4}
@@ -68,7 +69,7 @@ const ProjectLabel = ({
                             control={control}
                             render={({ field }) => (
                                 <Autocomplete
-                                    sx={{ paddingX: 1, width: '100%' }}
+                                    sx={{ paddingX: 0, width: '95%' }}
                                     multiple
                                     freeSolo
                                     id={`user-project-tags-tasks-${positionIndex}-${projectIndex}`}
@@ -104,7 +105,7 @@ const ProjectLabel = ({
                             }}
                             render={({ field }) => (
                                 <Autocomplete
-                                    sx={{ paddingX: 1, width: '100%' }}
+                                    sx={{ paddingX: 0, width: '95%' }}
                                     multiple
                                     freeSolo
                                     id={`user-project-tags-stack-${positionIndex}-${projectIndex}`}
@@ -142,6 +143,7 @@ const ProjectLabel = ({
                             render={({ field }) => (
                                 <DatePicker
                                     {...field}
+                                    sx={{ width: '95%' }}
                                     value={field.value ? dayjs(field.value) : null}
                                     onAccept={(date) => {
                                         field.onChange(date?.format('YYYY-MM-DD') || '');
@@ -159,6 +161,7 @@ const ProjectLabel = ({
                             render={({ field }) => (
                                 <DatePicker
                                     {...field}
+                                    sx={{ width: '95%' }}
                                     value={field.value ? dayjs(field.value) : null}
                                     onAccept={(date) => {
                                         field.onChange(date?.format('YYYY-MM-DD') || '');
@@ -209,6 +212,7 @@ const PositionsLabel = ({
                             render={({ field }) => (
                                 <TextField
                                     {...field}
+                                    sx={{ width: '95%' }}
                                     id={`user-position-name-${positionIndex}`}
                                     label="Позиция"
                                     error={!!errors.positionLinks?.[positionIndex]?.name}

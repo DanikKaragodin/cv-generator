@@ -38,6 +38,7 @@ const CoursesLabel = ({
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                sx={{ width: '95%' }}
                                 id={`user-courses-name-${index}`}
                                 label="Название Курса"
                                 error={!!errors.courseLinks?.[index]?.name}
@@ -56,6 +57,7 @@ const CoursesLabel = ({
                         render={({ field }) => (
                             <DatePicker
                                 {...field}
+                                sx={{ width: '95%' }}
                                 value={field.value ? dayjs(field.value) : null}
                                 onAccept={(date) => {
                                     field.onChange(date?.format('YYYY-MM-DD') || '');
@@ -73,6 +75,7 @@ const CoursesLabel = ({
                         render={({ field }) => (
                             <DatePicker
                                 {...field}
+                                sx={{ width: '95%' }}
                                 value={field.value ? dayjs(field.value) : null}
                                 onAccept={(date) => {
                                     field.onChange(date?.format('YYYY-MM-DD') || '');

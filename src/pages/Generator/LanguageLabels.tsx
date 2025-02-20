@@ -46,6 +46,7 @@ const LanguageLabel = ({
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                sx={{ width: '95%' }}
                                 id={`user-language-name-${index}`}
                                 label={`Название языка`}
                                 error={!!errors.languageLinks?.[index]?.name}
@@ -55,7 +56,7 @@ const LanguageLabel = ({
                     />
                 </CenteredGrid>
                 <CenteredGrid size={6}>
-                    <FormControl fullWidth error={!!errors.languageLinks?.[index]?.degree}>
+                    <FormControl sx={{ width: '95%' }} error={!!errors.languageLinks?.[index]?.degree}>
                         <Controller
                             name={`languageLinks.${index}.degree`}
                             control={control}

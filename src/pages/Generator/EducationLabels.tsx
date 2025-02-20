@@ -38,6 +38,7 @@ const EducationLabel = ({
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                sx={{ width: '95%' }}
                                 id={`user-education-name-${index}`}
                                 label="Название УЗ"
                                 error={!!errors.educationLinks?.[index]?.name}
@@ -53,6 +54,7 @@ const EducationLabel = ({
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                sx={{ width: '95%' }}
                                 id={`user-education-faculty-${index}`}
                                 label="Факультет"
                                 error={!!errors.educationLinks?.[index]?.faculty}
@@ -68,6 +70,7 @@ const EducationLabel = ({
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                sx={{ width: '95%' }}
                                 id={`user-education-specialization-${index}`}
                                 label="Специальность"
                                 error={!!errors.educationLinks?.[index]?.specialization}
@@ -83,6 +86,7 @@ const EducationLabel = ({
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                sx={{ width: '95%' }}
                                 id={`user-education-degree-${index}`}
                                 label="Степень"
                                 error={!!errors.educationLinks?.[index]?.degree}
@@ -98,6 +102,7 @@ const EducationLabel = ({
                         render={({ field }) => (
                             <DatePicker
                                 {...field}
+                                sx={{ width: '95%' }}
                                 value={field.value ? dayjs(field.value) : null}
                                 onAccept={(date) => {
                                     field.onChange(date?.format('YYYY-MM-DD') || '');
@@ -115,6 +120,7 @@ const EducationLabel = ({
                         render={({ field }) => (
                             <DatePicker
                                 {...field}
+                                sx={{ width: '95%' }}
                                 value={field.value ? dayjs(field.value) : null}
                                 onAccept={(date) => {
                                     field.onChange(date?.format('YYYY-MM-DD') || '');
