@@ -1,24 +1,60 @@
 import { Autocomplete, Button, CardHeader, Chip, Container, Divider, Grid2, Paper, TextField } from '@mui/material';
-import './Generator.css';
-import { useState } from 'react';
-import { IDs } from '@common/types/IDs';
 import { CenteredGrid } from '@common/components/CenteredGrid/CenteredGrid';
 import { LinksLabels } from './LinksLabels';
 import { LanguageLabels } from './LanguageLabels';
 import { EducationLabels } from './EducationLabels';
 import { CoursesLabels } from './CoursesLabels';
 import { PositionsLabels } from './Positions&ProjectLabels';
+import { FormData } from '@common/types/Links';
+import { useForm, Controller, SubmitHandler, useFieldArray } from 'react-hook-form';
 
 function Generator() {
-    const [positions, setPositions] = useState<IDs[]>([]);
-    // const [projects, setProjects] = useState<IDs[]>([]);
-    const [courses, setCourses] = useState<IDs[]>([]);
-    const [education, setEducation] = useState<IDs[]>([]);
-    const [language, setLanguage] = useState<IDs[]>([]);
-    const [links, setLinks] = useState<IDs[]>([]);
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<FormData>({
+        defaultValues: {
+            name: '',
+            lastName: '',
+            email: '',
+            telephone: '',
+            aboutMe: '',
+            technicalSkills: [],
+            languageLinks: [],
+            educationLinks: [],
+            courseLinks: [],
+            positionLinks: [],
+        },
+    });
+
+    // интересуют параметры fields , append, remove
+    const links = useFieldArray({
+        control: control,
+        name: 'socialLinks',
+    });
+    const languages = useFieldArray({
+        control: control,
+        name: 'languageLinks',
+    });
+    const educations = useFieldArray({
+        control: control,
+        name: 'educationLinks',
+    });
+    const courses = useFieldArray({
+        control: control,
+        name: 'courseLinks',
+    });
+    const positions = useFieldArray({
+        control,
+        name: 'positionLinks',
+    });
+    const onSubmit: SubmitHandler<FormData> = (data) => {
+        console.log('Собранные данные:', data);
+    };
 
     return (
-        <>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <Container maxWidth="sm">
                 <Paper elevation={4} sx={{ marginTop: 5, paddingBottom: 3 }}>
                     <CardHeader title="О себе" />
@@ -31,27 +67,95 @@ function Generator() {
                         sx={{ justifyContent: 'space-evenly', marginTop: 2, paddingX: 1 }}
                     >
                         <CenteredGrid size={6}>
-                            <TextField error required id="user-name" label="Имя" helperText="Incorrect entry." />
-                        </CenteredGrid>
-                        <CenteredGrid size={6}>
-                            <TextField
-                                error
-                                required
-                                id="user-last_name"
-                                label="Фамилия"
-                                helperText="Incorrect entry."
+                            <Controller
+                                name="name"
+                                control={control}
+                                rules={{ required: 'Имя обязательно' }}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        error={!!errors.name}
+                                        helperText={errors.name?.message}
+                                        required
+                                        id="user-name"
+                                        label="Имя"
+                                    />
+                                )}
                             />
                         </CenteredGrid>
+
                         <CenteredGrid size={6}>
-                            <TextField error required id="user-email" label="E-mail" />
+                            <Controller
+                                name="lastName"
+                                control={control}
+                                rules={{ required: 'Фамилия обязательна' }}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        error={!!errors.lastName}
+                                        helperText={errors.lastName?.message}
+                                        label="Фамилия"
+                                        required
+                                        id="user-last_name"
+                                    />
+                                )}
+                            />
                         </CenteredGrid>
+
                         <CenteredGrid size={6}>
-                            <TextField id="user-telephone" label="Телефон" />
+                            <Controller
+                                name="email"
+                                control={control}
+                                rules={{ required: 'E-mail обязателен' }}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        error={!!errors.email}
+                                        helperText={errors.email?.message}
+                                        label="E-mail"
+                                        required
+                                        id="user-email"
+                                    />
+                                )}
+                            />
                         </CenteredGrid>
+
+                        <CenteredGrid size={6}>
+                            <Controller
+                                name="telephone"
+                                control={control}
+                                render={({ field }) => <TextField {...field} label="Телефон" id="user-telephone" />}
+                            />
+                        </CenteredGrid>
+
                         <CenteredGrid size={11}>
-                            <TextField multiline id="user-about_me" label="О себе" rows={4} sx={{ width: '100%' }} />
+                            <Controller
+                                name="aboutMe"
+                                control={control}
+                                rules={{ required: "Поле 'О себе' обязательно" }}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        error={!!errors.aboutMe}
+                                        helperText={errors.aboutMe?.message}
+                                        label="О себе"
+                                        multiline
+                                        id="user-about_me"
+                                        fullWidth
+                                        rows={4}
+                                        sx={{ width: '100%' }}
+                                    />
+                                )}
+                            />
                         </CenteredGrid>
-                        <LinksLabels links={links} setLinks={setLinks} />
+
+                        <LinksLabels
+                            fields={links.fields}
+                            append={() => links.append({ name: '', url: '' })}
+                            remove={links.remove}
+                            control={control}
+                            errors={errors}
+                        />
                     </Grid2>
                 </Paper>
             </Container>
@@ -62,29 +166,46 @@ function Generator() {
                     <Divider />
                     <CardHeader title="Знание языков" />
                     <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} sx={{ marginY: 2, paddingX: 1 }}>
-                        <LanguageLabels languages={language} setLanguages={setLanguage} />
+                        <LanguageLabels
+                            fields={languages.fields}
+                            append={() => languages.append({ name: '', degree: '' })}
+                            remove={languages.remove}
+                            control={control}
+                            errors={errors}
+                        />
                     </Grid2>
                     <Divider />
                     <CardHeader title="Технические навыки" />
-                    <Autocomplete
-                        sx={{ paddingX: 1 }}
-                        multiple
-                        id="user-technical-skills"
-                        options={[].map((option) => option)}
-                        defaultValue={['Samara']}
-                        freeSolo
-                        renderTags={(value: readonly string[], getTagProps) =>
-                            value.map((option: string, index: number) => {
-                                const { key, ...tagProps } = getTagProps({ index });
-                                return <Chip variant="outlined" label={option} key={key} {...tagProps} />;
-                            })
-                        }
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Технические навыки"
-                                placeholder="Технические навыки"
+                    <Controller
+                        name="technicalSkills"
+                        control={control}
+                        render={({ field }) => (
+                            <Autocomplete
+                                sx={{ paddingX: 1 }}
+                                multiple
+                                id="user-technical-skills"
+                                options={[]}
+                                value={field.value || []}
+                                freeSolo
+                                onChange={(_, newValue) => field.onChange(newValue)} // такой формат для добавления тегов в массив
+                                renderTags={(value, getTagProps) =>
+                                    value.map((option: string, index: number) => (
+                                        <Chip
+                                            variant="outlined"
+                                            label={option}
+                                            {...getTagProps({ index })}
+                                            key={option}
+                                        />
+                                    ))
+                                }
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        variant="outlined"
+                                        label="Технические навыки"
+                                        placeholder="Технические навыки"
+                                    />
+                                )}
                             />
                         )}
                     />
@@ -97,12 +218,33 @@ function Generator() {
                     <Divider />
                     <CardHeader title="Образование" />
                     <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} sx={{ marginY: 2, paddingX: 1 }}>
-                        <EducationLabels educations={education} setEducations={setEducation} />
+                        <EducationLabels
+                            fields={educations.fields}
+                            append={() =>
+                                educations.append({
+                                    name: '',
+                                    faculty: '',
+                                    specialization: '',
+                                    degree: '',
+                                    dataStart: '',
+                                    dataEnd: '',
+                                })
+                            }
+                            remove={educations.remove}
+                            control={control}
+                            errors={errors}
+                        />
                     </Grid2>
                     <Divider />
                     <CardHeader title="Курсы" />
                     <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} sx={{ marginY: 2, paddingX: 1 }}>
-                        <CoursesLabels courses={courses} setCourses={setCourses} />
+                        <CoursesLabels
+                            fields={courses.fields}
+                            append={() => courses.append({ name: '', dataStart: '', dataEnd: '' })}
+                            remove={courses.remove}
+                            control={control}
+                            errors={errors}
+                        />
                     </Grid2>
                 </Paper>
             </Container>
@@ -112,16 +254,23 @@ function Generator() {
                     <CardHeader title="Опыт Работы" />
                     <Divider />
                     <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} sx={{ marginY: 2, paddingX: 1 }}>
-                        <PositionsLabels positions={positions} setPositions={setPositions} />
+                        <PositionsLabels
+                            fields={positions.fields}
+                            append={() => positions.append({ name: '', projects: [] })}
+                            remove={positions.remove}
+                            control={control}
+                            errors={errors}
+                        />
                     </Grid2>
                 </Paper>
             </Container>
 
             <Container maxWidth="sm" sx={{ display: 'flex', justifyContent: 'center', marginBottom: 5 }}>
-                <Button variant="outlined"> Собрать резюме </Button>
+                <Button type="submit" variant="outlined">
+                    Собрать резюме
+                </Button>
             </Container>
-        </>
+        </form>
     );
 }
-
 export default Generator;

@@ -1,77 +1,162 @@
 import { CenteredGrid } from '@common/components/CenteredGrid/CenteredGrid';
-import { IDs } from '@common/types/IDs';
 import Button from '@mui/material/Button';
 import Grid2 from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { addItemID, removeItemID } from '@common/utils/itemIDutils';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
-const EducationLabel = ({ id, onRemove }: { id: number; onRemove: () => void }) => {
+import { Control, FieldArrayWithId, FieldErrors } from 'node_modules/react-hook-form/dist/types';
+import { Controller } from 'react-hook-form';
+import dayjs from 'dayjs';
+import { FormData } from '@common/types/Links';
+const EducationLabel = ({
+    index,
+    onRemove,
+    control,
+    errors,
+}: {
+    index: number;
+    onRemove: () => void;
+    control: Control<FormData, unknown>;
+    errors: FieldErrors<FormData>;
+}) => {
     return (
         <Paper>
             <Grid2 container sx={{ marginY: 3, paddingX: 1 }} spacing={2} rowSpacing={4}>
                 <CenteredGrid size={12}>
-                    <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => onRemove()}>
+                    <Button variant="outlined" startIcon={<DeleteIcon />} onClick={onRemove}>
                         Удалить
                     </Button>
                 </CenteredGrid>
                 <CenteredGrid size={6}>
-                    <TextField
-                        error
-                        required
-                        id={`user-education-name-${id}`}
-                        label="Название УЗ"
-                        helperText="Incorrect entry."
+                    <Controller
+                        name={`educationLinks.${index}.name`}
+                        control={control}
+                        rules={{
+                            required: 'Название УЗ обязательно',
+                        }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                id={`user-education-name-${index}`}
+                                label="Название УЗ"
+                                error={!!errors.educationLinks?.[index]?.name}
+                                helperText={errors.educationLinks?.[index]?.name?.message}
+                            />
+                        )}
                     />
                 </CenteredGrid>
                 <CenteredGrid size={6}>
-                    <TextField id={`user-education-faculty-${id}`} label="Факультет" />
+                    <Controller
+                        name={`educationLinks.${index}.faculty`}
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                id={`user-education-faculty-${index}`}
+                                label="Факультет"
+                                error={!!errors.educationLinks?.[index]?.faculty}
+                                helperText={errors.educationLinks?.[index]?.faculty?.message}
+                            />
+                        )}
+                    />
                 </CenteredGrid>
                 <CenteredGrid size={6}>
-                    <TextField id={`user-education-specialization-${id}`} label="Специальность" />
+                    <Controller
+                        name={`educationLinks.${index}.specialization`}
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                id={`user-education-specialization-${index}`}
+                                label="Специальность"
+                                error={!!errors.educationLinks?.[index]?.specialization}
+                                helperText={errors.educationLinks?.[index]?.specialization?.message}
+                            />
+                        )}
+                    />
                 </CenteredGrid>
                 <CenteredGrid size={6}>
-                    <TextField id={`user-education-degree-${id}`} label="Степень" />
+                    <Controller
+                        name={`educationLinks.${index}.degree`}
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                id={`user-education-degree-${index}`}
+                                label="Степень"
+                                error={!!errors.educationLinks?.[index]?.degree}
+                                helperText={errors.educationLinks?.[index]?.degree?.message}
+                            />
+                        )}
+                    />
                 </CenteredGrid>
                 <CenteredGrid size={6}>
-                    <DatePicker data-id={`user-education-dataStart-${id}`} label="Дата начало" />
+                    <Controller
+                        name={`educationLinks.${index}.dataStart`}
+                        control={control}
+                        render={({ field }) => (
+                            <DatePicker
+                                {...field}
+                                value={field.value ? dayjs(field.value) : null}
+                                onAccept={(date) => {
+                                    field.onChange(date?.format('YYYY-MM-DD') || '');
+                                }}
+                                data-id={`user-education-dataStart-${index}`}
+                                label="Дата начало"
+                            />
+                        )}
+                    />
                 </CenteredGrid>
                 <CenteredGrid size={6}>
-                    <DatePicker data-id={`user-education-dataEnd-${id}`} label="Дата окончания" />
+                    <Controller
+                        name={`educationLinks.${index}.dataEnd`}
+                        control={control}
+                        render={({ field }) => (
+                            <DatePicker
+                                {...field}
+                                value={field.value ? dayjs(field.value) : null}
+                                onAccept={(date) => {
+                                    field.onChange(date?.format('YYYY-MM-DD') || '');
+                                }}
+                                data-id={`user-education-dataEnd-${index}`}
+                                label="Дата окончания"
+                            />
+                        )}
+                    />
                 </CenteredGrid>
             </Grid2>
         </Paper>
     );
 };
 export const EducationLabels = ({
-    educations,
-    setEducations,
+    fields,
+    append,
+    remove,
+    control,
+    errors,
 }: {
-    educations: IDs[];
-    setEducations: React.Dispatch<React.SetStateAction<IDs[]>>;
+    fields: FieldArrayWithId<FormData, 'educationLinks', 'id'>[];
+    append: () => void;
+    remove: (index: number) => void;
+    control: Control<FormData, unknown>;
+    errors: FieldErrors<FormData>;
 }) => {
     return (
         <>
             <CenteredGrid size={12}>
-                <Button
-                    variant="outlined"
-                    onClick={() => {
-                        addItemID(educations, setEducations);
-                    }}
-                >
+                <Button variant="outlined" onClick={append}>
                     {' '}
                     Добавить Учреждение
                 </Button>
             </CenteredGrid>
-            {educations.map((link: IDs) => (
+            {fields.map((field, index) => (
                 <EducationLabel
-                    key={link.id}
-                    id={link.id}
-                    onRemove={() => {
-                        removeItemID(link.id, educations, setEducations);
-                    }}
+                    control={control}
+                    errors={errors}
+                    key={field.id}
+                    index={index}
+                    onRemove={() => remove(index)}
                 />
             ))}
         </>
