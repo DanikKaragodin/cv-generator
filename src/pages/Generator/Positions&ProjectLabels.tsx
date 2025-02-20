@@ -16,13 +16,13 @@ const ProjectLabel = ({
     positionIndex,
     projectIndex,
     onRemove,
-    // errors,
+    errors,
 }: {
     control: Control<FormData>;
     positionIndex: number;
     projectIndex: number;
     onRemove: () => void;
-    // errors: FieldErrors<FormData>;
+    errors: FieldErrors<FormData>;
 }) => {
     return (
         <>
@@ -37,12 +37,25 @@ const ProjectLabel = ({
                         <Controller
                             name={`positionLinks.${positionIndex}.projects.${projectIndex}.description`}
                             control={control}
+                            rules={{
+                                maxLength: {
+                                    value: 500,
+                                    message: 'Максимум 500 символов',
+                                },
+                            }}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     multiline
                                     id={`user-project-text-${positionIndex}-${projectIndex}`}
                                     rows={4}
+                                    error={
+                                        !!errors.positionLinks?.[positionIndex]?.projects?.[projectIndex]?.description
+                                    }
+                                    helperText={
+                                        errors.positionLinks?.[positionIndex]?.projects?.[projectIndex]?.description
+                                            ?.message
+                                    }
                                     label="Описание проекта"
                                     fullWidth
                                 />
@@ -83,6 +96,12 @@ const ProjectLabel = ({
                         <Controller
                             name={`positionLinks.${positionIndex}.projects.${projectIndex}.stack`}
                             control={control}
+                            rules={{
+                                required: 'Необходимо от 2 технологий',
+                                validate: (value) => {
+                                    if (value.length < 2) return 'Необходимо от 2 технологий';
+                                },
+                            }}
                             render={({ field }) => (
                                 <Autocomplete
                                     sx={{ paddingX: 1, width: '100%' }}
@@ -100,6 +119,13 @@ const ProjectLabel = ({
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
+                                            error={
+                                                !!errors.positionLinks?.[positionIndex]?.projects?.[projectIndex]?.stack
+                                            }
+                                            helperText={
+                                                errors.positionLinks?.[positionIndex]?.projects?.[projectIndex]?.stack
+                                                    ?.message
+                                            }
                                             variant="outlined"
                                             label="Стек Технологий"
                                             placeholder="Стек Технологий"
@@ -177,6 +203,9 @@ const PositionsLabel = ({
                         <Controller
                             name={`positionLinks.${positionIndex}.name`}
                             control={control}
+                            rules={{
+                                required: 'Название Позиции обязательно',
+                            }}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -211,7 +240,7 @@ const PositionsLabel = ({
                             positionIndex={positionIndex}
                             projectIndex={projectIndex}
                             onRemove={() => projects.remove(projectIndex)}
-                            // errors={errors}
+                            errors={errors}
                         />
                     ))}
                 </Grid2>

@@ -14,6 +14,7 @@ function Generator() {
         handleSubmit,
         formState: { errors },
     } = useForm<FormData>({
+        mode: 'all',
         defaultValues: {
             name: '',
             lastName: '',
@@ -106,7 +107,13 @@ function Generator() {
                             <Controller
                                 name="email"
                                 control={control}
-                                rules={{ required: 'E-mail обязателен' }}
+                                rules={{
+                                    required: 'E-mail обязателен',
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                        message: 'Некорректный email',
+                                    },
+                                }}
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
@@ -124,7 +131,21 @@ function Generator() {
                             <Controller
                                 name="telephone"
                                 control={control}
-                                render={({ field }) => <TextField {...field} label="Телефон" id="user-telephone" />}
+                                rules={{
+                                    pattern: {
+                                        value: /^(\+375|80)[0-9]{9}$/,
+                                        message: 'Формат: +375291234567 или 80291234567',
+                                    },
+                                }}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        error={!!errors.telephone}
+                                        helperText={errors.telephone?.message}
+                                        label="Телефон"
+                                        id="user-telephone"
+                                    />
+                                )}
                             />
                         </CenteredGrid>
 
@@ -132,7 +153,13 @@ function Generator() {
                             <Controller
                                 name="aboutMe"
                                 control={control}
-                                rules={{ required: "Поле 'О себе' обязательно" }}
+                                rules={{
+                                    required: "Поле 'О себе' обязательно",
+                                    maxLength: {
+                                        value: 500,
+                                        message: 'Максимум 500 символов',
+                                    },
+                                }}
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
@@ -179,6 +206,12 @@ function Generator() {
                     <Controller
                         name="technicalSkills"
                         control={control}
+                        rules={{
+                            required: 'Необходимо от 2 навыков',
+                            validate: (value) => {
+                                if (value.length < 2) return 'Необходимо от 2 навыков';
+                            },
+                        }}
                         render={({ field }) => (
                             <Autocomplete
                                 sx={{ paddingX: 1 }}
@@ -204,6 +237,8 @@ function Generator() {
                                         variant="outlined"
                                         label="Технические навыки"
                                         placeholder="Технические навыки"
+                                        error={!!errors.technicalSkills}
+                                        helperText={errors.technicalSkills?.message}
                                     />
                                 )}
                             />
