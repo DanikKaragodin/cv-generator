@@ -5,21 +5,11 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Control, FieldArrayWithId, FieldErrors } from 'node_modules/react-hook-form/dist/types';
 import { Controller } from 'react-hook-form';
 import dayjs from 'dayjs';
-import { FormData } from '@common/types/Links';
-const EducationLabel = ({
-    index,
-    onRemove,
-    control,
-    errors,
-}: {
-    index: number;
-    onRemove: () => void;
-    control: Control<FormData, unknown>;
-    errors: FieldErrors<FormData>;
-}) => {
+import { LabelProps, LabelsProps } from '@common/types/Props';
+import { validationRules } from '@common/validation';
+const EducationLabel = ({ index, onRemove, control, errors }: LabelProps) => {
     return (
         <Paper>
             <Grid2 container sx={{ marginY: 3, paddingX: 1 }} spacing={2} rowSpacing={4}>
@@ -30,26 +20,24 @@ const EducationLabel = ({
                 </CenteredGrid>
                 <CenteredGrid size={6}>
                     <Controller
-                        name={`educationLinks.${index}.name`}
+                        name={`educationLabels.${index}.name`}
                         control={control}
-                        rules={{
-                            required: 'Название УЗ обязательно',
-                        }}
+                        rules={validationRules.requiredField('УЗ')}
                         render={({ field }) => (
                             <TextField
                                 {...field}
                                 sx={{ width: '95%' }}
                                 id={`user-education-name-${index}`}
                                 label="Название УЗ"
-                                error={!!errors.educationLinks?.[index]?.name}
-                                helperText={errors.educationLinks?.[index]?.name?.message}
+                                error={!!errors.educationLabels?.[index]?.name}
+                                helperText={errors.educationLabels?.[index]?.name?.message}
                             />
                         )}
                     />
                 </CenteredGrid>
                 <CenteredGrid size={6}>
                     <Controller
-                        name={`educationLinks.${index}.faculty`}
+                        name={`educationLabels.${index}.faculty`}
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -57,15 +45,15 @@ const EducationLabel = ({
                                 sx={{ width: '95%' }}
                                 id={`user-education-faculty-${index}`}
                                 label="Факультет"
-                                error={!!errors.educationLinks?.[index]?.faculty}
-                                helperText={errors.educationLinks?.[index]?.faculty?.message}
+                                error={!!errors.educationLabels?.[index]?.faculty}
+                                helperText={errors.educationLabels?.[index]?.faculty?.message}
                             />
                         )}
                     />
                 </CenteredGrid>
                 <CenteredGrid size={6}>
                     <Controller
-                        name={`educationLinks.${index}.specialization`}
+                        name={`educationLabels.${index}.specialization`}
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -73,15 +61,15 @@ const EducationLabel = ({
                                 sx={{ width: '95%' }}
                                 id={`user-education-specialization-${index}`}
                                 label="Специальность"
-                                error={!!errors.educationLinks?.[index]?.specialization}
-                                helperText={errors.educationLinks?.[index]?.specialization?.message}
+                                error={!!errors.educationLabels?.[index]?.specialization}
+                                helperText={errors.educationLabels?.[index]?.specialization?.message}
                             />
                         )}
                     />
                 </CenteredGrid>
                 <CenteredGrid size={6}>
                     <Controller
-                        name={`educationLinks.${index}.degree`}
+                        name={`educationLabels.${index}.degree`}
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -89,15 +77,15 @@ const EducationLabel = ({
                                 sx={{ width: '95%' }}
                                 id={`user-education-degree-${index}`}
                                 label="Степень"
-                                error={!!errors.educationLinks?.[index]?.degree}
-                                helperText={errors.educationLinks?.[index]?.degree?.message}
+                                error={!!errors.educationLabels?.[index]?.degree}
+                                helperText={errors.educationLabels?.[index]?.degree?.message}
                             />
                         )}
                     />
                 </CenteredGrid>
                 <CenteredGrid size={6}>
                     <Controller
-                        name={`educationLinks.${index}.dataStart`}
+                        name={`educationLabels.${index}.dataStart`}
                         control={control}
                         render={({ field }) => (
                             <DatePicker
@@ -115,7 +103,7 @@ const EducationLabel = ({
                 </CenteredGrid>
                 <CenteredGrid size={6}>
                     <Controller
-                        name={`educationLinks.${index}.dataEnd`}
+                        name={`educationLabels.${index}.dataEnd`}
                         control={control}
                         render={({ field }) => (
                             <DatePicker
@@ -135,19 +123,7 @@ const EducationLabel = ({
         </Paper>
     );
 };
-export const EducationLabels = ({
-    fields,
-    append,
-    remove,
-    control,
-    errors,
-}: {
-    fields: FieldArrayWithId<FormData, 'educationLinks', 'id'>[];
-    append: () => void;
-    remove: (index: number) => void;
-    control: Control<FormData, unknown>;
-    errors: FieldErrors<FormData>;
-}) => {
+export const EducationLabels = ({ fields, append, remove, control, errors }: LabelsProps) => {
     return (
         <>
             <CenteredGrid size={12}>

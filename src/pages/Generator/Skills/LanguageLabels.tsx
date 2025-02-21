@@ -6,22 +6,13 @@ import TextField from '@mui/material/TextField';
 import DeleteIcon from '@mui/icons-material/Delete';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import { Control, Controller, FieldArrayWithId, FieldErrors } from 'react-hook-form';
+import _Select from '@common/components/Select/_Select';
+import { Controller } from 'react-hook-form';
 import FormHelperText from '@mui/material/FormHelperText';
-import { FormData } from '@common/types/Links';
-const LanguageLabel = ({
-    index,
-    onRemove,
-    control,
-    errors,
-}: {
-    index: number;
-    onRemove: () => void;
-    control: Control<FormData, unknown>;
-    errors: FieldErrors<FormData>;
-}) => {
+import { languageDegrees } from '@common/constants';
+import { LabelProps, LabelsProps } from '@common/types/Props';
+import { validationRules } from '@common/validation';
+const LanguageLabel = ({ index, onRemove, control, errors }: LabelProps) => {
     return (
         <Paper sx={{ width: '100%' }}>
             <Grid2 container sx={{ marginY: 3, paddingX: 1 }} spacing={2} rowSpacing={4}>
@@ -38,48 +29,38 @@ const LanguageLabel = ({
                 </CenteredGrid>
                 <CenteredGrid size={6}>
                     <Controller
-                        name={`languageLinks.${index}.name`}
+                        name={`languageLabels.${index}.name`}
                         control={control}
-                        rules={{
-                            required: 'Название языка обязательно',
-                        }}
+                        rules={validationRules.requiredField('Язык')}
                         render={({ field }) => (
                             <TextField
                                 {...field}
                                 sx={{ width: '95%' }}
                                 id={`user-language-name-${index}`}
                                 label={`Название языка`}
-                                error={!!errors.languageLinks?.[index]?.name}
-                                helperText={errors.languageLinks?.[index]?.name?.message}
+                                error={!!errors.languageLabels?.[index]?.name}
+                                helperText={errors.languageLabels?.[index]?.name?.message}
                             />
                         )}
                     />
                 </CenteredGrid>
                 <CenteredGrid size={6}>
-                    <FormControl sx={{ width: '95%' }} error={!!errors.languageLinks?.[index]?.degree}>
+                    <FormControl sx={{ width: '95%' }} error={!!errors.languageLabels?.[index]?.degree}>
                         <Controller
-                            name={`languageLinks.${index}.degree`}
+                            name={`languageLabels.${index}.degree`}
                             control={control}
-                            rules={{
-                                required: 'Степень обязательна',
-                            }}
+                            rules={validationRules.requiredField('Степень')}
                             render={({ field }) => (
                                 <>
                                     <InputLabel id={`user-language-select-label-${index}`}>Степень знания</InputLabel>
-                                    <Select
-                                        {...field}
+                                    <_Select
+                                        field={field}
                                         labelId={`user-language-select-label-${index}`}
                                         id={`user-language-select-${index}`}
                                         label="Степень знания"
-                                    >
-                                        <MenuItem value={'A1'}>A1</MenuItem>
-                                        <MenuItem value={'A2'}>A2</MenuItem>
-                                        <MenuItem value={'B1'}>B1</MenuItem>
-                                        <MenuItem value={'B2'}>B2</MenuItem>
-                                        <MenuItem value={'C1'}>C1</MenuItem>
-                                        <MenuItem value={'C2'}>C2</MenuItem>
-                                    </Select>
-                                    <FormHelperText>{errors.languageLinks?.[index]?.degree?.message}</FormHelperText>
+                                        menuItems={languageDegrees}
+                                    ></_Select>
+                                    <FormHelperText>{errors.languageLabels?.[index]?.degree?.message}</FormHelperText>
                                 </>
                             )}
                         />
@@ -90,19 +71,7 @@ const LanguageLabel = ({
     );
 };
 
-export const LanguageLabels = ({
-    fields,
-    append,
-    remove,
-    control,
-    errors,
-}: {
-    fields: FieldArrayWithId<FormData, 'languageLinks', 'id'>[];
-    append: () => void;
-    remove: (index: number) => void;
-    control: Control<FormData, unknown>;
-    errors: FieldErrors<FormData>;
-}) => {
+export const LanguageLabels = ({ fields, append, remove, control, errors }: LabelsProps) => {
     return (
         <>
             <CenteredGrid size={12}>

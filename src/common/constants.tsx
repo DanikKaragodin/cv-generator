@@ -21,6 +21,15 @@ export const routes: Record<string, IRoute> = {
     login: { page: 'Выйти', href: '/login', isSettings: true, component: <Login /> },
 };
 
+export enum languageDegrees {
+    A1 = 'A1',
+    A2 = 'A2',
+    B1 = 'B1',
+    B2 = 'B2',
+    C1 = 'C1',
+    C2 = 'C2',
+}
+
 export enum TEST_IDS {
     settings = 'settings',
     root = 'root',

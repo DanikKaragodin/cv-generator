@@ -1,12 +1,12 @@
-interface SocialLink {
+interface SocialLabel {
     name: string;
     url: string;
 }
-interface LanguageLink {
+interface LanguageLabel {
     name: string;
     degree: string;
 }
-interface EducationLink {
+interface EducationLabel {
     name: string;
     faculty: string;
     specialization: string;
@@ -14,21 +14,21 @@ interface EducationLink {
     dataStart: string;
     dataEnd: string;
 }
-interface CourseLink {
+interface CourseLabel {
     name: string;
     dataStart: string;
     dataEnd: string;
 }
-interface ProjectLink {
+interface ProjectLabel {
     description: string;
     tasks: string[];
     stack: string[];
     dataStart: string;
     dataEnd: string;
 }
-interface PositionLink {
+interface PositionLabel {
     name: string;
-    projects: ProjectLink[];
+    projects: ProjectLabel[];
 }
 export interface FormData {
     name: string;
@@ -37,9 +37,9 @@ export interface FormData {
     telephone: string;
     aboutMe: string;
     technicalSkills: string[];
-    socialLinks: SocialLink[];
-    languageLinks: LanguageLink[];
-    educationLinks: EducationLink[];
-    courseLinks: CourseLink[];
-    positionLinks: PositionLink[];
+    socialLabels: SocialLabel[];
+    languageLabels: LanguageLabel[];
+    educationLabels: EducationLabel[];
+    courseLabels: CourseLabel[];
+    positionLabels: PositionLabel[];
 }

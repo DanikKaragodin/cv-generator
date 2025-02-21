@@ -4,19 +4,10 @@ import Grid2 from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Control, Controller, FieldArrayWithId, FieldErrors } from 'react-hook-form';
-import { FormData } from '@common/types/Links';
-const LinkLabel = ({
-    index,
-    onRemove,
-    control,
-    errors,
-}: {
-    index: number;
-    onRemove: () => void;
-    control: Control<FormData, unknown>;
-    errors: FieldErrors<FormData>;
-}) => {
+import { Controller } from 'react-hook-form';
+import { LabelProps, LabelsProps } from '@common/types/Props';
+import { validationRules } from '@common/validation';
+const LinkLabel = ({ index, onRemove, control, errors }: LabelProps) => {
     return (
         <Paper>
             <Grid2 container sx={{ marginY: 3, paddingX: 1 }} spacing={2} rowSpacing={4}>
@@ -33,7 +24,7 @@ const LinkLabel = ({
                 </CenteredGrid>
                 <CenteredGrid size={6}>
                     <Controller
-                        name={`socialLinks.${index}.name`}
+                        name={`socialLabels.${index}.name`}
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -47,21 +38,15 @@ const LinkLabel = ({
                 </CenteredGrid>
                 <CenteredGrid size={6}>
                     <Controller
-                        name={`socialLinks.${index}.url`}
+                        name={`socialLabels.${index}.url`}
                         control={control}
-                        rules={{
-                            required: 'Ссылка обязательна',
-                            pattern: {
-                                value: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
-                                message: 'Некорректный URL',
-                            },
-                        }}
+                        rules={validationRules.url}
                         render={({ field }) => (
                             <TextField
                                 {...field}
                                 sx={{ width: '95%' }}
-                                error={!!errors.socialLinks?.[index]?.url}
-                                helperText={errors.socialLinks?.[index]?.url?.message}
+                                error={!!errors.socialLabels?.[index]?.url}
+                                helperText={errors.socialLabels?.[index]?.url?.message}
                                 id={`user-link-url-${index}`}
                                 label="Ссылка на Соц.Сеть"
                             />
@@ -72,19 +57,7 @@ const LinkLabel = ({
         </Paper>
     );
 };
-export const LinksLabels = ({
-    fields,
-    append,
-    remove,
-    control,
-    errors,
-}: {
-    fields: FieldArrayWithId<FormData, 'socialLinks', 'id'>[];
-    append: () => void;
-    remove: (index: number) => void;
-    control: Control<FormData, unknown>;
-    errors: FieldErrors<FormData>;
-}) => {
+export const LinkLabels = ({ fields, append, remove, control, errors }: LabelsProps) => {
     return (
         <>
             <CenteredGrid size={12}>
