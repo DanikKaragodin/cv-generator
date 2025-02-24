@@ -24,6 +24,7 @@
     "@mui/icons-material": "^6.4.4",
     "@mui/material": "^6.4.4",
     "@mui/x-date-pickers": "^7.27.0",
+    "@react-pdf/renderer": "^4.2.2",
     "dayjs": "^1.11.13",
     "gh-pages": "^6.3.0",
     "husky": "^9.1.7",

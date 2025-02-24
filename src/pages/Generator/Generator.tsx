@@ -5,8 +5,10 @@ import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
 import Skills from './Skills/Skills';
 import Education from './Education/Education';
 import Projects from './Projects/Projects';
+import { useNavigate } from 'react-router';
 
 function Generator() {
+    const navigate = useNavigate();
     const {
         control,
         handleSubmit,
@@ -48,8 +50,9 @@ function Generator() {
         control,
         name: 'positionLabels',
     });
-    const onSubmit: SubmitHandler<FormData> = (data) => {
-        console.log('Собранные данные:', data);
+    const onSubmit: SubmitHandler<FormData> = (inputData) => {
+        console.log('Собранные данные:', inputData);
+        navigate('/create-cv/pdf-view', { state: { inputData } });
     };
 
     return (
@@ -59,7 +62,7 @@ function Generator() {
             <Education control={control} errors={errors} fieldArray={educations} fieldArray2={courses}></Education>
             <Projects control={control} errors={errors} fieldArray={positions}></Projects>
             <Container maxWidth="sm" sx={{ display: 'flex', justifyContent: 'center', marginBottom: 5 }}>
-                <Button type="submit" variant="outlined">
+                <Button type="submit" variant="contained">
                     Собрать резюме
                 </Button>
             </Container>
