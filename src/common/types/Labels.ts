@@ -19,16 +19,13 @@ interface CourseLabel {
     dataStart: string;
     dataEnd: string;
 }
-interface ProjectLabel {
+interface PositionLabel {
+    name: string;
     description: string;
     tasks: string[];
     stack: string[];
     dataStart: string;
     dataEnd: string;
-}
-interface PositionLabel {
-    name: string;
-    projects: ProjectLabel[];
 }
 export interface FormData {
     name: string;
@@ -36,6 +33,7 @@ export interface FormData {
     email: string;
     telephone: string;
     aboutMe: string;
+    avatar: File;
     technicalSkills: string[];
     socialLabels: SocialLabel[];
     languageLabels: LanguageLabel[];

@@ -9,10 +9,12 @@ import { Controller } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { LabelProps, LabelsProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
+import { MUIStyles } from '@common/styles/muistyles';
 const EducationLabel = ({ index, onRemove, control, errors }: LabelProps) => {
+    const { classes, cx } = MUIStyles();
     return (
         <Paper>
-            <Grid2 container sx={{ marginY: 3, paddingX: 1 }} spacing={2} rowSpacing={4}>
+            <Grid2 container className={cx(classes.grid)} spacing={2} rowSpacing={4}>
                 <CenteredGrid size={12}>
                     <Button variant="outlined" startIcon={<DeleteIcon />} onClick={onRemove}>
                         Удалить
@@ -26,7 +28,6 @@ const EducationLabel = ({ index, onRemove, control, errors }: LabelProps) => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                sx={{ width: '95%' }}
                                 id={`user-education-name-${index}`}
                                 label="Название УЗ"
                                 error={!!errors.educationLabels?.[index]?.name}
@@ -42,7 +43,6 @@ const EducationLabel = ({ index, onRemove, control, errors }: LabelProps) => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                sx={{ width: '95%' }}
                                 id={`user-education-faculty-${index}`}
                                 label="Факультет"
                                 error={!!errors.educationLabels?.[index]?.faculty}
@@ -58,7 +58,6 @@ const EducationLabel = ({ index, onRemove, control, errors }: LabelProps) => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                sx={{ width: '95%' }}
                                 id={`user-education-specialization-${index}`}
                                 label="Специальность"
                                 error={!!errors.educationLabels?.[index]?.specialization}
@@ -74,7 +73,6 @@ const EducationLabel = ({ index, onRemove, control, errors }: LabelProps) => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                sx={{ width: '95%' }}
                                 id={`user-education-degree-${index}`}
                                 label="Степень"
                                 error={!!errors.educationLabels?.[index]?.degree}
@@ -90,7 +88,6 @@ const EducationLabel = ({ index, onRemove, control, errors }: LabelProps) => {
                         render={({ field }) => (
                             <DatePicker
                                 {...field}
-                                sx={{ width: '95%' }}
                                 value={field.value ? dayjs(field.value) : null}
                                 onAccept={(date) => {
                                     field.onChange(date?.format('YYYY-MM-DD') || '');
@@ -108,7 +105,6 @@ const EducationLabel = ({ index, onRemove, control, errors }: LabelProps) => {
                         render={({ field }) => (
                             <DatePicker
                                 {...field}
-                                sx={{ width: '95%' }}
                                 value={field.value ? dayjs(field.value) : null}
                                 onAccept={(date) => {
                                     field.onChange(date?.format('YYYY-MM-DD') || '');

@@ -7,10 +7,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Controller } from 'react-hook-form';
 import { LabelProps, LabelsProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
+import { MUIStyles } from '@common/styles/muistyles';
 const LinkLabel = ({ index, onRemove, control, errors }: LabelProps) => {
+    const { classes, cx } = MUIStyles();
     return (
         <Paper>
-            <Grid2 container sx={{ marginY: 3, paddingX: 1 }} spacing={2} rowSpacing={4}>
+            <Grid2 container spacing={2} rowSpacing={4} className={cx(classes.grid)}>
                 <CenteredGrid size={12}>
                     <Button
                         key={`user-link-button-${index}`}
@@ -27,12 +29,7 @@ const LinkLabel = ({ index, onRemove, control, errors }: LabelProps) => {
                         name={`socialLabels.${index}.name`}
                         control={control}
                         render={({ field }) => (
-                            <TextField
-                                {...field}
-                                sx={{ width: '95%' }}
-                                id={`user-link-name-${index}`}
-                                label={`Название Соц.Сети`}
-                            />
+                            <TextField {...field} id={`user-link-name-${index}`} label={`Название Соц.Сети`} />
                         )}
                     />
                 </CenteredGrid>
@@ -44,7 +41,6 @@ const LinkLabel = ({ index, onRemove, control, errors }: LabelProps) => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                sx={{ width: '95%' }}
                                 error={!!errors.socialLabels?.[index]?.url}
                                 helperText={errors.socialLabels?.[index]?.url?.message}
                                 id={`user-link-url-${index}`}
@@ -62,8 +58,7 @@ export const LinkLabels = ({ fields, append, remove, control, errors }: LabelsPr
         <>
             <CenteredGrid size={12}>
                 <Button variant="outlined" onClick={append}>
-                    {' '}
-                    Добавить ссылку{' '}
+                    Добавить ссылку
                 </Button>
             </CenteredGrid>
             {fields.map((field, index) => (

@@ -9,19 +9,15 @@ import { Controller } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import { CVsectionProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
+import { MUIStyles } from '@common/styles/muistyles';
 function About({ control, errors, fieldArray }: CVsectionProps) {
+    const { classes, cx } = MUIStyles();
     return (
         <Container maxWidth="sm">
-            <Paper elevation={4} sx={{ marginTop: 5, paddingBottom: 3 }}>
+            <Paper elevation={4} className={cx(classes.paper)}>
                 <CardHeader title="О себе" />
                 <Divider />
-                <Grid2
-                    container
-                    maxWidth="xs"
-                    rowSpacing={4}
-                    spacing={2}
-                    sx={{ justifyContent: 'space-evenly', marginTop: 2, paddingX: 1 }}
-                >
+                <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={cx(classes.grid)}>
                     <CenteredGrid size={6}>
                         <Controller
                             name="name"
@@ -30,7 +26,6 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                             render={({ field }) => (
                                 <TextField
                                     {...field}
-                                    sx={{ width: '95%' }}
                                     error={!!errors.name}
                                     helperText={errors.name?.message}
                                     required
@@ -49,7 +44,6 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                             render={({ field }) => (
                                 <TextField
                                     {...field}
-                                    sx={{ width: '95%' }}
                                     error={!!errors.lastName}
                                     helperText={errors.lastName?.message}
                                     label="Фамилия"
@@ -68,7 +62,6 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                             render={({ field }) => (
                                 <TextField
                                     {...field}
-                                    sx={{ width: '95%' }}
                                     error={!!errors.email}
                                     helperText={errors.email?.message}
                                     label="E-mail"
@@ -87,7 +80,6 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                             render={({ field }) => (
                                 <TextField
                                     {...field}
-                                    sx={{ width: '95%' }}
                                     error={!!errors.telephone}
                                     helperText={errors.telephone?.message}
                                     label="Телефон"
@@ -112,12 +104,34 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                                     id="user-about_me"
                                     fullWidth
                                     rows={4}
-                                    sx={{ width: '95%' }}
                                 />
                             )}
                         />
                     </CenteredGrid>
-
+                    <CenteredGrid size={12}>
+                        <Controller
+                            name="avatar"
+                            control={control}
+                            render={({ field }) => (
+                                <TextField
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                        const file = event.target?.files;
+                                        if (file) {
+                                            field.onChange(file[0]);
+                                            console.log('Выбранный файл:', file[0]);
+                                        }
+                                    }}
+                                    InputProps={{
+                                        inputProps: { accept: 'image/*' },
+                                    }}
+                                    helperText="Выбери фото (рекомендуется фото в формате 1:1)"
+                                    type="file"
+                                    id="user-avatar"
+                                    fullWidth
+                                />
+                            )}
+                        />
+                    </CenteredGrid>
                     <LinkLabels
                         fields={fieldArray.fields}
                         append={() => fieldArray.append({ name: '', url: '' })}

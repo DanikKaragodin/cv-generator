@@ -12,10 +12,12 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { languageDegrees } from '@common/constants';
 import { LabelProps, LabelsProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
+import { MUIStyles } from '@common/styles/muistyles';
 const LanguageLabel = ({ index, onRemove, control, errors }: LabelProps) => {
+    const { classes, cx } = MUIStyles();
     return (
-        <Paper sx={{ width: '100%' }}>
-            <Grid2 container sx={{ marginY: 3, paddingX: 1 }} spacing={2} rowSpacing={4}>
+        <Paper className={cx(classes.paper)}>
+            <Grid2 container className={cx(classes.grid)} spacing={2} rowSpacing={4}>
                 <CenteredGrid size={12}>
                     <Button
                         key={`user-language-button-${index}`}
@@ -35,7 +37,6 @@ const LanguageLabel = ({ index, onRemove, control, errors }: LabelProps) => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                sx={{ width: '95%' }}
                                 id={`user-language-name-${index}`}
                                 label={`Название языка`}
                                 error={!!errors.languageLabels?.[index]?.name}
@@ -45,7 +46,7 @@ const LanguageLabel = ({ index, onRemove, control, errors }: LabelProps) => {
                     />
                 </CenteredGrid>
                 <CenteredGrid size={6}>
-                    <FormControl sx={{ width: '95%' }} error={!!errors.languageLabels?.[index]?.degree}>
+                    <FormControl className={cx(classes.autocomplete)} error={!!errors.languageLabels?.[index]?.degree}>
                         <Controller
                             name={`languageLabels.${index}.degree`}
                             control={control}

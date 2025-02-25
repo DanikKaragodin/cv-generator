@@ -9,10 +9,12 @@ import { Controller } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { LabelProps, LabelsProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
+import { MUIStyles } from '@common/styles/muistyles';
 const CoursesLabel = ({ index, onRemove, control, errors }: LabelProps) => {
+    const { classes, cx } = MUIStyles();
     return (
-        <Paper sx={{ width: '100%' }}>
-            <Grid2 container sx={{ marginY: 3, paddingX: 1 }} spacing={2} rowSpacing={4}>
+        <Paper className={cx(classes.paperAllWidth)}>
+            <Grid2 container className={cx(classes.grid)} spacing={2} rowSpacing={4}>
                 <CenteredGrid size={12}>
                     <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => onRemove()}>
                         Удалить
@@ -26,7 +28,6 @@ const CoursesLabel = ({ index, onRemove, control, errors }: LabelProps) => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                sx={{ width: '95%' }}
                                 id={`user-courses-name-${index}`}
                                 label="Название Курса"
                                 error={!!errors.courseLabels?.[index]?.name}
@@ -45,7 +46,6 @@ const CoursesLabel = ({ index, onRemove, control, errors }: LabelProps) => {
                         render={({ field }) => (
                             <DatePicker
                                 {...field}
-                                sx={{ width: '95%' }}
                                 value={field.value ? dayjs(field.value) : null}
                                 onAccept={(date) => {
                                     field.onChange(date?.format('YYYY-MM-DD') || '');
@@ -63,7 +63,6 @@ const CoursesLabel = ({ index, onRemove, control, errors }: LabelProps) => {
                         render={({ field }) => (
                             <DatePicker
                                 {...field}
-                                sx={{ width: '95%' }}
                                 value={field.value ? dayjs(field.value) : null}
                                 onAccept={(date) => {
                                     field.onChange(date?.format('YYYY-MM-DD') || '');

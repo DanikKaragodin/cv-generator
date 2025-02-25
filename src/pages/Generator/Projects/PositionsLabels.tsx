@@ -7,16 +7,18 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Controller, useFieldArray } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import dayjs from 'dayjs';
-import { LabelProps, LabelsProps, ProjectLabelProps } from '@common/types/Props';
+import { LabelProps, LabelsProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
+import { MUIStyles } from '@common/styles/muistyles';
 
-const ProjectLabel = ({ control, positionIndex, projectIndex, onRemove, errors }: ProjectLabelProps) => {
+const PositionsLabel = ({ control, index, onRemove, errors }: LabelProps) => {
+    const { classes, cx } = MUIStyles();
     return (
         <>
-            <Paper sx={{ width: '100%' }}>
-                <Grid2 container sx={{ marginY: 3, paddingX: 1, justifyContent: 'center' }} spacing={2} rowSpacing={4}>
+            <Paper className={cx(classes.paperAllWidth)}>
+                <Grid2 container className={cx(classes.grid)} spacing={2} rowSpacing={4}>
                     <CenteredGrid size={12}>
                         <Button variant="outlined" startIcon={<DeleteIcon />} onClick={onRemove}>
                             Удалить
@@ -24,23 +26,34 @@ const ProjectLabel = ({ control, positionIndex, projectIndex, onRemove, errors }
                     </CenteredGrid>
                     <CenteredGrid size={12}>
                         <Controller
-                            name={`positionLabels.${positionIndex}.projects.${projectIndex}.description`}
+                            name={`positionLabels.${index}.name`}
+                            control={control}
+                            rules={validationRules.requiredField('Позиция')}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    id={`user-position-name-${index}`}
+                                    label="Позиция"
+                                    error={!!errors.positionLabels?.[index]?.name}
+                                    helperText={errors.positionLabels?.[index]?.name?.message}
+                                />
+                            )}
+                        />
+                    </CenteredGrid>
+
+                    <CenteredGrid size={12}>
+                        <Controller
+                            name={`positionLabels.${index}.description`}
                             control={control}
                             rules={validationRules.maxLength500}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
-                                    sx={{ width: '95%' }}
                                     multiline
-                                    id={`user-project-text-${positionIndex}-${projectIndex}`}
+                                    id={`user-project-text-${index}-${index}`}
                                     rows={4}
-                                    error={
-                                        !!errors.positionLabels?.[positionIndex]?.projects?.[projectIndex]?.description
-                                    }
-                                    helperText={
-                                        errors.positionLabels?.[positionIndex]?.projects?.[projectIndex]?.description
-                                            ?.message
-                                    }
+                                    error={!!errors.positionLabels?.[index]?.description}
+                                    helperText={errors.positionLabels?.[index]?.description?.message}
                                     label="Описание проекта"
                                     fullWidth
                                 />
@@ -49,14 +62,14 @@ const ProjectLabel = ({ control, positionIndex, projectIndex, onRemove, errors }
                     </CenteredGrid>
                     <CenteredGrid size={12}>
                         <Controller
-                            name={`positionLabels.${positionIndex}.projects.${projectIndex}.tasks`}
+                            name={`positionLabels.${index}.tasks`}
                             control={control}
                             render={({ field }) => (
                                 <Autocomplete
-                                    sx={{ paddingX: 0, width: '95%' }}
+                                    className={cx(classes.autocomplete)}
                                     multiple
                                     freeSolo
-                                    id={`user-project-tags-tasks-${positionIndex}-${projectIndex}`}
+                                    id={`user-project-tags-tasks-${index}`}
                                     options={[]}
                                     value={field.value}
                                     onChange={(_, newValue) => field.onChange(newValue)}
@@ -79,15 +92,15 @@ const ProjectLabel = ({ control, positionIndex, projectIndex, onRemove, errors }
                     </CenteredGrid>
                     <CenteredGrid size={12}>
                         <Controller
-                            name={`positionLabels.${positionIndex}.projects.${projectIndex}.stack`}
+                            name={`positionLabels.${index}.stack`}
                             control={control}
                             rules={validationRules.minTwoItems('Технологий')}
                             render={({ field }) => (
                                 <Autocomplete
-                                    sx={{ paddingX: 0, width: '95%' }}
+                                    className={cx(classes.autocomplete)}
                                     multiple
                                     freeSolo
-                                    id={`user-project-tags-stack-${positionIndex}-${projectIndex}`}
+                                    id={`user-project-tags-stack-${index}`}
                                     options={[]}
                                     value={field.value}
                                     onChange={(_, newValue) => field.onChange(newValue)}
@@ -99,14 +112,8 @@ const ProjectLabel = ({ control, positionIndex, projectIndex, onRemove, errors }
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            error={
-                                                !!errors.positionLabels?.[positionIndex]?.projects?.[projectIndex]
-                                                    ?.stack
-                                            }
-                                            helperText={
-                                                errors.positionLabels?.[positionIndex]?.projects?.[projectIndex]?.stack
-                                                    ?.message
-                                            }
+                                            error={!!errors.positionLabels?.[index]?.stack}
+                                            helperText={errors.positionLabels?.[index]?.message}
                                             variant="outlined"
                                             label="Стек Технологий"
                                             placeholder="Стек Технологий"
@@ -118,17 +125,16 @@ const ProjectLabel = ({ control, positionIndex, projectIndex, onRemove, errors }
                     </CenteredGrid>
                     <CenteredGrid size={6}>
                         <Controller
-                            name={`positionLabels.${positionIndex}.projects.${projectIndex}.dataStart`}
+                            name={`positionLabels.${index}.dataStart`}
                             control={control}
                             render={({ field }) => (
                                 <DatePicker
                                     {...field}
-                                    sx={{ width: '95%' }}
                                     value={field.value ? dayjs(field.value) : null}
                                     onAccept={(date) => {
                                         field.onChange(date?.format('YYYY-MM-DD') || '');
                                     }}
-                                    data-id={`user-project-dataStart-${positionIndex}-${projectIndex}`}
+                                    data-id={`user-project-dataStart-${index}-${index}`}
                                     label="Дата начало"
                                 />
                             )}
@@ -136,17 +142,16 @@ const ProjectLabel = ({ control, positionIndex, projectIndex, onRemove, errors }
                     </CenteredGrid>
                     <CenteredGrid size={6}>
                         <Controller
-                            name={`positionLabels.${positionIndex}.projects.${projectIndex}.dataEnd`}
+                            name={`positionLabels.${index}.dataEnd`}
                             control={control}
                             render={({ field }) => (
                                 <DatePicker
                                     {...field}
-                                    sx={{ width: '95%' }}
                                     value={field.value ? dayjs(field.value) : null}
                                     onAccept={(date) => {
                                         field.onChange(date?.format('YYYY-MM-DD') || '');
                                     }}
-                                    data-id={`user-project-dataEnd-${positionIndex}-${projectIndex}`}
+                                    data-id={`user-project-dataEnd-${index}-${index}`}
                                     label="Дата окончания"
                                 />
                             )}
@@ -158,84 +163,20 @@ const ProjectLabel = ({ control, positionIndex, projectIndex, onRemove, errors }
     );
 };
 
-const PositionsLabel = ({ control, index, onRemove, errors }: LabelProps) => {
-    const projects = useFieldArray({
-        control: control,
-        name: `positionLabels.${index}.projects`,
-    });
-    return (
-        <>
-            <Paper sx={{ width: '100%' }}>
-                <Grid2 container sx={{ marginY: 3, paddingX: 1 }} spacing={2} rowSpacing={4}>
-                    <CenteredGrid size={12}>
-                        <Button variant="outlined" startIcon={<DeleteIcon />} onClick={onRemove}>
-                            Удалить
-                        </Button>
-                    </CenteredGrid>
-                    <CenteredGrid size={6}>
-                        <Controller
-                            name={`positionLabels.${index}.name`}
-                            control={control}
-                            rules={validationRules.requiredField('Позиция')}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    sx={{ width: '95%' }}
-                                    id={`user-position-name-${index}`}
-                                    label="Позиция"
-                                    error={!!errors.positionLabels?.[index]?.name}
-                                    helperText={errors.positionLabels?.[index]?.name?.message}
-                                />
-                            )}
-                        />
-                    </CenteredGrid>
-                    <CenteredGrid size={12}>
-                        <Button
-                            variant="outlined"
-                            onClick={() =>
-                                projects.append({
-                                    description: '',
-                                    tasks: [],
-                                    stack: [],
-                                    dataStart: '',
-                                    dataEnd: '',
-                                })
-                            }
-                        >
-                            Добавить Проект
-                        </Button>
-                    </CenteredGrid>
-                    {projects.fields.map((project, projectIndex) => (
-                        <ProjectLabel
-                            key={project.id}
-                            control={control}
-                            positionIndex={index}
-                            projectIndex={projectIndex}
-                            onRemove={() => projects.remove(projectIndex)}
-                            errors={errors}
-                        />
-                    ))}
-                </Grid2>
-            </Paper>
-        </>
-    );
-};
-
 export const PositionsLabels = ({ fields, append, remove, control, errors }: LabelsProps) => {
     return (
         <>
             <CenteredGrid size={12}>
                 <Button variant="outlined" onClick={append}>
-                    {' '}
-                    Добавить Позицию{' '}
+                    Добавить Позицию
                 </Button>
             </CenteredGrid>
-            {fields.map((position, positionIndex) => (
+            {fields.map((position, index) => (
                 <PositionsLabel
                     key={position.id}
                     control={control}
-                    index={positionIndex}
-                    onRemove={() => remove(positionIndex)}
+                    index={index}
+                    onRemove={() => remove(index)}
                     errors={errors}
                 />
             ))}

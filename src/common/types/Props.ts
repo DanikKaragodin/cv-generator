@@ -13,16 +13,9 @@ export interface LabelProps {
     control: Control<FormData, unknown>;
     errors: FieldErrors<FormData>;
 }
-export interface ProjectLabelProps {
-    control: Control<FormData>;
-    positionIndex: number;
-    projectIndex: number;
-    onRemove: () => void;
-    errors: FieldErrors<FormData>;
-}
 export interface CVsectionProps {
     control: Control<FormData>;
     errors: FieldErrors<FormData>;
-    fieldArray: UseFieldArrayReturn<FormData, FieldArrayPath<FormData>, "id">;
-    fieldArray2?: UseFieldArrayReturn<FormData, FieldArrayPath<FormData>, "id">;
+    fieldArray: UseFieldArrayReturn<FormData, FieldArrayPath<FormData>, 'id'>;
+    fieldArray2?: UseFieldArrayReturn<FormData, FieldArrayPath<FormData>, 'id'>;
 }

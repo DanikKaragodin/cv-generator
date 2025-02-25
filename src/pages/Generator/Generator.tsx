@@ -4,10 +4,14 @@ import { FormData } from '@common/types/Labels.ts';
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
 import Skills from './Skills/Skills';
 import Education from './Education/Education';
-import Projects from './Projects/Projects';
+import Positions from './Projects/Positions';
 import { useNavigate } from 'react-router';
+import { MUIStyles } from '@common/styles/muistyles';
+import { useFormData } from '@common/contexts/FormDataContext';
 
 function Generator() {
+    const { setFormData } = useFormData();
+    const { classes, cx } = MUIStyles();
     const navigate = useNavigate();
     const {
         control,
@@ -52,7 +56,8 @@ function Generator() {
     });
     const onSubmit: SubmitHandler<FormData> = (inputData) => {
         console.log('Собранные данные:', inputData);
-        navigate('/create-cv/pdf-view', { state: { inputData } });
+        setFormData(inputData);
+        navigate('/create-cv/pdf-view');
     };
 
     return (
@@ -60,8 +65,8 @@ function Generator() {
             <About control={control} errors={errors} fieldArray={links}></About>
             <Skills control={control} errors={errors} fieldArray={languages}></Skills>
             <Education control={control} errors={errors} fieldArray={educations} fieldArray2={courses}></Education>
-            <Projects control={control} errors={errors} fieldArray={positions}></Projects>
-            <Container maxWidth="sm" sx={{ display: 'flex', justifyContent: 'center', marginBottom: 5 }}>
+            <Positions control={control} errors={errors} fieldArray={positions}></Positions>
+            <Container maxWidth="sm" className={cx(classes.sumbitCVcontainer)}>
                 <Button type="submit" variant="contained">
                     Собрать резюме
                 </Button>
