@@ -24,8 +24,4 @@ export const theme = createTheme({
             },
         },
     },
-    // shadows: [
-    //   // ... другие тени
-    //   "0px 2px 8px rgba(103, 58, 183, 0.3)", // elevation 4 (индекс 3)
-    // ]
 });
