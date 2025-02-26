@@ -14,10 +14,10 @@ import { LabelProps, LabelsProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
 import { MUIStyles } from '@common/styles/muistyles';
 const LanguageLabel = ({ index, onRemove, control, errors }: LabelProps) => {
-    const { classes, cx } = MUIStyles();
+    const { classes } = MUIStyles();
     return (
-        <Paper className={cx(classes.paper)}>
-            <Grid2 container className={cx(classes.grid)} spacing={2} rowSpacing={4}>
+        <Paper className={classes.paper}>
+            <Grid2 container className={classes.grid} spacing={2} rowSpacing={4}>
                 <CenteredGrid size={12}>
                     <Button
                         key={`user-language-button-${index}`}
@@ -46,7 +46,7 @@ const LanguageLabel = ({ index, onRemove, control, errors }: LabelProps) => {
                     />
                 </CenteredGrid>
                 <CenteredGrid size={6}>
-                    <FormControl className={cx(classes.autocomplete)} error={!!errors.languageLabels?.[index]?.degree}>
+                    <FormControl className={classes.autocomplete} error={!!errors.languageLabels?.[index]?.degree}>
                         <Controller
                             name={`languageLabels.${index}.degree`}
                             control={control}

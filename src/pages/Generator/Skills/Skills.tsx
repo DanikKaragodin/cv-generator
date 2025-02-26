@@ -12,18 +12,19 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import { validationRules } from '@common/validation';
 import { MUIStyles } from '@common/styles/muistyles';
+import { emptyLabels } from '@common/constants';
 function Skills({ control, errors, fieldArray }: CVsectionProps) {
-    const { classes, cx } = MUIStyles();
+    const { classes } = MUIStyles();
     return (
         <Container maxWidth="sm">
-            <Paper elevation={4} className={cx(classes.paper)}>
+            <Paper elevation={4} className={classes.paper}>
                 <CardHeader title="Основные Навыки" />
                 <Divider />
                 <CardHeader title="Знание языков" />
-                <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={cx(classes.grid)}>
+                <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={classes.grid}>
                     <LanguageLabels
                         fields={fieldArray.fields}
-                        append={() => fieldArray.append({ name: '', degree: '' })}
+                        append={() => fieldArray.append(emptyLabels.languageLabel)}
                         remove={fieldArray.remove}
                         control={control}
                         errors={errors}
@@ -38,7 +39,7 @@ function Skills({ control, errors, fieldArray }: CVsectionProps) {
                         rules={validationRules.minTwoItems('Навыков')}
                         render={({ field }) => (
                             <Autocomplete
-                                className={cx(classes.autocomplete)}
+                                className={classes.autocomplete}
                                 multiple
                                 id="user-technical-skills"
                                 options={[]}

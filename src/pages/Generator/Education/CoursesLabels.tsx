@@ -11,10 +11,10 @@ import { LabelProps, LabelsProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
 import { MUIStyles } from '@common/styles/muistyles';
 const CoursesLabel = ({ index, onRemove, control, errors }: LabelProps) => {
-    const { classes, cx } = MUIStyles();
+    const { classes } = MUIStyles();
     return (
-        <Paper className={cx(classes.paperAllWidth)}>
-            <Grid2 container className={cx(classes.grid)} spacing={2} rowSpacing={4}>
+        <Paper className={classes.paperAllWidth}>
+            <Grid2 container className={classes.grid} spacing={2} rowSpacing={4}>
                 <CenteredGrid size={12}>
                     <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => onRemove()}>
                         Удалить

@@ -10,14 +10,15 @@ import TextField from '@mui/material/TextField';
 import { CVsectionProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
 import { MUIStyles } from '@common/styles/muistyles';
+import { emptyLabels } from '@common/constants';
 function About({ control, errors, fieldArray }: CVsectionProps) {
-    const { classes, cx } = MUIStyles();
+    const { classes } = MUIStyles();
     return (
         <Container maxWidth="sm">
-            <Paper elevation={4} className={cx(classes.paper)}>
+            <Paper elevation={4} className={classes.paper}>
                 <CardHeader title="О себе" />
                 <Divider />
-                <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={cx(classes.grid)}>
+                <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={classes.grid}>
                     <CenteredGrid size={6}>
                         <Controller
                             name="name"
@@ -134,7 +135,7 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                     </CenteredGrid>
                     <LinkLabels
                         fields={fieldArray.fields}
-                        append={() => fieldArray.append({ name: '', url: '' })}
+                        append={() => fieldArray.append(emptyLabels.linkLabel)}
                         remove={fieldArray.remove}
                         control={control}
                         errors={errors}

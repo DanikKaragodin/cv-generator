@@ -7,28 +7,20 @@ import Divider from '@mui/material/Divider';
 import Grid2 from '@mui/material/Grid2';
 import { CVsectionProps } from '@common/types/Props';
 import { MUIStyles } from '@common/styles/muistyles';
+import { emptyLabels } from '@common/constants';
 
 function Education({ control, errors, fieldArray, fieldArray2 }: CVsectionProps) {
-    const { classes, cx } = MUIStyles();
+    const { classes } = MUIStyles();
     return (
         <Container maxWidth="sm">
-            <Paper elevation={4} className={cx(classes.paper)}>
+            <Paper elevation={4} className={classes.paper}>
                 <CardHeader title="Образование" />
                 <Divider />
                 <CardHeader title="Образование" />
-                <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={cx(classes.grid)}>
+                <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={classes.grid}>
                     <EducationLabels
                         fields={fieldArray.fields}
-                        append={() =>
-                            fieldArray.append({
-                                name: '',
-                                faculty: '',
-                                specialization: '',
-                                degree: '',
-                                dataStart: '',
-                                dataEnd: '',
-                            })
-                        }
+                        append={() => fieldArray.append(emptyLabels.educationLabel)}
                         remove={fieldArray.remove}
                         control={control}
                         errors={errors}
@@ -37,10 +29,10 @@ function Education({ control, errors, fieldArray, fieldArray2 }: CVsectionProps)
                 <Divider />
                 <CardHeader title="Курсы" />
                 {fieldArray2 !== undefined ? (
-                    <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={cx(classes.grid)}>
+                    <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={classes.grid}>
                         <CoursesLabels
                             fields={fieldArray2.fields}
-                            append={() => fieldArray2.append({ name: '', dataStart: '', dataEnd: '' })}
+                            append={() => fieldArray2.append(emptyLabels.courseLabel)}
                             remove={fieldArray2.remove}
                             control={control}
                             errors={errors}

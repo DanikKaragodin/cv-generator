@@ -11,26 +11,27 @@ import { useFormData } from '@common/contexts/FormDataContext';
 
 function Generator() {
     const { setFormData } = useFormData();
-    const { classes, cx } = MUIStyles();
+    const { classes } = MUIStyles();
     const navigate = useNavigate();
+    const defaultState = {
+        name: '',
+        lastName: '',
+        email: '',
+        telephone: '',
+        aboutMe: '',
+        technicalSkills: [],
+        languageLabels: [],
+        educationLabels: [],
+        courseLabels: [],
+        positionLabels: [],
+    };
     const {
         control,
         handleSubmit,
         formState: { errors },
     } = useForm<FormData>({
         mode: 'all',
-        defaultValues: {
-            name: '',
-            lastName: '',
-            email: '',
-            telephone: '',
-            aboutMe: '',
-            technicalSkills: [],
-            languageLabels: [],
-            educationLabels: [],
-            courseLabels: [],
-            positionLabels: [],
-        },
+        defaultValues: defaultState,
     });
 
     // интересуют параметры fields , append, remove
@@ -66,7 +67,7 @@ function Generator() {
             <Skills control={control} errors={errors} fieldArray={languages}></Skills>
             <Education control={control} errors={errors} fieldArray={educations} fieldArray2={courses}></Education>
             <Positions control={control} errors={errors} fieldArray={positions}></Positions>
-            <Container maxWidth="sm" className={cx(classes.sumbitCVcontainer)}>
+            <Container maxWidth="sm" className={classes.sumbitCVcontainer}>
                 <Button type="submit" variant="contained">
                     Собрать резюме
                 </Button>

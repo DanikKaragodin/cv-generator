@@ -29,7 +29,30 @@ export enum languageDegrees {
     C1 = 'C1',
     C2 = 'C2',
 }
-
+export const emptyLabels = {
+    linkLabel: {
+        name: '',
+        url: '',
+    },
+    educationLabel: {
+        name: '',
+        faculty: '',
+        specialization: '',
+        degree: '',
+        dataStart: '',
+        dataEnd: '',
+    },
+    courseLabel: { name: '', dataStart: '', dataEnd: '' },
+    positionLabel: {
+        name: '',
+        description: '',
+        tasks: [],
+        stack: [],
+        dataStart: '',
+        dataEnd: '',
+    },
+    languageLabel: { name: '', degree: '' },
+};
 export enum TEST_IDS {
     settings = 'settings',
     root = 'root',
