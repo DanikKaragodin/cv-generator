@@ -23,13 +23,18 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.4",
     "@mui/material": "^6.4.4",
+    "@mui/x-date-pickers": "^7.27.0",
+    "@react-pdf/renderer": "^4.2.2",
+    "dayjs": "^1.11.13",
     "gh-pages": "^6.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
     "prettier": "^3.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^7.1.5"
+    "react-hook-form": "^7.54.2",
+    "react-router": "^7.1.5",
+    "tss-react": "^4.9.15"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

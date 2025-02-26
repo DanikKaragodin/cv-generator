@@ -1,0 +1,12 @@
+.app-root {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow-x: hidden;
+    -ms-overflow-style: none; /* IE и Edge */
+    scrollbar-width: none; /* Firefox */
+}
+/* Скрываем scrollbar для Chrome, Safari и Opera */
+.app-root::-webkit-scrollbar {
+    display: none;
+}
