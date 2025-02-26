@@ -81,6 +81,7 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                             render={({ field }) => (
                                 <TextField
                                     {...field}
+                                    type="tel"
                                     error={!!errors.telephone}
                                     helperText={errors.telephone?.message}
                                     label="Телефон"

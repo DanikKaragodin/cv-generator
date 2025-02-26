@@ -30,6 +30,7 @@ export enum languageDegrees {
     C2 = 'C2',
 }
 export const emptyLabels = {
+    login: { email: '', password: '' },
     linkLabel: {
         name: '',
         url: '',
