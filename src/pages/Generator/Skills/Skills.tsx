@@ -11,7 +11,7 @@ import { CVsectionProps } from '@common/types/Props';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import { validationRules } from '@common/validation';
-import { UseMUIStyles } from '@common/styles/muistyles';
+import { UseMUIStyles } from '@common/styles/muiStyles';
 import { emptyLabels } from '@common/constants';
 function Skills({ control, errors, fieldArray }: CVsectionProps) {
     const { classes } = UseMUIStyles();

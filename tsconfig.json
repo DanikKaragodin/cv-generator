@@ -25,7 +25,7 @@
     }
   },
 
-  "include": ["src", "./jest.setup.ts"],
+  "include": ["./jest.setup.ts"],
   "files": [],
   "references": [{
       "path": "./tsconfig.app.json"

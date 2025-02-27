@@ -6,7 +6,7 @@ import Skills from './Skills/Skills';
 import Education from './Education/Education';
 import Positions from './Projects/Positions';
 import { useNavigate } from 'react-router';
-import { UseMUIStyles } from '@common/styles/muistyles';
+import { UseMUIStyles } from '@common/styles/muiStyles';
 import { useFormData } from '@common/contexts/FormDataContext';
 
 function Generator() {

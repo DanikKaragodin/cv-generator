@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Controller } from 'react-hook-form';
 import { LabelProps, LabelsProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
-import { UseMUIStyles } from '@common/styles/muistyles';
+import { UseMUIStyles } from '@common/styles/muiStyles';
 const LinkLabel = ({ index, onRemove, control, errors }: LabelProps) => {
     const { classes } = UseMUIStyles();
     return (

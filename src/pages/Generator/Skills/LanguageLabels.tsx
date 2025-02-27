@@ -12,7 +12,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { languageDegrees } from '@common/constants';
 import { LabelProps, LabelsProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
-import { UseMUIStyles } from '@common/styles/muistyles';
+import { UseMUIStyles } from '@common/styles/muiStyles';
 const LanguageLabel = ({ index, onRemove, control, errors }: LabelProps) => {
     const { classes } = UseMUIStyles();
     return (

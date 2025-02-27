@@ -9,7 +9,7 @@ import { Controller } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import { CVsectionProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
-import { UseMUIStyles } from '@common/styles/muistyles';
+import { UseMUIStyles } from '@common/styles/muiStyles';
 import { emptyLabels } from '@common/constants';
 function About({ control, errors, fieldArray }: CVsectionProps) {
     const { classes } = UseMUIStyles();
