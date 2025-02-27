@@ -10,7 +10,13 @@ export const validationRules = {
             message: 'Некорректный email',
         },
     },
-
+    password: {
+        required: 'Пароль обязателен',
+        minLength: {
+            value: 8,
+            message: 'Минимум 8 символов',
+        },
+    },
     phone: {
         pattern: {
             value: /^(\+375|80)[0-9]{9}$/,
@@ -33,13 +39,13 @@ export const validationRules = {
 
     minTwoItems: (fieldName: string = 'Элементы') => ({
         required: `Необходимо от 2 ${fieldName}`,
-        validate: (value: any[]) => {
+        validate: (value: unknown[]) => {
             if (value.length < 2) return `Необходимо от 2 ${fieldName}`;
         },
     }),
 
     aboutMe: {
-        required: "Поле О себе обязательно",
+        required: 'Поле О себе обязательно',
         maxLength: {
             value: 500,
             message: 'Максимум 500 символов',

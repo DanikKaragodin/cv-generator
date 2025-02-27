@@ -11,10 +11,10 @@ import { Controller } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { LabelProps, LabelsProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
-import { MUIStyles } from '@common/styles/muistyles';
+import { UseMUIStyles } from '@common/styles/muistyles';
 
 const PositionsLabel = ({ control, index, onRemove, errors }: LabelProps) => {
-    const { classes } = MUIStyles();
+    const { classes } = UseMUIStyles();
     return (
         <>
             <Paper className={classes.paperAllWidth}>

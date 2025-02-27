@@ -5,11 +5,11 @@ import Divider from '@mui/material/Divider';
 import Grid2 from '@mui/material/Grid2';
 import { CVsectionProps } from '@common/types/Props';
 import { PositionsLabels } from './PositionsLabels';
-import { MUIStyles } from '@common/styles/muistyles';
+import { UseMUIStyles } from '@common/styles/muistyles';
 import { emptyLabels } from '@common/constants';
 
 function Positions({ control, errors, fieldArray }: CVsectionProps) {
-    const { classes } = MUIStyles();
+    const { classes } = UseMUIStyles();
     return (
         <Container maxWidth="sm">
             <Paper elevation={4} className={classes.paper} sx={{ marginBottom: 5 }}>

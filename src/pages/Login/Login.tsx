@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Paper, Typography, TextField, Button, Divider, Grid2, Box, Container } from '@mui/material';
 import { Google } from '@mui/icons-material';
-import { loginStyles } from '@common/styles/loginStyles';
+import { UseLoginStyles } from '@common/styles/loginStyles';
 import { LoginData } from '@common/types/Login';
 import { emptyLabels } from '@common/constants';
+import { validationRules } from '@common/validation';
 
 function Login() {
-    const { classes } = loginStyles();
+    const { classes } = UseLoginStyles();
     const [isLogin, setIsLogin] = useState(true);
     const {
         register,
@@ -45,13 +46,7 @@ function Login() {
 
                 <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
                     <TextField
-                        {...register('email', {
-                            required: 'Обязательное поле',
-                            pattern: {
-                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                message: 'Некорректный email',
-                            },
-                        })}
+                        {...register('email', validationRules.email)}
                         label="Email"
                         variant="outlined"
                         className={classes.formInput}
@@ -60,13 +55,7 @@ function Login() {
                     />
 
                     <TextField
-                        {...register('password', {
-                            required: 'Обязательное поле',
-                            minLength: {
-                                value: 8,
-                                message: 'Минимум 8 символов',
-                            },
-                        })}
+                        {...register('password', validationRules.password)}
                         label="Пароль"
                         type="password"
                         variant="outlined"

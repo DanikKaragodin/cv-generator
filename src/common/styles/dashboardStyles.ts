@@ -1,6 +1,6 @@
 import { makeStyles } from 'tss-react/mui';
 
-export const dashboardStyles = makeStyles()((theme) => ({
+export const UseDashboardStyles = makeStyles()((theme) => ({
     root: {
         padding: theme.spacing(4),
     },

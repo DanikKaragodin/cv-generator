@@ -34,7 +34,7 @@ const PDFView = () => {
                                         </Link>
                                     </View>
                                 ))}
-                                <Image src={formData.avatar} style={pdfStyles.avatar} />
+                                {formData?.avatar ? <Image src={formData.avatar} style={pdfStyles.avatar} /> : null}
                             </View>
 
                             {/* Two Columns */}

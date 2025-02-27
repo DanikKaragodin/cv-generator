@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Container, Paper, Typography, Button, Fade, useMediaQuery, Theme, Grid2 } from '@mui/material';
-import { dashboardStyles } from '@common/styles/dashboardStyles';
+import { Container, Paper, Typography, Button, Fade, Grid2 } from '@mui/material';
+import { UseDashboardStyles } from '@common/styles/dashboardStyles';
 
 // Затычки для вёрстки
 interface CVItem {
@@ -15,20 +15,9 @@ const CVList: CVItem[] = Array.from({ length: 9 }, (_, i) => ({
 }));
 
 function Dashboard() {
-    const { classes } = dashboardStyles();
+    const { classes } = UseDashboardStyles();
     const navigate = useNavigate();
-    const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
-
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-    const [touchedItem, setTouchedItem] = useState<string | null>(null);
-
-    const handleItemInteraction = (id: string) => {
-        if (isMobile) {
-            setTouchedItem(touchedItem === id ? null : id);
-        } else {
-            setHoveredItem(id);
-        }
-    };
 
     return (
         <Container maxWidth="lg" className={classes.root}>
@@ -38,9 +27,8 @@ function Dashboard() {
                         size={{ xs: 12, sm: 6, md: 4 }}
                         key={cv.id}
                         className={classes.gridItem}
-                        onMouseEnter={() => !isMobile && setHoveredItem(cv.id)}
-                        onMouseLeave={() => !isMobile && setHoveredItem(null)}
-                        onClick={() => handleItemInteraction(cv.id)}
+                        onMouseEnter={() => setHoveredItem(cv.id)}
+                        onMouseLeave={() => setHoveredItem(null)}
                     >
                         <Paper elevation={4} className={classes.paper}>
                             <Typography variant="h3" color="textSecondary" className={classes.indexNumber}>
@@ -50,7 +38,7 @@ function Dashboard() {
                                 {cv.name}
                             </Typography>
 
-                            {(hoveredItem === cv.id || touchedItem === cv.id) && (
+                            {hoveredItem === cv.id && (
                                 <Fade in>
                                     <div className={classes.overlay}>
                                         <Button

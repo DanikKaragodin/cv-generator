@@ -1,6 +1,6 @@
 import { makeStyles } from 'tss-react/mui';
 
-export const loginStyles = makeStyles()((theme) => ({
+export const UseLoginStyles = makeStyles()((theme) => ({
     root: {
         minHeight: '100%',
         display: 'flex',
