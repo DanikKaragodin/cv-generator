@@ -9,9 +9,9 @@ import { Controller } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { LabelProps, LabelsProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
-import { MUIStyles } from '@common/styles/muistyles';
+import { UseMUIStyles } from '@common/styles/muistyles';
 const EducationLabel = ({ index, onRemove, control, errors }: LabelProps) => {
-    const { classes } = MUIStyles();
+    const { classes } = UseMUIStyles();
     return (
         <Paper>
             <Grid2 container className={classes.grid} spacing={2} rowSpacing={4}>

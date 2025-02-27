@@ -9,10 +9,10 @@ import { Controller } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import { CVsectionProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
-import { MUIStyles } from '@common/styles/muistyles';
+import { UseMUIStyles } from '@common/styles/muistyles';
 import { emptyLabels } from '@common/constants';
 function About({ control, errors, fieldArray }: CVsectionProps) {
-    const { classes } = MUIStyles();
+    const { classes } = UseMUIStyles();
     return (
         <Container maxWidth="sm">
             <Paper elevation={4} className={classes.paper}>
@@ -81,6 +81,7 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                             render={({ field }) => (
                                 <TextField
                                     {...field}
+                                    type="tel"
                                     error={!!errors.telephone}
                                     helperText={errors.telephone?.message}
                                     label="Телефон"

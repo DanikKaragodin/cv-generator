@@ -12,9 +12,9 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { languageDegrees } from '@common/constants';
 import { LabelProps, LabelsProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
-import { MUIStyles } from '@common/styles/muistyles';
+import { UseMUIStyles } from '@common/styles/muistyles';
 const LanguageLabel = ({ index, onRemove, control, errors }: LabelProps) => {
-    const { classes } = MUIStyles();
+    const { classes } = UseMUIStyles();
     return (
         <Paper className={classes.paper}>
             <Grid2 container className={classes.grid} spacing={2} rowSpacing={4}>

@@ -3,7 +3,7 @@ import type { CSSObject } from 'tss-react';
 import { makeStyles } from 'tss-react/mui';
 export const styleFunctionSx = unstable_styleFunctionSx as (params: object) => CSSObject;
 
-export const MUIStyles = makeStyles()({
+export const UseMUIStyles = makeStyles()({
     grid: styleFunctionSx({
         sx: {
             marginY: 3,

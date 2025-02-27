@@ -6,11 +6,11 @@ import CardHeader from '@mui/material/CardHeader';
 import Divider from '@mui/material/Divider';
 import Grid2 from '@mui/material/Grid2';
 import { CVsectionProps } from '@common/types/Props';
-import { MUIStyles } from '@common/styles/muistyles';
+import { UseMUIStyles } from '@common/styles/muiStyles';
 import { emptyLabels } from '@common/constants';
 
 function Education({ control, errors, fieldArray, fieldArray2 }: CVsectionProps) {
-    const { classes } = MUIStyles();
+    const { classes } = UseMUIStyles();
     return (
         <Container maxWidth="sm">
             <Paper elevation={4} className={classes.paper}>
