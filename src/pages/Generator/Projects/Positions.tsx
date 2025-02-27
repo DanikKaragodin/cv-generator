@@ -5,7 +5,7 @@ import Divider from '@mui/material/Divider';
 import Grid2 from '@mui/material/Grid2';
 import { CVsectionProps } from '@common/types/Props';
 import { PositionsLabels } from './PositionsLabels';
-import { UseMUIStyles } from '@common/styles/muistyles';
+import { UseMUIStyles } from '@common/styles/muiStyles';
 import { emptyLabels } from '@common/constants';
 
 function Positions({ control, errors, fieldArray }: CVsectionProps) {

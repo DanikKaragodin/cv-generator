@@ -11,7 +11,7 @@ import { Controller } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { LabelProps, LabelsProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
-import { UseMUIStyles } from '@common/styles/muistyles';
+import { UseMUIStyles } from '@common/styles/muiStyles';
 
 const PositionsLabel = ({ control, index, onRemove, errors }: LabelProps) => {
     const { classes } = UseMUIStyles();
