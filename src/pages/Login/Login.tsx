@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Paper, Typography, TextField, Button, Divider, Grid2, Box, Container } from '@mui/material';
 import { Google } from '@mui/icons-material';
@@ -6,8 +6,12 @@ import { UseLoginStyles } from '@common/styles/loginStyles';
 import { LoginData } from '@common/types/Login';
 import { emptyLabels } from '@common/constants';
 import { validationRules } from '@common/validation';
+import { UserAuth } from '@common/contexts/AuthContext';
+import { useNavigate } from 'react-router';
+import { routes } from '@common/constants';
 
 function Login() {
+    const navigate = useNavigate();
     const { classes } = UseLoginStyles();
     const [isLogin, setIsLogin] = useState(true);
     const {
@@ -15,16 +19,40 @@ function Login() {
         handleSubmit,
         formState: { errors },
     } = useForm<LoginData>({ mode: 'all', defaultValues: emptyLabels.login });
+    const { session, signInUser, signUpNewUser, isLogoutAction, setIsLogoutAction } = UserAuth();
 
     const handleGoogleLogin = () => {
         // Потом сделать (по возможности) логику Google Sign-In
         console.log('Google login Button');
     };
 
-    const onSubmit = (data: LoginData) => {
-        // Потом сделать логику отправки запроса в бэк
-        console.log(isLogin ? 'Login' : 'Register', data);
+    const onSubmit = async (data: LoginData) => {
+        try {
+            const result = isLogin
+                ? await signInUser(data.email, data.password)
+                : await signUpNewUser(data.email, data.password);
+
+            if (result.success) {
+                // после успеха "выйти" видимо, а "войти" невидимо
+                routes.login.page = 'Выйти';
+                console.log('Session', isLogin, session); // отладочная информация по входу (бывает показывает null, но навбар показывает обратное)
+                navigate('/');
+            } else {
+                console.error(result.error);
+            }
+        } catch (err) {
+            console.error('An unexpected error occurred: ', err);
+        }
     };
+
+    useEffect(() => {
+        if (isLogoutAction) {
+            setIsLogoutAction(false);
+            routes.login.page = 'Войти';
+        } else if (session && routes.login.page !== 'Войти') {
+            navigate('/');
+        }
+    }, [isLogoutAction, session, setIsLogoutAction]);
 
     return (
         <Container className={classes.root}>

@@ -5,7 +5,12 @@ import Login from '@pages/Login/Login.tsx';
 import { IRoute } from '@common/types/Route.tsx';
 
 export const routes: Record<string, IRoute> = {
-    dashboard: { page: 'Главная', href: '/', isSettings: false, component: <Dashboard /> },
+    dashboard: {
+        page: 'Главная',
+        href: '/',
+        isSettings: false,
+        component: <Dashboard />,
+    },
     createCV: {
         page: 'Создать резюме',
         href: '/create-cv',
@@ -18,7 +23,12 @@ export const routes: Record<string, IRoute> = {
         isSettings: true,
         component: <Settings />,
     },
-    login: { page: 'Выйти', href: '/login', isSettings: true, component: <Login /> },
+    login: {
+        page: 'Войти',
+        href: '/login',
+        isSettings: true,
+        component: <Login />,
+    },
 };
 
 export enum languageDegrees {
