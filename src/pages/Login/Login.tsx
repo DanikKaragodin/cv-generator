@@ -8,7 +8,6 @@ import { emptyLabels } from '@common/constants';
 import { validationRules } from '@common/validation';
 import { UserAuth } from '@common/contexts/AuthContext';
 import { useNavigate } from 'react-router';
-import { routes } from '@common/constants';
 
 function Login() {
     const navigate = useNavigate();
@@ -19,7 +18,7 @@ function Login() {
         handleSubmit,
         formState: { errors },
     } = useForm<LoginData>({ mode: 'all', defaultValues: emptyLabels.login });
-    const { session, signInUser, signUpNewUser, isLogoutAction, setIsLogoutAction } = UserAuth();
+    const { session, signInUser, signUpNewUser } = UserAuth();
 
     const handleGoogleLogin = () => {
         // Потом сделать (по возможности) логику Google Sign-In
@@ -33,8 +32,6 @@ function Login() {
                 : await signUpNewUser(data.email, data.password);
 
             if (result.success) {
-                // после успеха "выйти" видимо, а "войти" невидимо
-                routes.login.page = 'Выйти';
                 console.log('Session', isLogin, session); // отладочная информация по входу (бывает показывает null, но навбар показывает обратное)
                 navigate('/');
             } else {
@@ -46,13 +43,10 @@ function Login() {
     };
 
     useEffect(() => {
-        if (isLogoutAction) {
-            setIsLogoutAction(false);
-            routes.login.page = 'Войти';
-        } else if (session && routes.login.page !== 'Войти') {
+        if (session) {
             navigate('/');
         }
-    }, [isLogoutAction, session, setIsLogoutAction]);
+    }, [session, navigate]);
 
     return (
         <Container className={classes.root}>

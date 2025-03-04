@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { routes } from '@common/constants.tsx';
@@ -13,16 +13,18 @@ function NavigationLinks({
     keySuffix: string;
     handleCloseNavMenu: () => void;
 }) {
-    const { session, signOut, setIsLogoutAction } = UserAuth();
-
-    const handleLoginLogoutClick = (page: IRoute) => {
+    const { session, signOut } = UserAuth();
+    const navigate = useNavigate();
+    const handleMenuClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>, page: IRoute) => {
+        event.preventDefault(); //отменяет Link перессылку
         if (page.href === '/login') {
+            handleCloseNavMenu();
             if (session) {
-                session.user.email = '';
-                setIsLogoutAction(true);
                 signOut();
             }
+        } else {
             handleCloseNavMenu();
+            navigate(page.href);
         }
     };
 
@@ -30,8 +32,10 @@ function NavigationLinks({
         .filter((page) => page.isSettings === isSettings)
         .map((page, index) => (
             <Link key={index + '_' + keySuffix} to={page.href}>
-                <MenuItem onClick={() => handleLoginLogoutClick(page)}>
-                    <Typography sx={{ textAlign: 'center' }}>{page.page}</Typography>
+                <MenuItem onClick={(event) => handleMenuClick(event, page)}>
+                    <Typography sx={{ textAlign: 'center' }}>
+                        {page.href === '/login' ? (session ? 'Выйти' : 'Войти') : page.page}
+                    </Typography>
                 </MenuItem>
             </Link>
         ));
