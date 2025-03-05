@@ -24,7 +24,7 @@ export const routes: Record<string, IRoute> = {
         component: <Settings />,
     },
     login: {
-        page: 'Войти',
+        page: 'Выйти',
         href: '/login',
         isSettings: true,
         component: <Login />,
