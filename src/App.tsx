@@ -1,8 +1,7 @@
-import { Route, Routes } from 'react-router';
+import { Routes } from 'react-router';
 import Navigation from '@common/components/Navigation/Navigation.tsx';
 import { routes, TEST_IDS } from '@common/constants.tsx';
 import { renderRoutes } from '@common/utils/renderRoutes';
-import PDFview from '@pages/Generator/PDFview';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { FormDataProvider } from '@common/contexts/FormDataContext';
@@ -16,10 +15,7 @@ function App() {
                 <AuthContextProvider>
                     <Navigation />
                     <FormDataProvider>
-                        <Routes>
-                            {renderRoutes(Object.values(routes))}
-                            <Route key={'Просмотр PDF'} path={'/create-cv/pdf-view'} element={<PDFview />} />
-                        </Routes>
+                        <Routes>{renderRoutes(Object.values(routes))}</Routes>
                     </FormDataProvider>
                 </AuthContextProvider>
             </LocalizationProvider>

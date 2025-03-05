@@ -4,7 +4,7 @@ import { Paper, Typography, TextField, Button, Divider, Grid2, Box, Container } 
 import { Google } from '@mui/icons-material';
 import { UseLoginStyles } from '@common/styles/loginStyles';
 import { LoginData } from '@common/types/Login';
-import { emptyLabels } from '@common/constants';
+import { emptyLabels, routes } from '@common/constants';
 import { validationRules } from '@common/validation';
 import { UserAuth } from '@common/contexts/AuthContext';
 import { useNavigate } from 'react-router';
@@ -33,7 +33,7 @@ function Login() {
 
             if (result.success) {
                 console.log('Session', isLogin, session); // отладочная информация по входу (бывает показывает null, но навбар показывает обратное)
-                navigate('/');
+                navigate(routes.dashboard.href);
             } else {
                 console.error(result.error);
             }
@@ -44,7 +44,7 @@ function Login() {
 
     useEffect(() => {
         if (session) {
-            navigate('/');
+            navigate(routes.dashboard.href);
         }
     }, [session, navigate]);
 

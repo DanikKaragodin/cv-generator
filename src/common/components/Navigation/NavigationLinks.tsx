@@ -33,7 +33,7 @@ function NavigationLinks({
     );
 
     return Object.values(routes)
-        .filter((page) => page.isSettings === isSettings)
+        .filter((page) => page.isSettings === isSettings && page.isVisible)
         .map((page) => (
             <Link key={`${page.href}_${keySuffix}`} to={page.href}>
                 <MenuItem onClick={handleMenuClick(page.href)}>

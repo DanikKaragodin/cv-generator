@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router';
 import { UseMUIStyles } from '@common/styles/muiStyles';
 import { useFormData } from '@common/contexts/FormDataContext';
 import { UserAuth } from '@common/contexts/AuthContext';
+import { routes } from '@common/constants';
 
 function Generator() {
     const { session, insertCVbyID } = UserAuth();
@@ -65,7 +66,7 @@ function Generator() {
 
             if (result.success) {
                 console.log('good!');
-                navigate('/create-cv/pdf-view');
+                navigate(routes.pdfView.href);
             } else {
                 console.error(result.error);
             }

@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useCallback } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,22 +16,22 @@ import { UserAuth } from '@common/contexts/AuthContext';
 function Navigation() {
     const { session } = UserAuth();
 
-    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+    const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+    const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-    const handleOpenNavMenu = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
+    const handleOpenNavMenu = useCallback((event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     }, []);
 
-    const handleOpenUserMenu = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
+    const handleOpenUserMenu = useCallback((event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     }, []);
 
-    const handleCloseNavMenu = React.useCallback(() => {
+    const handleCloseNavMenu = useCallback(() => {
         setAnchorElNav(null);
     }, []);
 
-    const handleCloseUserMenu = React.useCallback(() => {
+    const handleCloseUserMenu = useCallback(() => {
         setAnchorElUser(null);
     }, []);
 

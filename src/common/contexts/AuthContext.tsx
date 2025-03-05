@@ -3,6 +3,7 @@ import supabase from '@common/utils/supabaseClient';
 import { AuthResponse, Session } from '@supabase/supabase-js';
 import { FormData } from '@common/types/Labels';
 import { useNavigate } from 'react-router';
+import { routes } from '@common/constants';
 
 type AuthContextType = {
     session: Session | null;
@@ -95,7 +96,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             console.log('initSession: ', session);
             setSession(session);
             if (session === null) {
-                navigate('/login');
+                navigate(routes.login.href);
             }
         });
 
@@ -113,7 +114,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         if (error) {
             console.error('Error signing out:', error);
         }
-        navigate('/login');
+        navigate(routes.login.href);
     };
 
     // Загрузка аватара в storage

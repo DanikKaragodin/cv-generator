@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { Container, Paper, Typography, Button, Fade, Grid2 } from '@mui/material';
 import { UseDashboardStyles } from '@common/styles/dashboardStyles';
 import { UserAuth } from '@common/contexts/AuthContext';
+import { routes } from '@common/constants';
 
 // Затычки для вёрстки
 // interface CVItem {
@@ -73,7 +74,7 @@ function Dashboard() {
                                                 color="primary"
                                                 className={classes.button}
                                                 onClick={() => {
-                                                    navigate('/create-cv/' /* cv.id */);
+                                                    navigate(routes.createCV.href /* cv.id */);
                                                 }}
                                             >
                                                 Редактировать
@@ -83,7 +84,7 @@ function Dashboard() {
                                                 color="primary"
                                                 className={classes.button}
                                                 onClick={() => {
-                                                    navigate('/create-cv/pdf-view/' /*  cv.id */);
+                                                    navigate(routes.pdfView.href /*  cv.id */);
                                                 }}
                                             >
                                                 Просмотреть
