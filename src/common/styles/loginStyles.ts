@@ -2,11 +2,10 @@ import { makeStyles } from 'tss-react/mui';
 
 export const UseLoginStyles = makeStyles()((theme) => ({
     root: {
-        minHeight: '100%',
+        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: theme.spacing(2),
     },
     paper: {
         width: '100%',

@@ -120,7 +120,7 @@ function Navigation() {
             </AppBar>
         );
     } else {
-        return <AppBar position="static"></AppBar>;
+        return null;
     }
 }
 export default Navigation;
