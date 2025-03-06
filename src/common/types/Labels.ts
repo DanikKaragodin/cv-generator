@@ -33,7 +33,7 @@ export interface FormData {
     email: string;
     telephone: string;
     aboutMe: string;
-    avatar: File;
+    avatar: File | string;
     technicalSkills: string[];
     socialLabels: SocialLabel[];
     languageLabels: LanguageLabel[];

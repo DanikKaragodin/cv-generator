@@ -12,12 +12,12 @@ function App() {
     return (
         <div className="app-root" data-testid={TEST_IDS.root}>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
-                <AuthContextProvider>
-                    <Navigation />
-                    <FormDataProvider>
+                <FormDataProvider>
+                    <AuthContextProvider>
+                        <Navigation />
                         <Routes>{renderRoutes(Object.values(routes))}</Routes>
-                    </FormDataProvider>
-                </AuthContextProvider>
+                    </AuthContextProvider>
+                </FormDataProvider>
             </LocalizationProvider>
         </div>
     );

@@ -1,10 +1,6 @@
 import { createContext, useContext, ReactNode, useState } from 'react';
 import { FormData } from '@common/types/Labels';
-
-type FormDataContextType = {
-    formData: FormData | null;
-    setFormData: (data: FormData) => void;
-};
+import { FormDataContextType } from '@common/types/contexts';
 
 export const FormDataContext = createContext<FormDataContextType>({
     formData: null,

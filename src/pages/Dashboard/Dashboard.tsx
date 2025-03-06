@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { generatePath, useNavigate } from 'react-router';
 import { Container, Paper, Typography, Button, Fade, Grid2 } from '@mui/material';
 import { UseDashboardStyles } from '@common/styles/dashboardStyles';
 import { UserAuth } from '@common/contexts/AuthContext';
@@ -18,7 +18,7 @@ import { routes } from '@common/constants';
 
 function Dashboard() {
     const [CVList, setCVList] = useState<Response | undefined | null>(null);
-    const { session, selectCVbyID } = UserAuth();
+    const { session, selectCVbyUserID } = UserAuth();
     const { classes } = UseDashboardStyles();
     const navigate = useNavigate();
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
@@ -30,7 +30,7 @@ function Dashboard() {
                 return;
             }
             try {
-                const result = await selectCVbyID(session.user.id);
+                const result = await selectCVbyUserID(session.user.id);
 
                 if (result.success) {
                     setCVList(result.data);
@@ -45,11 +45,12 @@ function Dashboard() {
         };
 
         loadCVList();
-    }, [session, selectCVbyID]); // Добавили session в зависимости
+    }, [session, selectCVbyUserID]); // Добавили session в зависимости
     return (
         <Container maxWidth="lg" className={classes.root}>
             <Grid2 container spacing={3}>
                 {CVList &&
+                    Array.isArray(CVList) &&
                     CVList.map((cv, index: number) => (
                         <Grid2
                             size={{ xs: 12, sm: 6, md: 4 }}
@@ -74,7 +75,7 @@ function Dashboard() {
                                                 color="primary"
                                                 className={classes.button}
                                                 onClick={() => {
-                                                    navigate(routes.createCV.href /* cv.id */);
+                                                    navigate(generatePath(routes.createCV.href, { id: cv.id }));
                                                 }}
                                             >
                                                 Редактировать
@@ -84,7 +85,7 @@ function Dashboard() {
                                                 color="primary"
                                                 className={classes.button}
                                                 onClick={() => {
-                                                    navigate(routes.pdfView.href /*  cv.id */);
+                                                    navigate(generatePath(routes.pdfView.href, { id: cv.id }));
                                                 }}
                                             >
                                                 Просмотреть

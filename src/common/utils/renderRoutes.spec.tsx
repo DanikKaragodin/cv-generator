@@ -15,6 +15,7 @@ const ROUTES_MOCK: Record<string, IRoute> = {
         href: '/test',
         isSettings: false,
         page: 'testText',
+        isVisible: true,
         component: <TestComp testProp={TEST_TEXT_PROP} />,
     },
 };

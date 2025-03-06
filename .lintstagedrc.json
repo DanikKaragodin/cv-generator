@@ -1,9 +1,9 @@
 {
-    "*.css": [
-      "prettier --config .prettierrc --write"
-    ],
-    "*.{ts,js,tsx,jsx}": [
-      "prettier --config .prettierrc --write",
-      "eslint"
-    ]
-  }
+  "*.css": [
+    "prettier --config .prettierrc --write"
+  ],
+  "*.{ts,js,tsx,jsx}": [
+    "prettier --config .prettierrc --write",
+    "eslint"
+  ]
+}

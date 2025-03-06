@@ -15,7 +15,7 @@ export const routes: Record<string, IRoute> = {
     },
     createCV: {
         page: 'Создать резюме',
-        href: '/create-cv',
+        href: '/create-cv/:id',
         isSettings: false,
         isVisible: true,
         component: <Generator />,
@@ -36,7 +36,7 @@ export const routes: Record<string, IRoute> = {
     },
     pdfView: {
         page: 'Просмотр PDF',
-        href: '/create-cv/pdf-view',
+        href: '/create-cv/pdf-view/:id',
         isSettings: true,
         isVisible: false,
         component: <PDFView />,

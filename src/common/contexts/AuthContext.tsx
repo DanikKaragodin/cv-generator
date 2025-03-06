@@ -1,12 +1,19 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import supabase from '@common/utils/supabaseClient';
-import { AuthResponse, Session } from '@supabase/supabase-js';
+import { Session, User, WeakPassword } from '@supabase/supabase-js';
 import { FormData } from '@common/types/Labels';
 import { useNavigate } from 'react-router';
 import { routes } from '@common/constants';
+import { useFormData } from './FormDataContext';
+
+type AuthResponse = {
+    user: User | null; // Учитываем возможный null
+    session: Session | null; // Учитываем возможный null
+    weakPassword?: WeakPassword;
+};
 
 type AuthContextType = {
-    session: Session | null;
+    session: Session | null | undefined;
     signUpNewUser: (
         email: string,
         password: string,
@@ -25,17 +32,24 @@ type AuthContextType = {
     }>;
     signOut: () => Promise<void>;
     insertCVbyID: (
-        user_id: string | undefined,
+        user_id: string,
         formData: FormData,
     ) => Promise<{
         success: boolean;
         data?: Response;
-        error?: string;
+        // error?: string | unknown;
+        // data?: any[] | null;
+        error?: string | unknown;
     }>;
-    selectCVbyID: (user_id: string | undefined) => Promise<{
+    selectCVbyUserID: (user_id: string) => Promise<{
         success: boolean;
         data?: Response;
-        error?: string;
+        error?: string | unknown;
+    }>;
+    selectCVbyID: (cv_id: string) => Promise<{
+        success: boolean;
+        data?: FormData;
+        error?: string | unknown;
     }>;
 };
 
@@ -45,12 +59,14 @@ const AuthContext = createContext<AuthContextType>({
     signInUser: async () => ({ success: false }),
     signOut: async () => {},
     insertCVbyID: async () => ({ success: false }),
+    selectCVbyUserID: async () => ({ success: false }),
     selectCVbyID: async () => ({ success: false }),
 });
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
+    const { setFormData } = useFormData();
     const navigate = useNavigate();
-    const [session, setSession] = useState<Session | null>();
+    const [session, setSession] = useState<Session | null | undefined>();
     // Регистрация
     const signUpNewUser = async (email: string, password: string) => {
         const { data, error } = await supabase.auth.signUp({
@@ -93,7 +109,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         // используется для получения текущей сессии пользователя из БД
         supabase.auth.getSession().then(({ data: { session } }) => {
-            console.log('initSession: ', session);
+            // console.log('initSession: ', session);
             setSession(session);
             if (session === null) {
                 navigate(routes.login.href);
@@ -102,7 +118,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
         // условный setState на изменения состояния аутентификации
         supabase.auth.onAuthStateChange((_event, session) => {
-            console.log('AuthStateSessionChange: ', session);
+            // console.log('AuthStateSessionChange: ', session);
             setSession(session);
         });
     }, [navigate]);
@@ -155,7 +171,10 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             }
             console.log('insert cv: ', data, error);
             if (data && data.length > 0) {
-                const avatar_url = formData.avatar ? await UploadAvatar(formData.avatar, user_id, data[0]?.id) : '';
+                const avatar_url =
+                    formData.avatar && formData.avatar instanceof File
+                        ? await UploadAvatar(formData.avatar, user_id, data[0]?.id)
+                        : '';
                 console.log(avatar_url);
                 if (avatar_url) {
                     const { data: data_avatar, error: error_avatar } = await supabase
@@ -261,8 +280,8 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    // Выбор всех СV пользователя по его id (так как отключен RLS, access_token пока не используется)
-    const selectCVbyID = async (user_id: string) => {
+    // Выбор всех СV пользователя по id пользователя (так как отключен RLS, access_token пока не используется)
+    const selectCVbyUserID = async (user_id: string) => {
         try {
             const { data, error } = await supabase.from('cv').select('*').eq('user_id', user_id);
             if (error) {
@@ -275,7 +294,101 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             return { success: false, error };
         }
     };
+    // Выбор СV по его id (так как отключен RLS, access_token пока не используется)
+    const selectCVbyID = async (cv_id: string) => {
+        try {
+            const { data: cvData, error: cvError } = await supabase.from('cv').select('*').eq('id', cv_id).single();
+            if (cvError || !cvData) {
+                console.error('SelectError:', cvError?.message);
+                return { success: false, error: cvError };
+            }
+            const [
+                { data: socialData },
+                { data: languageData },
+                { data: educationData },
+                { data: courseData },
+                { data: positionData },
+            ] = await Promise.all([
+                supabase.from('socials').select('*').eq('cv_id', cv_id),
+                supabase.from('languages').select('*').eq('cv_id', cv_id),
+                supabase.from('educations').select('*').eq('cv_id', cv_id),
+                supabase.from('courses').select('*').eq('cv_id', cv_id),
+                supabase.from('positions').select('*').eq('cv_id', cv_id),
+            ]);
 
+            // const { data: socialSubdata, error: socialSuberror } = await supabase
+            //     .from('socials').select('*').eq('cv_id', cv_id);
+            // console.log(`select SocialLabel `, socialSubdata, socialSuberror);
+
+            // const { data: languageSubdata, error: languageSuberror } = await supabase
+            //     .from('languages').select('*').eq('cv_id', cv_id)
+            // console.log(`select languageLabel `, languageSubdata, languageSuberror);
+
+            // const { data: educationSubdata, error: educationSuberror } = await supabase
+            //     .from('educations').select('*').eq('cv_id', cv_id);
+            // console.log(`select educationLabel `, educationSubdata, educationSuberror);
+
+            // const { data: courseSubdata, error: courseSuberror } = await supabase
+            //     .from('courses').select('*').eq('cv_id', cv_id);
+            // console.log(`select coursesLabel `, courseSubdata, courseSuberror);
+
+            // const { data: positionSubdata, error: positionSuberror } = await supabase
+            //     .from('positions').select('*').eq('cv_id', cv_id);
+            // console.log(`select PositionLabel `, positionSubdata, positionSuberror);
+
+            // Формирование объекта FormData
+            const formData: FormData = {
+                name: cvData.name,
+                lastName: cvData.last_name,
+                email: cvData.email,
+                telephone: cvData.telephone,
+                aboutMe: cvData.about_me,
+                avatar: cvData.avatar_url, // Предполагается, что avatar хранится как File
+                technicalSkills: cvData.technical_skills || [],
+                socialLabels:
+                    socialData?.map((s) => ({
+                        name: s.name,
+                        url: s.url,
+                    })) || [],
+                languageLabels:
+                    languageData?.map((l) => ({
+                        name: l.name,
+                        degree: l.degree,
+                    })) || [],
+                educationLabels:
+                    educationData?.map((e) => ({
+                        name: e.name,
+                        faculty: e.faculty,
+                        specialization: e.specialization,
+                        degree: e.degree,
+                        dataStart: e.data_start,
+                        dataEnd: e.data_end,
+                    })) || [],
+                courseLabels:
+                    courseData?.map((c) => ({
+                        name: c.name,
+                        dataStart: c.data_start,
+                        dataEnd: c.data_end,
+                    })) || [],
+                positionLabels:
+                    positionData?.map((p) => ({
+                        name: p.name,
+                        description: p.description,
+                        tasks: p.tasks,
+                        stack: p.stack,
+                        dataStart: p.data_start,
+                        dataEnd: p.data_end,
+                    })) || [],
+            };
+            await setFormData(formData);
+            // console.log("globalformData",globalformdata);
+            console.log('Select:', formData);
+            return { success: true, data: formData };
+        } catch (error) {
+            console.error('Unexpected error during select:', error);
+            return { success: false, error };
+        }
+    };
     return (
         <AuthContext.Provider
             value={{
@@ -284,6 +397,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 session,
                 signOut,
                 insertCVbyID,
+                selectCVbyUserID,
                 selectCVbyID,
             }}
         >
