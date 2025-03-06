@@ -3,22 +3,44 @@ import Generator from '@pages/Generator/Generator.tsx';
 import Settings from '@pages/Settings/Settings.tsx';
 import Login from '@pages/Login/Login.tsx';
 import { IRoute } from '@common/types/Route.tsx';
+import PDFView from '@pages/Generator/PDFview';
 
 export const routes: Record<string, IRoute> = {
-    dashboard: { page: 'Главная', href: '/', isSettings: false, component: <Dashboard /> },
+    dashboard: {
+        page: 'Главная',
+        href: '/',
+        isSettings: false,
+        isVisible: true,
+        component: <Dashboard />,
+    },
     createCV: {
         page: 'Создать резюме',
         href: '/create-cv',
         isSettings: false,
+        isVisible: true,
         component: <Generator />,
     },
     userSettings: {
         page: 'Настройки',
         href: '/user-settings',
         isSettings: true,
+        isVisible: true,
         component: <Settings />,
     },
-    login: { page: 'Выйти', href: '/login', isSettings: true, component: <Login /> },
+    login: {
+        page: 'Выйти',
+        href: '/login',
+        isSettings: true,
+        isVisible: true,
+        component: <Login />,
+    },
+    pdfView: {
+        page: 'Просмотр PDF',
+        href: '/create-cv/pdf-view',
+        isSettings: true,
+        isVisible: false,
+        component: <PDFView />,
+    },
 };
 
 export enum languageDegrees {

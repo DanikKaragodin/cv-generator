@@ -8,8 +8,11 @@ import Positions from './Projects/Positions';
 import { useNavigate } from 'react-router';
 import { UseMUIStyles } from '@common/styles/muiStyles';
 import { useFormData } from '@common/contexts/FormDataContext';
+import { UserAuth } from '@common/contexts/AuthContext';
+import { routes } from '@common/constants';
 
 function Generator() {
+    const { session, insertCVbyID } = UserAuth();
     const { setFormData } = useFormData();
     const { classes } = UseMUIStyles();
     const navigate = useNavigate();
@@ -55,10 +58,21 @@ function Generator() {
         control,
         name: 'positionLabels',
     });
-    const onSubmit: SubmitHandler<FormData> = (inputData) => {
+    const onSubmit: SubmitHandler<FormData> = async (inputData) => {
         console.log('Собранные данные:', inputData);
         setFormData(inputData);
-        navigate('/create-cv/pdf-view');
+        try {
+            const result = await insertCVbyID(session?.user.id, inputData);
+
+            if (result.success) {
+                console.log('good!');
+                navigate(routes.pdfView.href);
+            } else {
+                console.error(result.error);
+            }
+        } catch (err) {
+            console.error('An unexpected error occurred: ', err);
+        }
     };
 
     return (
