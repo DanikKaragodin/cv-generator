@@ -5,23 +5,28 @@ import { UseDashboardStyles } from '@common/styles/dashboardStyles';
 import { UserAuth } from '@common/contexts/AuthContext';
 import { routes } from '@common/constants';
 
-// Затычки для вёрстки
-// interface CVItem {
-//     id: string;
-//     name: string;
-// }
-
-// const CVList: CVItem[] = Array.from({ length: 9 }, (_, i) => ({
-//     id: `${i + 1}`,
-//     name: `Имя резюме ${i + 1}`,
-// }));
-
 function Dashboard() {
-    const [CVList, setCVList] = useState<Response | undefined | null>(null);
-    const { session, selectCVbyUserID } = UserAuth();
+    const [CVList, setCVList] = useState<{ id: string; cv_name: string }[] | undefined | null>(null);
+    const { session, selectCVbyUserID, deleteCVbyID } = UserAuth();
     const { classes } = UseDashboardStyles();
     const navigate = useNavigate();
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+
+    const handleDeleteCV = async (cvId: string) => {
+        if (window.confirm('Вы уверены, что хотите удалить это резюме?')) {
+            try {
+                const result = await deleteCVbyID(cvId);
+
+                if (result.success) {
+                    setCVList((prev) => (Array.isArray(prev) ? prev.filter((cv) => cv.id !== cvId) : prev));
+                } else {
+                    console.error('Ошибка удаления:', result.error);
+                }
+            } catch (error) {
+                console.error('Ошибка при удалении:', error);
+            }
+        }
+    };
 
     useEffect(() => {
         const loadCVList = async () => {
@@ -45,7 +50,7 @@ function Dashboard() {
         };
 
         loadCVList();
-    }, [session, selectCVbyUserID]); // Добавили session в зависимости
+    }, [session, selectCVbyUserID, setCVList]);
     return (
         <Container maxWidth="lg" className={classes.root}>
             <Grid2 container spacing={3}>
@@ -89,6 +94,14 @@ function Dashboard() {
                                                 }}
                                             >
                                                 Просмотреть
+                                            </Button>
+                                            <Button
+                                                variant="contained"
+                                                color="error"
+                                                className={classes.button}
+                                                onClick={() => handleDeleteCV(cv.id)}
+                                            >
+                                                Удалить
                                             </Button>
                                         </div>
                                     </Fade>

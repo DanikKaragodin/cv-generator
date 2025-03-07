@@ -10,14 +10,13 @@ import { UseMUIStyles } from '@common/styles/muiStyles';
 import { useFormData } from '@common/contexts/FormDataContext';
 import { UserAuth } from '@common/contexts/AuthContext';
 import { routes } from '@common/constants';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 function Generator() {
-    const { formData } = useFormData();
+    const { formData, setFormData } = useFormData();
     const { id } = useParams<{ id: string }>();
-    console.log(id);
-    const { session, insertCVbyID, selectCVbyID } = UserAuth();
-    const { setFormData } = useFormData();
+    const [isUpdate, setisUpdate] = useState<boolean>(false);
+    const { session, insertCVbyID, selectCVbyID, updateCVbyID } = UserAuth();
     const { classes } = UseMUIStyles();
     const navigate = useNavigate();
     const defaultState = useMemo(() => {
@@ -69,8 +68,10 @@ function Generator() {
         console.log('Собранные данные:', inputData);
         setFormData(inputData);
         try {
-            if (session?.user.id) {
-                const result = await insertCVbyID(session.user.id, inputData);
+            if (session?.user.id && id) {
+                const result = isUpdate
+                    ? await updateCVbyID(session.user.id, id, inputData)
+                    : await insertCVbyID(session.user.id, inputData);
 
                 if (result.success) {
                     console.log('good!');
@@ -83,14 +84,15 @@ function Generator() {
             console.error('An unexpected error occurred: ', err);
         }
     };
-    // Загрузка данных при наличии ID
+
     useEffect(() => {
         const loadCVData = async () => {
             if (id && id !== ':id') {
                 try {
                     const { success, error } = await selectCVbyID(id);
-
+                    console.log(success, error, formData);
                     if (success) {
+                        setisUpdate(true);
                         if (formData) reset(formData);
                     } else {
                         console.error(error);
@@ -110,7 +112,7 @@ function Generator() {
         };
 
         loadCVData();
-    }, [id]);
+    }, [id, setisUpdate, isUpdate]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -120,7 +122,7 @@ function Generator() {
             <Positions control={control} errors={errors} fieldArray={positions}></Positions>
             <Container maxWidth="sm" className={classes.sumbitCVcontainer}>
                 <Button type="submit" variant="contained">
-                    Собрать резюме
+                    {isUpdate ? 'Обновить резюме' : 'Собрать резюме'}
                 </Button>
             </Container>
         </form>

@@ -3,34 +3,39 @@ import { Container } from '@mui/material';
 import { pdfStyles } from '@common/styles/pdfStyles';
 import { useFormData } from '@common/contexts/FormDataContext';
 import { useParams } from 'react-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { UserAuth } from '@common/contexts/AuthContext';
 
 const PDFView = () => {
     const { formData } = useFormData();
     const { selectCVbyID } = UserAuth();
     const { id } = useParams<{ id: string }>();
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
         const loadCVData = async () => {
-            if (id && id !== ':id') {
-                try {
+            setIsLoading(true);
+            try {
+                if (id && id !== ':id') {
                     const { error } = await selectCVbyID(id);
-                    if (error) {
-                        console.error(error);
-                    }
-                } catch (e) {
-                    console.error('Произошла ошибка при загрузке данных: ', e);
+                    if (error) console.error(error);
                 }
+            } catch (e) {
+                console.error('Ошибка загрузки:', e);
+            } finally {
+                setIsLoading(false);
             }
         };
 
         loadCVData();
     }, [id]);
-    if (formData) {
+
+    if (isLoading) return <div style={pdfStyles.name}>Загрузка резюме...</div>;
+    else if (!formData) return <div style={pdfStyles.name}>Ошибка загрузки данных</div>;
+    else if (formData) {
         return (
             <Container maxWidth="lg">
-                {/* Косяки с рендером при переключении резюме */}
-                <PDFViewer style={pdfStyles.pdfView} key={Math.random().toString(16)}>
+                <PDFViewer style={pdfStyles.pdfView} key={id}>
                     <Document>
                         <Page size="A4" style={pdfStyles.page}>
                             <View style={pdfStyles.backgroundShape} />
@@ -172,5 +177,4 @@ const PDFView = () => {
         return 'Ошибка сборки';
     }
 };
-
 export default PDFView;
