@@ -16,6 +16,29 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
     return (
         <Container maxWidth="sm">
             <Paper elevation={4} className={classes.paper}>
+                <CardHeader title="Имя резюме" />
+                <Divider />
+                <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={classes.grid}>
+                    <CenteredGrid size={6}>
+                        <Controller
+                            name="CVname"
+                            control={control}
+                            rules={validationRules.requiredField('Имя Резюме')}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    error={!!errors.name}
+                                    helperText={errors.name?.message}
+                                    required
+                                    id="cv-name"
+                                    label="Имя Резюме"
+                                />
+                            )}
+                        />
+                    </CenteredGrid>
+                </Grid2>
+            </Paper>
+            <Paper elevation={4} className={classes.paper}>
                 <CardHeader title="О себе" />
                 <Divider />
                 <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={classes.grid}>
@@ -59,7 +82,7 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                         <Controller
                             name="email"
                             control={control}
-                            rules={validationRules.email}
+                            rules={{ ...validationRules.email, ...validationRules.requiredField('E-mail') }}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -95,7 +118,7 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                         <Controller
                             name="aboutMe"
                             control={control}
-                            rules={validationRules.aboutMe}
+                            rules={{ ...validationRules.aboutMe, ...validationRules.requiredField('О себе') }}
                             render={({ field }) => (
                                 <TextField
                                     {...field}

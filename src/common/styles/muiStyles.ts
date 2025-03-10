@@ -37,6 +37,7 @@ export const UseMUIStyles = makeStyles()({
         sx: {
             display: 'flex',
             justifyContent: 'center',
+            marginTop: 3,
             marginBottom: 5,
         },
     }),

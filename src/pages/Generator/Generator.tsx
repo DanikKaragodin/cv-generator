@@ -16,11 +16,13 @@ function Generator() {
     const { formData, setFormData } = useFormData();
     const { id } = useParams<{ id: string }>();
     const [isUpdate, setisUpdate] = useState<boolean>(false);
-    const { session, insertCVbyID, selectCVbyID, updateCVbyID } = UserAuth();
+    const { session, insertCVbyID, selectCVbyID, selectDefaultsbyUserID, updateCVbyID } = UserAuth();
     const { classes } = UseMUIStyles();
     const navigate = useNavigate();
     const defaultState = useMemo(() => {
         return {
+            id: '',
+            CVname: '',
             name: '',
             lastName: '',
             email: '',
@@ -89,11 +91,11 @@ function Generator() {
         const loadCVData = async () => {
             if (id && id !== ':id') {
                 try {
-                    const { success, error } = await selectCVbyID(id);
+                    const { success, error, data } = await selectCVbyID(id);
                     console.log(success, error, formData);
                     if (success) {
                         setisUpdate(true);
-                        if (formData) reset(formData);
+                        if (data) reset(data);
                     } else {
                         console.error(error);
                     }
@@ -101,18 +103,32 @@ function Generator() {
                     console.error('Произошла ошибка при загрузке данных: ', e);
                 }
             } else {
-                reset(defaultState);
-                links.replace([]);
-                languages.replace([]);
-                educations.replace([]);
-                courses.replace([]);
-                positions.replace([]);
+                if (session?.user.id) {
+                    try {
+                        const { success, error, data } = await selectDefaultsbyUserID(session.user.id);
+                        console.log(success, error, data);
+                        if (success) {
+                            if (data) reset(data);
+                        } else {
+                            console.error(error);
+                        }
+                    } catch (e) {
+                        console.error('Произошла ошибка при загрузке данных: ', e);
+                    }
+                } else {
+                    reset(defaultState);
+                    links.replace([]);
+                    languages.replace([]);
+                    educations.replace([]);
+                    courses.replace([]);
+                    positions.replace([]);
+                }
                 return;
             }
         };
 
         loadCVData();
-    }, [id, setisUpdate, isUpdate]);
+    }, [id, setisUpdate, isUpdate, session?.user.id]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

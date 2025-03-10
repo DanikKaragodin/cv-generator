@@ -54,7 +54,19 @@ type AuthContextType = {
         data?: { id: string; cv_name: string }[] | null;
         error?: string | unknown;
     }>;
+    insertDefaultsbyUserID: (
+        user_id: string,
+        formData: FormData,
+    ) => Promise<{
+        success: boolean;
+        error?: string | unknown;
+    }>;
     selectCVbyID: (cv_id: string) => Promise<{
+        success: boolean;
+        data?: FormData;
+        error?: string | unknown;
+    }>;
+    selectDefaultsbyUserID: (user_id: string) => Promise<{
         success: boolean;
         data?: FormData;
         error?: string | unknown;
@@ -71,6 +83,8 @@ const AuthContext = createContext<AuthContextType>({
     signInUser: async () => ({ success: false }),
     signOut: async () => {},
     insertCVbyID: async () => ({ success: false }),
+    insertDefaultsbyUserID: async () => ({ success: false }),
+    selectDefaultsbyUserID: async () => ({ success: false }),
     updateCVbyID: async () => ({ success: false }),
     selectCVbyUserID: async () => ({ success: false }),
     selectCVbyID: async () => ({ success: false }),
@@ -143,6 +157,8 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             }
 
             const formData: FormData = {
+                id: cvData.id,
+                CVname: cvData.cv_name,
                 name: cvData.name,
                 lastName: cvData.last_name,
                 email: cvData.email,
@@ -165,6 +181,41 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             return { success: false, error };
         }
     };
+    // Выбор СV по его id (так как отключен RLS, access_token пока не используется)
+    const selectDefaultsbyUserID = async (user_id: string) => {
+        try {
+            const { data: cvData, error: cvError } = await supabase
+                .from('contact_info')
+                .select('*')
+                .eq('user_id', user_id)
+                .single();
+            if (cvError || !cvData) {
+                console.error('SelectError:', cvError?.message);
+                return { success: false, error: cvError };
+            }
+
+            const formData: FormData = {
+                id: cvData.id,
+                CVname: cvData.cv_name,
+                name: cvData.name,
+                lastName: cvData.last_name,
+                email: cvData.email,
+                telephone: cvData.telephone,
+                aboutMe: cvData.about_me,
+                avatar: cvData.avatar_url,
+                technicalSkills: cvData.technical_skills || [],
+                socialLabels: [],
+                languageLabels: [],
+                educationLabels: [],
+                courseLabels: [],
+                positionLabels: [],
+            };
+            return { success: true, data: formData };
+        } catch (error) {
+            console.error('Unexpected error during select:', error);
+            return { success: false, error };
+        }
+    };
     // Выход пользователя
     const signOut = async () => {
         console.log('signOut');
@@ -176,7 +227,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     };
 
     // Загрузка аватара в storage
-    const UploadAvatar = async (avatar: File, user_id: string, cv_id: string) => {
+    const UploadAvatar = async (avatar: File, user_id: string, cv_id: string = 'default') => {
         const { data: uploadData, error: uploadError } = await supabase.storage
             .from('avatars')
             .upload(`${user_id}/${cv_id}`, avatar, {
@@ -197,7 +248,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 .from('cv')
                 .update([
                     {
-                        cv_name: formData.name,
+                        cv_name: formData.CVname,
                         name: formData.name,
                         last_name: formData.lastName,
                         email: formData.email,
@@ -241,6 +292,37 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             return { success: false, error };
         }
     };
+    //Добавление данных по умолчанию с привязкой к id пользователя
+    const insertDefaultsbyUserID = async (user_id: string, formData: FormData) => {
+        try {
+            let avatar_url: File | string = formData.avatar;
+            if (formData.avatar && formData.avatar instanceof File) {
+                avatar_url = await UploadAvatar(formData.avatar, user_id);
+                console.log('insert avatar: ', avatar_url);
+            }
+            const { error } = await supabase.from('contact_info').upsert([
+                {
+                    id: formData.id,
+                    name: formData.name,
+                    last_name: formData.lastName,
+                    email: formData.email,
+                    telephone: formData.telephone,
+                    about_me: formData.aboutMe,
+                    avatar_url: avatar_url,
+                    technical_skills: formData.technicalSkills,
+                    user_id: user_id,
+                },
+            ]);
+
+            if (error) {
+                console.error('InsertError:', error.message);
+            }
+            return { success: true };
+        } catch (error) {
+            console.error('Unexpected error during insert:', error);
+            return { success: false, error };
+        }
+    };
     //Добавление нового CV с привязкой к id пользователя
     const insertCVbyID = async (user_id: string, formData: FormData) => {
         try {
@@ -248,7 +330,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 .from('cv')
                 .insert([
                     {
-                        cv_name: formData.name,
+                        cv_name: formData.CVname,
                         name: formData.name,
                         last_name: formData.lastName,
                         email: formData.email,
@@ -314,6 +396,8 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 signOut,
                 selectCVbyUserID,
                 selectCVbyID,
+                insertDefaultsbyUserID,
+                selectDefaultsbyUserID,
                 insertCVbyID,
                 updateCVbyID,
                 deleteCVbyID,
