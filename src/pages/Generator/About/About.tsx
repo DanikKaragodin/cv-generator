@@ -11,6 +11,7 @@ import { CVsectionProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
 import { UseMUIStyles } from '@common/styles/muiStyles';
 import { emptyLabels } from '@common/constants';
+import Avatar from '@common/components/Avatar/Avatar';
 function About({ control, errors, fieldArray }: CVsectionProps) {
     const { classes } = UseMUIStyles();
     return (
@@ -27,8 +28,8 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                             render={({ field }) => (
                                 <TextField
                                     {...field}
-                                    error={!!errors.name}
-                                    helperText={errors.name?.message}
+                                    error={!!errors.CVname}
+                                    helperText={errors.CVname?.message}
                                     required
                                     id="cv-name"
                                     label="Имя Резюме"
@@ -133,34 +134,12 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                             )}
                         />
                     </CenteredGrid>
-                    <CenteredGrid size={12}>
-                        <Controller
-                            name="avatar"
-                            control={control}
-                            render={({ field }) => (
-                                <TextField
-                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                        const file = event.target?.files;
-                                        if (file) {
-                                            field.onChange(file[0]);
-                                            console.log('Выбранный файл:', file[0]);
-                                        }
-                                    }}
-                                    InputProps={{
-                                        inputProps: { accept: 'image/*' },
-                                    }}
-                                    helperText="Выбери фото (рекомендуется фото в формате 1:1)"
-                                    type="file"
-                                    id="user-avatar"
-                                    fullWidth
-                                />
-                            )}
-                        />
-                    </CenteredGrid>
+                    <Avatar control={control} />
                     <LinkLabels
                         fields={fieldArray.fields}
                         append={() => fieldArray.append(emptyLabels.linkLabel)}
                         remove={fieldArray.remove}
+                        move={fieldArray.move}
                         control={control}
                         errors={errors}
                     />

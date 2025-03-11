@@ -26,6 +26,7 @@ function Skills({ control, errors, fieldArray }: CVsectionProps) {
                         fields={fieldArray.fields}
                         append={() => fieldArray.append(emptyLabels.languageLabel)}
                         remove={fieldArray.remove}
+                        move={fieldArray.move}
                         control={control}
                         errors={errors}
                     />

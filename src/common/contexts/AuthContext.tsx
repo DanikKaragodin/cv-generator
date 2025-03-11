@@ -7,8 +7,8 @@ import { routes } from '@common/constants';
 import { useFormData } from './FormDataContext';
 
 type AuthResponse = {
-    user: User | null; // Учитываем возможный null
-    session: Session | null; // Учитываем возможный null
+    user: User | null;
+    session: Session | null;
     weakPassword?: WeakPassword;
 };
 

@@ -35,7 +35,7 @@ function Navigation() {
         setAnchorElUser(null);
     }, []);
 
-    if (session) {
+    if (session?.user?.id) {
         return (
             <AppBar position="static">
                 <Container maxWidth="xl">

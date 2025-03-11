@@ -20,6 +20,7 @@ function Positions({ control, errors, fieldArray }: CVsectionProps) {
                         fields={fieldArray.fields}
                         append={() => fieldArray.append(emptyLabels.positionLabel)}
                         remove={fieldArray.remove}
+                        move={fieldArray.move}
                         control={control}
                         errors={errors}
                     />

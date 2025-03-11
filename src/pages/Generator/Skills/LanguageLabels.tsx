@@ -3,7 +3,8 @@ import Button from '@mui/material/Button';
 import Grid2 from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
-import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import { ArrowDownward, ArrowUpward, Delete } from '@mui/icons-material';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import _Select from '@common/components/Select/_Select';
@@ -13,21 +14,30 @@ import { languageDegrees } from '@common/constants';
 import { LabelProps, LabelsProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
 import { UseMUIStyles } from '@common/styles/muiStyles';
-const LanguageLabel = ({ index, onRemove, control, errors }: LabelProps) => {
+const LanguageLabel = ({
+    control,
+    errors,
+    index,
+    onRemove,
+    onMoveUp,
+    onMoveDown,
+    canMoveUp,
+    canMoveDown,
+}: LabelProps) => {
     const { classes } = UseMUIStyles();
     return (
         <Paper className={classes.paper}>
             <Grid2 container className={classes.grid} spacing={2} rowSpacing={4}>
                 <CenteredGrid size={12}>
-                    <Button
-                        key={`user-language-button-${index}`}
-                        id={`user-language-button-${index}`}
-                        variant="outlined"
-                        startIcon={<DeleteIcon />}
-                        onClick={onRemove}
-                    >
-                        Удалить
-                    </Button>
+                    <IconButton onClick={onMoveUp} disabled={!canMoveUp} aria-label="Move up" color="primary">
+                        <ArrowUpward />
+                    </IconButton>
+                    <IconButton onClick={onMoveDown} disabled={!canMoveDown} aria-label="Move down" color="primary">
+                        <ArrowDownward />
+                    </IconButton>
+                    <IconButton onClick={onRemove} aria-label="Delete" color="primary">
+                        <Delete />
+                    </IconButton>
                 </CenteredGrid>
                 <CenteredGrid size={6}>
                     <Controller
@@ -72,7 +82,7 @@ const LanguageLabel = ({ index, onRemove, control, errors }: LabelProps) => {
     );
 };
 
-export const LanguageLabels = ({ fields, append, remove, control, errors }: LabelsProps) => {
+export const LanguageLabels = ({ fields, append, remove, move, control, errors }: LabelsProps) => {
     return (
         <>
             <CenteredGrid size={12}>
@@ -85,9 +95,13 @@ export const LanguageLabels = ({ fields, append, remove, control, errors }: Labe
                 <LanguageLabel
                     control={control}
                     errors={errors}
-                    key={field.id}
+                    key={`${field.id}-${index}`}
                     index={index}
                     onRemove={() => remove(index)}
+                    onMoveUp={() => move(index, index - 1)}
+                    onMoveDown={() => move(index, index + 1)}
+                    canMoveUp={index > 0}
+                    canMoveDown={index < fields.length - 1}
                 />
             ))}
         </>

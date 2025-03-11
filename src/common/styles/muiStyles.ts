@@ -41,4 +41,10 @@ export const UseMUIStyles = makeStyles()({
             marginBottom: 5,
         },
     }),
+    avatar: {
+        width: '95%',
+        padding: '10px 0px',
+        border: '1px rgba(0, 0, 0, 0.24) solid',
+        borderRadius: '4px',
+    },
 });

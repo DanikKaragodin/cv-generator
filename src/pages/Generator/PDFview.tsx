@@ -39,7 +39,7 @@ const PDFView = () => {
                     <Document>
                         <Page size="A4" style={pdfStyles.page}>
                             <View style={pdfStyles.backgroundShape} />
-                            {/* Header */}
+                            {/* Шапка */}
                             <View style={pdfStyles.header}>
                                 <Text style={pdfStyles.name}>
                                     {formData?.name} {formData?.lastName}
@@ -63,11 +63,11 @@ const PDFView = () => {
                                 {formData?.avatar ? <Image src={formData?.avatar} style={pdfStyles.avatar} /> : null}
                             </View>
 
-                            {/* Two Columns */}
+                            {/* 2 Колонки */}
                             <View style={pdfStyles.twoColumn}>
-                                {/* Left Column */}
+                                {/* Левая колонка */}
                                 <View style={pdfStyles.leftColumn}>
-                                    {/* About */}
+                                    {/* О себе */}
                                     {formData?.aboutMe && (
                                         <View style={pdfStyles.section}>
                                             <Text style={pdfStyles.sectionTitle}>Обо мне</Text>
@@ -75,7 +75,7 @@ const PDFView = () => {
                                         </View>
                                     )}
 
-                                    {/* Tech Skills */}
+                                    {/* Скиллы */}
                                     <View style={pdfStyles.section}>
                                         <Text style={pdfStyles.sectionTitle}>Навыки</Text>
                                         <View style={pdfStyles.skillItem}>
@@ -87,7 +87,7 @@ const PDFView = () => {
                                         </View>
                                     </View>
 
-                                    {/* Languages */}
+                                    {/* Языки */}
                                     <View style={pdfStyles.section}>
                                         <Text style={pdfStyles.sectionTitle}>Языки</Text>
                                         {formData?.languageLabels.map((language, index) => (
@@ -98,7 +98,7 @@ const PDFView = () => {
                                         ))}
                                     </View>
 
-                                    {/* Education */}
+                                    {/* Образование */}
                                     <View style={pdfStyles.section}>
                                         <Text style={pdfStyles.sectionTitle}>Образование</Text>
                                         {formData?.educationLabels.map((education, index) => (
@@ -117,7 +117,7 @@ const PDFView = () => {
                                         ))}
                                     </View>
 
-                                    {/* Courses */}
+                                    {/* Курсы */}
                                     <View style={pdfStyles.section}>
                                         <Text style={pdfStyles.sectionTitle}>Курсы</Text>
                                         {formData?.courseLabels.map((course, index) => (
@@ -131,9 +131,9 @@ const PDFView = () => {
                                     </View>
                                 </View>
 
-                                {/* Right Column */}
+                                {/* Правая колонка */}
                                 <View style={pdfStyles.rightColumn}>
-                                    {/* Projects */}
+                                    {/* Позиции */}
                                     <View style={pdfStyles.section}>
                                         <Text style={pdfStyles.sectionTitle}>Опыт работы</Text>
                                         {formData?.positionLabels.map((position, index) => (
