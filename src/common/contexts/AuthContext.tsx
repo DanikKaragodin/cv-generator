@@ -195,15 +195,15 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             }
 
             const formData: FormData = {
-                id: cvData.id,
-                CVname: cvData.cv_name,
-                name: cvData.name,
-                lastName: cvData.last_name,
-                email: cvData.email,
-                telephone: cvData.telephone,
-                aboutMe: cvData.about_me,
-                avatar: cvData.avatar_url,
-                technicalSkills: cvData.technical_skills || [],
+                id: cvData?.id,
+                CVname: cvData?.cv_name,
+                name: cvData?.name,
+                lastName: cvData?.last_name,
+                email: cvData?.email,
+                telephone: cvData?.telephone,
+                aboutMe: cvData?.about_me,
+                avatar: cvData?.avatar_url,
+                technicalSkills: cvData?.technical_skills || [],
                 socialLabels: [],
                 languageLabels: [],
                 educationLabels: [],
@@ -302,7 +302,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             }
             const { error } = await supabase.from('contact_info').upsert([
                 {
-                    id: formData.id,
                     name: formData.name,
                     last_name: formData.lastName,
                     email: formData.email,
@@ -311,6 +310,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                     avatar_url: avatar_url,
                     technical_skills: formData.technicalSkills,
                     user_id: user_id,
+                    ...(formData.id && { id: formData.id }),
                 },
             ]);
 
@@ -326,6 +326,11 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     //Добавление нового CV с привязкой к id пользователя
     const insertCVbyID = async (user_id: string, formData: FormData) => {
         try {
+            let avatar_url: File | string = formData.avatar;
+            if (formData.avatar && formData.avatar instanceof File) {
+                avatar_url = await UploadAvatar(formData.avatar, user_id);
+                console.log('insert avatar: ', avatar_url);
+            }
             const { data, error } = await supabase
                 .from('cv')
                 .insert([
@@ -336,7 +341,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                         email: formData.email,
                         telephone: formData.telephone,
                         about_me: formData.aboutMe,
-                        avatar_url: '',
+                        avatar_url: avatar_url,
                         technical_skills: formData.technicalSkills,
                         socials: formData.socialLabels || null,
                         languages: formData.languageLabels || null,
@@ -352,20 +357,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 console.error('InsertError:', error.message);
             }
             console.log('insert cv: ', data, error);
-            if (data && formData.avatar && formData.avatar instanceof File) {
-                const avatar_url = await UploadAvatar(formData.avatar, user_id, data?.id);
-                if (avatar_url) {
-                    const { data: data_avatar, error: error_avatar } = await supabase
-                        .from('cv')
-                        .update({ avatar_url: avatar_url })
-                        .eq('id', data?.id)
-                        .select();
-                    if (error_avatar) {
-                        console.error('InsertError:', error_avatar.message);
-                    }
-                    console.log('insert avatar: ', data_avatar, error_avatar);
-                }
-            }
             return { success: true, data };
         } catch (error) {
             console.error('Unexpected error during insert:', error);

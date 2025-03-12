@@ -93,9 +93,9 @@ function Generator() {
                 try {
                     const { success, error, data } = await selectCVbyID(id);
                     console.log(success, error, formData);
-                    if (success) {
+                    if (success && data) {
                         setisUpdate(true);
-                        if (data) reset(data);
+                        reset(data);
                     } else {
                         console.error(error);
                     }
@@ -107,8 +107,8 @@ function Generator() {
                     try {
                         const { success, error, data } = await selectDefaultsbyUserID(session.user.id);
                         console.log(success, error, data);
-                        if (success) {
-                            if (data) reset(data);
+                        if (success && data) {
+                            reset(data);
                         } else {
                             console.error(error);
                         }
