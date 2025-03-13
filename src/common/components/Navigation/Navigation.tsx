@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import { UserAuth } from '@common/contexts/AuthContext';
 
 function Navigation() {
-    const { session } = UserAuth();
+    const { isAuth, email } = UserAuth();
 
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -35,7 +35,7 @@ function Navigation() {
         setAnchorElUser(null);
     }, []);
 
-    if (session?.user?.id) {
+    if (isAuth) {
         return (
             <AppBar position="static">
                 <Container maxWidth="xl">
@@ -85,7 +85,7 @@ function Navigation() {
 
                         <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
                             <Typography variant="body1" component="p" sx={{ mr: 1 }}>
-                                {session?.user.email}
+                                {email}
                             </Typography>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

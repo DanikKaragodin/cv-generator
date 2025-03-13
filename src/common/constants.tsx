@@ -3,8 +3,8 @@ import Generator from '@pages/Generator/Generator.tsx';
 import Settings from '@pages/Settings/Settings.tsx';
 import Login from '@pages/Login/Login.tsx';
 import { IRoute } from '@common/types/Route.tsx';
-import PDFView from '@pages/Generator/PDFview';
-
+import PDFView from '@pages/PDFview/PDFview';
+import { FormData } from './types/Labels';
 export const routes: Record<string, IRoute> = {
     dashboard: {
         page: 'Главная',
@@ -36,7 +36,7 @@ export const routes: Record<string, IRoute> = {
     },
     pdfView: {
         page: 'Просмотр PDF',
-        href: '/create-cv/pdf-view/:id',
+        href: '/pdf-view/:id',
         isSettings: true,
         isVisible: false,
         component: <PDFView />,
@@ -51,6 +51,22 @@ export enum languageDegrees {
     C1 = 'C1',
     C2 = 'C2',
 }
+export const defaultState: FormData = {
+    id: '',
+    CVname: '',
+    name: '',
+    lastName: '',
+    email: '',
+    telephone: '',
+    avatar: '',
+    aboutMe: '',
+    technicalSkills: [],
+    socialLabels: [],
+    languageLabels: [],
+    educationLabels: [],
+    courseLabels: [],
+    positionLabels: [],
+};
 export const emptyLabels = {
     login: { email: '', password: '' },
     linkLabel: {

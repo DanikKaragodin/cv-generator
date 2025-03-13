@@ -1,4 +1,4 @@
-import { TEST_IDS } from '@common/constants';
+import { defaultState, TEST_IDS } from '@common/constants';
 import './Settings.css';
 import { Autocomplete, Button, Chip, Container, TextField } from '@mui/material';
 import { FormData } from '@common/types/Labels.ts';
@@ -9,30 +9,17 @@ import Divider from '@mui/material/Divider';
 import Grid2 from '@mui/material/Grid2';
 import { UseMUIStyles } from '@common/styles/muiStyles';
 import { UserAuth } from '@common/contexts/AuthContext';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CenteredGrid } from '@common/components/CenteredGrid/CenteredGrid';
 import { validationRules } from '@common/validation';
 import Avatar from '@common/components/Avatar/Avatar';
+import { UserSupabase } from '@common/contexts/SupabaseContext';
 
 function Settings() {
-    const { session, insertDefaultsbyUserID, selectDefaultsbyUserID } = UserAuth();
+    const { userID } = UserAuth();
+    const { insertDefaultsbyUserID, selectDefaultsbyUserID } = UserSupabase();
     const { classes } = UseMUIStyles();
     const [isLoad, setLoad] = useState<boolean | null>(true);
-    const defaultState = useMemo(() => {
-        return {
-            id: '',
-            name: '',
-            lastName: '',
-            email: '',
-            telephone: '',
-            aboutMe: '',
-            technicalSkills: [],
-            languageLabels: [],
-            educationLabels: [],
-            courseLabels: [],
-            positionLabels: [],
-        };
-    }, []);
     const {
         control,
         handleSubmit,
@@ -46,8 +33,8 @@ function Settings() {
     const onSubmit: SubmitHandler<FormData> = async (inputData) => {
         console.log('Собранные данные:', inputData);
         try {
-            if (session?.user.id) {
-                const result = await insertDefaultsbyUserID(session.user.id, inputData);
+            if (userID) {
+                const result = await insertDefaultsbyUserID(userID, inputData);
                 if (result.success) {
                     console.log('good!');
                 } else {
@@ -61,9 +48,9 @@ function Settings() {
 
     useEffect(() => {
         const loadDefaultsData = async () => {
-            if (session?.user?.id) {
+            if (userID) {
                 try {
-                    const { success, error, data } = await selectDefaultsbyUserID(session.user.id);
+                    const { success, error, data } = await selectDefaultsbyUserID(userID);
                     console.log(success, error, data);
                     if (success) {
                         if (data) reset(data);
@@ -81,7 +68,7 @@ function Settings() {
         };
 
         loadDefaultsData();
-    }, [session?.user?.id, isLoad]);
+    }, [userID, isLoad]);
 
     return (
         !isLoad && (

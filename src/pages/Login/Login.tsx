@@ -18,7 +18,7 @@ function Login() {
         handleSubmit,
         formState: { errors },
     } = useForm<LoginData>({ mode: 'all', defaultValues: emptyLabels.login });
-    const { session, signInUser, signUpNewUser } = UserAuth();
+    const { isAuth, signInUser, signUpNewUser } = UserAuth();
 
     const handleGoogleLogin = () => {
         // Потом сделать (по возможности) логику Google Sign-In
@@ -32,7 +32,6 @@ function Login() {
                 : await signUpNewUser(data.email, data.password);
 
             if (result.success) {
-                console.log('Session', isLogin, session); // отладочная информация по входу (бывает показывает null, но навбар показывает обратное)
                 navigate(routes.dashboard.href);
             } else {
                 console.error(result.error);
@@ -43,10 +42,10 @@ function Login() {
     };
 
     useEffect(() => {
-        if (session) {
+        if (isAuth) {
             navigate(routes.dashboard.href);
         }
-    }, [session, navigate]);
+    }, [isAuth, navigate]);
 
     return (
         <Container className={classes.root}>

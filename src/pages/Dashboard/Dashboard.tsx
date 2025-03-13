@@ -4,10 +4,12 @@ import { Container, Paper, Typography, Button, Fade, Grid2 } from '@mui/material
 import { UseDashboardStyles } from '@common/styles/dashboardStyles';
 import { UserAuth } from '@common/contexts/AuthContext';
 import { routes } from '@common/constants';
+import { UserSupabase } from '@common/contexts/SupabaseContext';
 
 function Dashboard() {
     const [CVList, setCVList] = useState<{ id: string; cv_name: string }[] | undefined | null>(null);
-    const { session, selectCVbyUserID, deleteCVbyID } = UserAuth();
+    const { isAuth, userID } = UserAuth();
+    const { selectCVbyUserID, deleteCVbyID } = UserSupabase();
     const { classes } = UseDashboardStyles();
     const navigate = useNavigate();
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
@@ -30,12 +32,12 @@ function Dashboard() {
 
     useEffect(() => {
         const loadCVList = async () => {
-            if (!session?.user?.id) {
+            if (!isAuth) {
                 setCVList(null);
                 return;
             }
             try {
-                const result = await selectCVbyUserID(session.user.id);
+                const result = await selectCVbyUserID(userID);
 
                 if (result.success) {
                     setCVList(result.data);
@@ -50,7 +52,7 @@ function Dashboard() {
         };
 
         loadCVList();
-    }, [session, selectCVbyUserID, setCVList]);
+    }, [isAuth, selectCVbyUserID, setCVList]);
     return (
         <Container maxWidth="lg" className={classes.root}>
             <Grid2 container spacing={3}>

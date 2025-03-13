@@ -4,11 +4,11 @@ import { pdfStyles } from '@common/styles/pdfStyles';
 import { useFormData } from '@common/contexts/FormDataContext';
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
-import { UserAuth } from '@common/contexts/AuthContext';
+import { UserSupabase } from '@common/contexts/SupabaseContext';
 
 const PDFView = () => {
     const { formData } = useFormData();
-    const { selectCVbyID } = UserAuth();
+    const { selectCVbyID } = UserSupabase();
     const { id } = useParams<{ id: string }>();
     const [isLoading, setIsLoading] = useState(true);
 
@@ -34,7 +34,7 @@ const PDFView = () => {
     else if (!formData) return <div style={pdfStyles.name}>Ошибка загрузки данных</div>;
     else if (formData) {
         return (
-            <Container maxWidth="lg">
+            <Container maxWidth="lg" classes={pdfStyles.container}>
                 <PDFViewer style={pdfStyles.pdfView} key={id}>
                     <Document>
                         <Page size="A4" style={pdfStyles.page}>
