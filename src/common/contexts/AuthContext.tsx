@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import supabase from '@common/utils/supabaseClient';
 import { Session, User, WeakPassword } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router';
@@ -12,7 +12,7 @@ type AuthResponse = {
 
 type AuthContextType = {
     // session: Session | null | undefined;
-    isAuth: boolean;
+    isAuthorized: boolean;
     userID: string;
     email: string;
     signUpNewUser: (
@@ -36,7 +36,7 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType>({
     // session: null,
-    isAuth: false,
+    isAuthorized: false,
     userID: '',
     email: '',
     signUpNewUser: async () => ({ success: false }),
@@ -46,10 +46,20 @@ const AuthContext = createContext<AuthContextType>({
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     const navigate = useNavigate();
-    const [session, setSession] = useState<Session | null | undefined>();
-    const [isAuth, setIsAuth] = useState<boolean>(!!session);
-    const [userID, setUserID] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
+    const [session, setSession] = useState<Session | null | undefined>(null);
+    //const [isAuthorized, setIsAuth] = useState<boolean>(!!session);
+    const isAuthorized = useMemo(() => {
+        return !!session?.access_token;
+    }, [session]);
+    //const [userID, setUserID] = useState<string>('');
+    const userID = useMemo(() => {
+        return session?.user?.id ? session.user.id : '';
+    }, [session]);
+    //const [email, setEmail] = useState<string>('');
+    const email = useMemo(() => {
+        return session?.user?.email ? session.user.email : '';
+    }, [session]);
+
     // Регистрация
     const signUpNewUser = async (email: string, password: string) => {
         const { data, error } = await supabase.auth.signUp({
@@ -101,26 +111,17 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         // используется для получения текущей сессии пользователя из БД
+
         supabase.auth.getSession().then(({ data: { session } }) => {
             setSession(session);
-            setIsAuth(!!session);
-
             if (session === null) {
                 navigate(routes.login.href);
-            } else if (session.user.email) {
-                setUserID(session?.user.id);
-                setEmail(session?.user.email);
             }
         });
 
         // условный setState на изменения состояния аутентификации
         supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session);
-            setIsAuth(!!session);
-            if (session && session.user.email) {
-                setUserID(session?.user.id);
-                setEmail(session?.user.email);
-            }
         });
     }, []);
 
@@ -130,7 +131,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 signUpNewUser,
                 signInUser,
                 //session,
-                isAuth,
+                isAuthorized,
                 userID,
                 email,
                 signOut,

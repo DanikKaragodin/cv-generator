@@ -13,12 +13,14 @@ import { defaultState, routes } from '@common/constants';
 import { useEffect, useState } from 'react';
 import { UserSupabase } from '@common/contexts/SupabaseContext';
 import { resetFormData } from '@common/utils/resetFormData';
+import Loading from '@common/components/Alerts/Loading';
 
 function Generator() {
-    const { formData, setFormData } = useFormData();
+    const { setFormData } = useFormData();
     const { id } = useParams<{ id: string }>();
-    const [isUpdate, setisUpdate] = useState<boolean>(false);
-    const { isAuth, userID } = UserAuth();
+    const [isEditMode, setisEditMode] = useState<boolean>(false);
+    const [isLoad, setisLoad] = useState<boolean>(true);
+    const { isAuthorized, userID } = UserAuth();
     const { insertCVbyID, selectCVbyID, selectDefaultsbyUserID, updateCVbyID } = UserSupabase();
     const { classes } = UseMUIStyles();
     const navigate = useNavigate();
@@ -58,14 +60,14 @@ function Generator() {
         console.log('Собранные данные:', inputData);
         setFormData(inputData);
         try {
-            if (isAuth && id) {
-                const result = isUpdate
+            if (id) {
+                const result = isEditMode
                     ? await updateCVbyID(userID, id, inputData)
                     : await insertCVbyID(userID, inputData);
 
                 if (result.success) {
                     console.log('good!');
-                    navigate(routes.pdfView.href);
+                    navigate(routes.createdPDF.href);
                 } else {
                     console.error(result.error);
                 }
@@ -77,42 +79,47 @@ function Generator() {
 
     useEffect(() => {
         const loadCVData = async () => {
-            if (id && id !== ':id') {
-                try {
-                    const { success, error, data } = await selectCVbyID(id);
-                    console.log(success, error, formData);
-                    if (success && data) {
-                        setisUpdate(true);
-                        reset(data);
-                    } else {
-                        console.error(error);
-                    }
-                } catch (e) {
-                    console.error('Произошла ошибка при загрузке данных: ', e);
-                }
-            } else {
-                if (userID) {
+            if (isAuthorized) {
+                if (id) {
                     try {
-                        const { success, error, data } = await selectDefaultsbyUserID(userID);
-                        console.log(success, error, data);
+                        const { success, error, data } = await selectCVbyID(id);
                         if (success && data) {
+                            setisEditMode(true);
                             reset(data);
                         } else {
                             console.error(error);
                         }
                     } catch (e) {
                         console.error('Произошла ошибка при загрузке данных: ', e);
+                    } finally {
+                        setisLoad(false);
                     }
                 } else {
-                    resetFormData(reset, [links, languages, educations, courses, positions]);
+                    if (userID) {
+                        try {
+                            const { success, error, data } = await selectDefaultsbyUserID(userID);
+                            if (success && data) {
+                                reset(data);
+                            } else {
+                                console.error(error);
+                            }
+                        } catch (e) {
+                            console.error('Произошла ошибка при загрузке данных: ', e);
+                        } finally {
+                            setisLoad(false);
+                        }
+                    } else {
+                        resetFormData(reset, [links, languages, educations, courses, positions]);
+                        setisLoad(false);
+                    }
+                    return;
                 }
-                return;
             }
         };
 
         loadCVData();
-    }, [id, setisUpdate, isUpdate, userID]);
-
+    }, [id, isAuthorized, userID]);
+    if (isLoad) return <Loading />;
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <About control={control} errors={errors} fieldArray={links}></About>
@@ -121,7 +128,7 @@ function Generator() {
             <Positions control={control} errors={errors} fieldArray={positions}></Positions>
             <Container maxWidth="sm" className={classes.sumbitCVcontainer}>
                 <Button type="submit" variant="contained">
-                    {isUpdate ? 'Обновить резюме' : 'Собрать резюме'}
+                    {isEditMode ? 'Обновить резюме' : 'Собрать резюме'}
                 </Button>
             </Container>
         </form>

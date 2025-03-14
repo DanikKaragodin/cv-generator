@@ -5,10 +5,12 @@ import { UseDashboardStyles } from '@common/styles/dashboardStyles';
 import { UserAuth } from '@common/contexts/AuthContext';
 import { routes } from '@common/constants';
 import { UserSupabase } from '@common/contexts/SupabaseContext';
+import Loading from '@common/components/Alerts/Loading';
 
 function Dashboard() {
     const [CVList, setCVList] = useState<{ id: string; cv_name: string }[] | undefined | null>(null);
-    const { isAuth, userID } = UserAuth();
+    const { isAuthorized, userID } = UserAuth();
+    const [isLoad, setisLoad] = useState<boolean>(true);
     const { selectCVbyUserID, deleteCVbyID } = UserSupabase();
     const { classes } = UseDashboardStyles();
     const navigate = useNavigate();
@@ -32,8 +34,9 @@ function Dashboard() {
 
     useEffect(() => {
         const loadCVList = async () => {
-            if (!isAuth) {
+            if (!isAuthorized) {
                 setCVList(null);
+                setisLoad(false);
                 return;
             }
             try {
@@ -48,11 +51,14 @@ function Dashboard() {
             } catch (err) {
                 setCVList(null);
                 console.error(err);
+            } finally {
+                setisLoad(false);
             }
         };
 
         loadCVList();
-    }, [isAuth, selectCVbyUserID, setCVList]);
+    }, [isAuthorized]);
+    if (isLoad) return <Loading />;
     return (
         <Container maxWidth="lg" className={classes.root}>
             <Grid2 container spacing={3}>
@@ -82,7 +88,7 @@ function Dashboard() {
                                                 color="primary"
                                                 className={classes.button}
                                                 onClick={() => {
-                                                    navigate(generatePath(routes.createCV.href, { id: cv.id }));
+                                                    navigate(generatePath(routes.editCV.href, { id: cv.id }));
                                                 }}
                                             >
                                                 Редактировать
@@ -92,7 +98,7 @@ function Dashboard() {
                                                 color="primary"
                                                 className={classes.button}
                                                 onClick={() => {
-                                                    navigate(generatePath(routes.pdfView.href, { id: cv.id }));
+                                                    navigate(generatePath(routes.finishedPDF.href, { id: cv.id }));
                                                 }}
                                             >
                                                 Просмотреть

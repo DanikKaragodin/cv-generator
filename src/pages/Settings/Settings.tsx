@@ -14,6 +14,7 @@ import { CenteredGrid } from '@common/components/CenteredGrid/CenteredGrid';
 import { validationRules } from '@common/validation';
 import Avatar from '@common/components/Avatar/Avatar';
 import { UserSupabase } from '@common/contexts/SupabaseContext';
+import Loading from '@common/components/Alerts/Loading';
 
 function Settings() {
     const { userID } = UserAuth();
@@ -69,7 +70,7 @@ function Settings() {
 
         loadDefaultsData();
     }, [userID, isLoad]);
-
+    if (isLoad) return <Loading />;
     return (
         !isLoad && (
             <form onSubmit={handleSubmit(onSubmit)}>

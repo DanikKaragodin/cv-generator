@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { CenteredGrid } from '../CenteredGrid/CenteredGrid';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -7,20 +6,14 @@ import { FormData } from '@common/types/Labels';
 import { avatarStyles } from '@common/styles/avatarStyles';
 import useSetPreview from './useSetPreview';
 
-interface AvatarUploaderProps {
-    field: ControllerRenderProps<FormData, 'avatar'>;
-    classes: Record<'avatar', string>;
-}
-
-export function AvatarUploader({ field, classes }: AvatarUploaderProps) {
-    const inputRef = useRef<HTMLInputElement>(null);
-    const avatarStyle = avatarStyles();
-    const { preview, handleFileChange } = useSetPreview(field);
+export function AvatarUploader({ field }: { field: ControllerRenderProps<FormData, 'avatar'> }) {
+    const { classes: avatarClasses } = avatarStyles();
+    const { preview, handleFileChange, handleRemoveAvatar, inputRef } = useSetPreview(field);
 
     return (
-        <div className={classes.avatar}>
+        <div className={avatarClasses.avatarDiv}>
             <CenteredGrid size={12}>
-                {preview && <img src={preview} alt="Avatar preview" className={avatarStyle.classes.preview} />}
+                {preview && <img src={preview} alt="Avatar preview" className={avatarClasses.preview} />}
             </CenteredGrid>
             <CenteredGrid size={12}>
                 <input
@@ -31,14 +24,30 @@ export function AvatarUploader({ field, classes }: AvatarUploaderProps) {
                         field.ref(e);
                     }}
                     onChange={handleFileChange}
-                    className={avatarStyle.classes.inputHidden}
+                    className={avatarClasses.inputHidden}
                 />
-                <Button variant="outlined" component="span" onClick={() => inputRef.current?.click()}>
+                <Button
+                    variant="outlined"
+                    className={avatarClasses.button}
+                    component="span"
+                    onClick={() => inputRef.current?.click()}
+                >
                     Загрузить аватар
                 </Button>
+                {preview && (
+                    <Button
+                        variant="outlined"
+                        className={avatarClasses.button}
+                        color="error"
+                        component="span"
+                        onClick={handleRemoveAvatar}
+                    >
+                        Удалить аватар
+                    </Button>
+                )}
             </CenteredGrid>
             <CenteredGrid size={12}>
-                <Typography variant="body2" color="textSecondary" className={avatarStyle.classes.textRecomendation}>
+                <Typography variant="body2" color="textSecondary" className={avatarClasses.textRecomendation}>
                     Рекомендуется фото в формате 1:1
                 </Typography>
             </CenteredGrid>

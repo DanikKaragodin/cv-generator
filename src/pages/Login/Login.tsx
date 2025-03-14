@@ -18,7 +18,7 @@ function Login() {
         handleSubmit,
         formState: { errors },
     } = useForm<LoginData>({ mode: 'all', defaultValues: emptyLabels.login });
-    const { isAuth, signInUser, signUpNewUser } = UserAuth();
+    const { isAuthorized, signInUser, signUpNewUser } = UserAuth();
 
     const handleGoogleLogin = () => {
         // Потом сделать (по возможности) логику Google Sign-In
@@ -42,10 +42,10 @@ function Login() {
     };
 
     useEffect(() => {
-        if (isAuth) {
+        if (isAuthorized) {
             navigate(routes.dashboard.href);
         }
-    }, [isAuth, navigate]);
+    }, [isAuthorized, navigate]);
 
     return (
         <Container className={classes.root}>

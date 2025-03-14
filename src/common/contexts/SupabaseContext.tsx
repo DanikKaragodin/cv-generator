@@ -1,8 +1,10 @@
-import { createContext, ReactNode, useContext } from 'react';
+import { createContext, ReactNode, useCallback, useContext } from 'react';
 import supabase from '@common/utils/supabaseClient';
 import { FormData } from '@common/types/Labels';
 import { useFormData } from './FormDataContext';
 import { UserAuth } from './AuthContext';
+import { routes } from '@common/constants';
+import { useNavigate } from 'react-router';
 
 type SupabaseContextType = {
     insertCVbyID: (
@@ -63,18 +65,21 @@ const SupabaseContext = createContext<SupabaseContextType>({
 
 export const SupabaseContextProvider = ({ children }: { children: ReactNode }) => {
     const { formData: globalFormData, setFormData } = useFormData();
-    const { isAuth } = UserAuth();
-
+    const { isAuthorized } = UserAuth();
+    const navigate = useNavigate();
     // Проверка на авторизированного пользователя
-    const withAuthCheck =
+    const withAuthCheck = useCallback(
         (fn: Function) =>
-        async (...args: any[]) => {
-            if (!isAuth) {
-                console.error('User is not authenticated');
-                return { success: false, error: 'User is not authenticated' };
-            }
-            return await fn(...args);
-        };
+            async (...args: any[]) => {
+                if (!isAuthorized) {
+                    console.error('User is not authenticated');
+                    navigate(routes.login.href);
+                    return { success: false, error: 'User is not authenticated' };
+                }
+                return await fn(...args);
+            },
+        [isAuthorized],
+    );
 
     // Выбор всех СV пользователя по id пользователя (так как отключен RLS, access_token пока не используется)
     const selectCVbyUserID = async (user_id: string) => {

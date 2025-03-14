@@ -4,6 +4,9 @@ import { makeStyles } from 'tss-react/mui';
 export const styleFunctionSx = unstable_styleFunctionSx as (params: object) => CSSObject;
 
 export const UseMUIStyles = makeStyles()({
+    loadContainer: styleFunctionSx({
+        sx: { height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' },
+    }),
     grid: styleFunctionSx({
         sx: {
             marginY: 3,
@@ -41,10 +44,4 @@ export const UseMUIStyles = makeStyles()({
             marginBottom: 5,
         },
     }),
-    avatar: {
-        width: '95%',
-        padding: '10px 0px',
-        border: '1px rgba(0, 0, 0, 0.24) solid',
-        borderRadius: '4px',
-    },
 });

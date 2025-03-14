@@ -15,9 +15,16 @@ export const routes: Record<string, IRoute> = {
     },
     createCV: {
         page: 'Создать резюме',
-        href: '/create-cv/:id',
+        href: '/create-cv',
         isSettings: false,
         isVisible: true,
+        component: <Generator />,
+    },
+    editCV: {
+        page: 'Изменить резюме',
+        href: '/edit-cv/:id',
+        isSettings: false,
+        isVisible: false,
         component: <Generator />,
     },
     userSettings: {
@@ -34,8 +41,15 @@ export const routes: Record<string, IRoute> = {
         isVisible: true,
         component: <Login />,
     },
-    pdfView: {
-        page: 'Просмотр PDF',
+    createdPDF: {
+        page: 'Просмотр созданного PDF',
+        href: '/pdf-view',
+        isSettings: true,
+        isVisible: false,
+        component: <PDFView />,
+    },
+    finishedPDF: {
+        page: 'Просмотр готового PDF',
         href: '/pdf-view/:id',
         isSettings: true,
         isVisible: false,

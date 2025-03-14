@@ -1,10 +1,10 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 import { FormData } from '@common/types/Labels';
 
 const useSetPreview = (field: ControllerRenderProps<FormData, 'avatar'>) => {
     const [preview, setPreview] = useState<string>('');
-
+    const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
         if (typeof field.value === 'string') {
             setPreview(field.value);
@@ -29,7 +29,14 @@ const useSetPreview = (field: ControllerRenderProps<FormData, 'avatar'>) => {
         [field],
     );
 
-    return { preview, handleFileChange };
+    const handleRemoveAvatar = () => {
+        if (inputRef.current) {
+            inputRef.current.value = '';
+        }
+        setPreview('');
+        field.onChange(null);
+    };
+    return { preview, handleFileChange, handleRemoveAvatar, inputRef };
 };
 
 export default useSetPreview;
