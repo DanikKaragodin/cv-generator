@@ -1,4 +1,4 @@
-import { Button, Container } from '@mui/material';
+import { Button, Checkbox, Container, FormControlLabel, FormGroup } from '@mui/material';
 import About from './About/About';
 import { FormData } from '@common/types/Labels.ts';
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
@@ -19,9 +19,10 @@ function Generator() {
     const { setFormData } = useFormData();
     const { id } = useParams<{ id: string }>();
     const [isEditMode, setisEditMode] = useState<boolean>(false);
+    const [needToChangeDefaults, setNeedToChangeDefaults] = useState<boolean>(false);
     const [isLoad, setisLoad] = useState<boolean>(true);
     const { isAuthorized, userID } = UserAuth();
-    const { insertCVbyID, selectCVbyID, selectDefaultsbyUserID, updateCVbyID } = UserSupabase();
+    const { insertCVbyID, selectCVbyID, selectDefaultsbyUserID, updateCVbyID, insertDefaultsbyUserID } = UserSupabase();
     const { classes } = UseMUIStyles();
     const navigate = useNavigate();
 
@@ -60,17 +61,14 @@ function Generator() {
         console.log('Собранные данные:', inputData);
         setFormData(inputData);
         try {
-            if (id) {
-                const result = isEditMode
-                    ? await updateCVbyID(userID, id, inputData)
-                    : await insertCVbyID(userID, inputData);
-
-                if (result.success) {
-                    console.log('good!');
-                    navigate(routes.createdPDF.href);
-                } else {
-                    console.error(result.error);
-                }
+            const result =
+                isEditMode && id ? await updateCVbyID(userID, id, inputData) : await insertCVbyID(userID, inputData);
+            if (needToChangeDefaults) await insertDefaultsbyUserID(userID, inputData);
+            if (result.success) {
+                console.log('good!');
+                navigate(routes.createdPDF.href);
+            } else {
+                console.error(result.error);
             }
         } catch (err) {
             console.error('An unexpected error occurred: ', err);
@@ -126,6 +124,20 @@ function Generator() {
             <Skills control={control} errors={errors} fieldArray={languages}></Skills>
             <Education control={control} errors={errors} fieldArray={educations} fieldArray2={courses}></Education>
             <Positions control={control} errors={errors} fieldArray={positions}></Positions>
+            <Container maxWidth="sm" className={classes.sumbitCVcontainer}>
+                <FormGroup>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={needToChangeDefaults}
+                                onChange={(e) => setNeedToChangeDefaults(e.target.checked)}
+                                color="primary"
+                            />
+                        }
+                        label="Обновить значения по умолчанию"
+                    />
+                </FormGroup>
+            </Container>
             <Container maxWidth="sm" className={classes.sumbitCVcontainer}>
                 <Button type="submit" variant="contained">
                     {isEditMode ? 'Обновить резюме' : 'Собрать резюме'}

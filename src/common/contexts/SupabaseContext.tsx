@@ -144,7 +144,7 @@ export const SupabaseContextProvider = ({ children }: { children: ReactNode }) =
 
             const formData: FormData = {
                 id: cvData?.id,
-                CVname: cvData?.cv_name,
+                CVname: '',
                 name: cvData?.name,
                 lastName: cvData?.last_name,
                 email: cvData?.email,
@@ -239,8 +239,9 @@ export const SupabaseContextProvider = ({ children }: { children: ReactNode }) =
                 avatar_url = await UploadAvatar(formData.avatar, user_id);
                 console.log('insert avatar: ', avatar_url);
             }
-            const { error } = await supabase.from('contact_info').upsert([
+            const { error } = await supabase.from('contact_info').upsert(
                 {
+                    user_id: user_id,
                     name: formData.name,
                     last_name: formData.lastName,
                     email: formData.email,
@@ -248,10 +249,12 @@ export const SupabaseContextProvider = ({ children }: { children: ReactNode }) =
                     about_me: formData.aboutMe,
                     avatar_url: avatar_url,
                     technical_skills: formData.technicalSkills,
-                    user_id: user_id,
-                    ...(formData.id && { id: formData.id }),
+                    // ...(formData.id && { id: formData.id }),
                 },
-            ]);
+                {
+                    onConflict: 'user_id', // Явно указываем поле для проверки конфликтов
+                },
+            );
 
             if (error) {
                 console.error('InsertError:', error.message);
