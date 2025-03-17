@@ -23,7 +23,7 @@ const PDFView = () => {
         const loadCVData = async () => {
             setIsLoading(true);
             try {
-                if (id && isAuthorized) {
+                if (id) {
                     const { error } = await selectCVbyID(id);
                     if (error) console.error(error);
                 }

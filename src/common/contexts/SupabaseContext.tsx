@@ -3,8 +3,6 @@ import supabase from '@common/utils/supabaseClient';
 import { FormData } from '@common/types/Labels';
 import { useFormData } from './FormDataContext';
 import { UserAuth } from './AuthContext';
-import { routes } from '@common/constants';
-import { useNavigate } from 'react-router';
 
 type SupabaseContextType = {
     insertCVbyID: (
@@ -66,7 +64,7 @@ const SupabaseContext = createContext<SupabaseContextType>({
 export const SupabaseContextProvider = ({ children }: { children: ReactNode }) => {
     const { formData: globalFormData, setFormData } = useFormData();
     const { isAuthorized } = UserAuth();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     // Проверка на авторизированного пользователя
     // const withAuthCheck = useCallback(
     //     (fn: Function) =>
@@ -83,8 +81,11 @@ export const SupabaseContextProvider = ({ children }: { children: ReactNode }) =
     const withAuthCheck = useCallback(
         (request: Function) => {
             if (!isAuthorized) {
-                console.error('User is not authenticated');
-                navigate(routes.login.href);
+                //  console.log('User is not authenticated');
+                // navigate(routes.login.href);
+                return () =>
+                    // navigate(routes.login.href);
+                    ({ success: false, data: null, error: 'User is not authenticated' });
             } else {
                 return request;
             }
