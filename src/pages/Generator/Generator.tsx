@@ -21,7 +21,7 @@ function Generator() {
     const [isEditMode, setisEditMode] = useState<boolean>(false);
     const [needToChangeDefaults, setNeedToChangeDefaults] = useState<boolean>(false);
     const [isLoad, setisLoad] = useState<boolean>(true);
-    const { isAuthorized, userID } = UserAuth();
+    const { userID } = UserAuth();
     const { insertCVbyID, selectCVbyID, selectDefaultsbyUserID, updateCVbyID, insertDefaultsbyUserID } = UserSupabase();
     const { classes } = UseMUIStyles();
     const navigate = useNavigate();
@@ -93,7 +93,7 @@ function Generator() {
         };
 
         loadCVData();
-    }, [id, isAuthorized, userID]);
+    }, [id, userID]);
     if (isLoad) return <Loading />;
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

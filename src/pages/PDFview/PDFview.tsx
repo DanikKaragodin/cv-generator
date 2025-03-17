@@ -8,14 +8,12 @@ import { UserSupabase } from '@common/contexts/SupabaseContext';
 import PDFheader from './PDFheader';
 import PDFleftColumn from './PDFleftColumn';
 import PDFrightColumn from './PDFrightColumn';
-import { UserAuth } from '@common/contexts/AuthContext';
 import Loading from '@common/components/Alerts/Loading';
 import Error from '@common/components/Alerts/Error';
 
 const PDFView = () => {
     const { formData } = useFormData();
     const { selectCVbyID } = UserSupabase();
-    const { isAuthorized } = UserAuth();
     const { id } = useParams<{ id: string }>();
     const [isLoading, setIsLoading] = useState(true);
 
@@ -29,7 +27,7 @@ const PDFView = () => {
         };
 
         loadCVData();
-    }, [id, isAuthorized]);
+    }, [id]);
 
     if (isLoading) return <Loading />;
     else if (!formData) return <Error />;
