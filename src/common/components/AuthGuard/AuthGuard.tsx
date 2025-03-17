@@ -10,9 +10,7 @@ const AuthGuard = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         console.log(location.pathname);
-        if (!isAuthorized) {
-            navigate(routes.login.href);
-        }
+        if (!isAuthorized) navigate(routes.login.href);
     }, [location.pathname]);
 
     return children;

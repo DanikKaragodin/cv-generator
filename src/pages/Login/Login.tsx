@@ -26,25 +26,14 @@ function Login() {
     };
 
     const onSubmit = async (data: LoginData) => {
-        try {
-            const result = isLogin
-                ? await signInUser(data.email, data.password)
-                : await signUpNewUser(data.email, data.password);
-
-            if (result.success) {
-                navigate(routes.dashboard.href);
-            } else {
-                console.error(result.error);
-            }
-        } catch (err) {
-            console.error('An unexpected error occurred: ', err);
-        }
+        const result = isLogin
+            ? await signInUser(data.email, data.password)
+            : await signUpNewUser(data.email, data.password);
+        if (result.success) navigate(routes.dashboard.href);
     };
 
     useEffect(() => {
-        if (isAuthorized) {
-            navigate(routes.dashboard.href);
-        }
+        if (isAuthorized) navigate(routes.dashboard.href);
     }, [isAuthorized, navigate]);
 
     return (

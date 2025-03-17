@@ -33,39 +33,22 @@ function Settings() {
 
     const onSubmit: SubmitHandler<FormData> = async (inputData) => {
         console.log('Собранные данные:', inputData);
-        try {
-            if (userID) {
-                const result = await insertDefaultsbyUserID(userID, inputData);
-                if (result.success) {
-                    console.log('good!');
-                } else {
-                    console.error(result.error);
-                }
-            }
-        } catch (err) {
-            console.error('An unexpected error occurred: ', err);
+        if (userID) {
+            const result = await insertDefaultsbyUserID(userID, inputData);
+            if (result.success) console.log('good!');
         }
     };
 
     useEffect(() => {
         const loadDefaultsData = async () => {
             if (userID) {
-                try {
-                    const { success, error, data } = await selectDefaultsbyUserID(userID);
-                    console.log(success, error, data);
-                    if (success) {
-                        if (data) reset(data);
-                    } else {
-                        console.error(error);
-                    }
-                } catch (e) {
-                    console.error('Произошла ошибка при загрузке данных: ', e);
-                } finally {
-                    setLoad(false);
-                }
+                const { success, data } = await selectDefaultsbyUserID(userID);
+                console.log(success, data);
+                if (success && data) reset(data);
             } else {
                 reset(defaultState);
             }
+            setLoad(false);
         };
 
         loadDefaultsData();

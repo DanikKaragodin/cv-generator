@@ -22,17 +22,13 @@ const useSetPreview = (field: ControllerRenderProps<FormData, 'avatar'>) => {
     const handleFileChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             const file = e.target.files?.[0];
-            if (file) {
-                field.onChange(file);
-            }
+            if (file) field.onChange(file);
         },
         [field],
     );
 
     const handleRemoveAvatar = () => {
-        if (inputRef.current) {
-            inputRef.current.value = '';
-        }
+        if (inputRef.current) inputRef.current.value = '';
         setPreview('');
         field.onChange(null);
     };

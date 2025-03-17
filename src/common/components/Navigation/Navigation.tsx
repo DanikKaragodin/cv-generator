@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import { UserAuth } from '@common/contexts/AuthContext';
 
 function Navigation() {
-    const { isAuthorized, email } = UserAuth();
+    const { email } = UserAuth();
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -34,7 +34,7 @@ function Navigation() {
         setAnchorElUser(null);
     }, []);
 
-    if (isAuthorized) {
+    if (email) {
         return (
             <AppBar position="static">
                 <Container maxWidth="xl">

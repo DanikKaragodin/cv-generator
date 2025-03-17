@@ -60,59 +60,36 @@ function Generator() {
     const onSubmit: SubmitHandler<FormData> = async (inputData) => {
         console.log('Собранные данные:', inputData);
         setFormData(inputData);
-        try {
-            const result =
-                isEditMode && id ? await updateCVbyID(userID, id, inputData) : await insertCVbyID(userID, inputData);
-            if (needToChangeDefaults) await insertDefaultsbyUserID(userID, inputData);
-            if (result.success) {
-                console.log('good!');
-                navigate(routes.createdPDF.href);
-            } else {
-                console.error(result.error);
-            }
-        } catch (err) {
-            console.error('An unexpected error occurred: ', err);
+        const result =
+            isEditMode && id ? await updateCVbyID(userID, id, inputData) : await insertCVbyID(userID, inputData);
+        if (needToChangeDefaults) await insertDefaultsbyUserID(userID, inputData);
+        if (result.success) {
+            console.log('good!');
+            navigate(routes.createdPDF.href);
         }
     };
 
     useEffect(() => {
         const loadCVData = async () => {
-            if (isAuthorized) {
-                if (id) {
-                    try {
-                        const { success, error, data } = await selectCVbyID(id);
-                        if (success && data) {
-                            setisEditMode(true);
-                            reset(data);
-                        } else {
-                            console.error(error);
-                        }
-                    } catch (e) {
-                        console.error('Произошла ошибка при загрузке данных: ', e);
-                    } finally {
-                        setisLoad(false);
-                    }
-                } else {
-                    if (userID) {
-                        try {
-                            const { success, error, data } = await selectDefaultsbyUserID(userID);
-                            if (success && data) {
-                                reset(data);
-                            } else {
-                                console.error(error);
-                            }
-                        } catch (e) {
-                            console.error('Произошла ошибка при загрузке данных: ', e);
-                        } finally {
-                            setisLoad(false);
-                        }
-                    } else {
-                        resetFormData(reset, [links, languages, educations, courses, positions]);
-                        setisLoad(false);
-                    }
+            if (id) {
+                const { success, data } = await selectCVbyID(id);
+                if (success && data) {
+                    setisEditMode(true);
+                    reset(data);
+                    setisLoad(false);
                     return;
                 }
             }
+            if (userID) {
+                const { success, data } = await selectDefaultsbyUserID(userID);
+                if (success && data) {
+                    reset(data);
+                    setisLoad(false);
+                    return;
+                }
+            }
+            resetFormData(reset, [links, languages, educations, courses, positions]);
+            setisLoad(false);
         };
 
         loadCVData();

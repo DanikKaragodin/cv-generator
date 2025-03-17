@@ -21,17 +21,11 @@ const PDFView = () => {
 
     useEffect(() => {
         const loadCVData = async () => {
-            setIsLoading(true);
-            try {
-                if (id) {
-                    const { error } = await selectCVbyID(id);
-                    if (error) console.error(error);
-                }
-            } catch (e) {
-                console.error('Ошибка загрузки:', e);
-            } finally {
-                setIsLoading(false);
+            if (id) {
+                const { error } = await selectCVbyID(id);
+                if (error) console.error(error);
             }
+            setIsLoading(false);
         };
 
         loadCVData();

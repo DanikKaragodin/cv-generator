@@ -18,17 +18,8 @@ function Dashboard() {
 
     const handleDeleteCV = async (cvId: string) => {
         if (window.confirm('Вы уверены, что хотите удалить это резюме?')) {
-            try {
-                const result = await deleteCVbyID(cvId);
-
-                if (result.success) {
-                    setCVList((prev) => (Array.isArray(prev) ? prev.filter((cv) => cv.id !== cvId) : prev));
-                } else {
-                    console.error('Ошибка удаления:', result.error);
-                }
-            } catch (error) {
-                console.error('Ошибка при удалении:', error);
-            }
+            const result = await deleteCVbyID(cvId);
+            if (result.success) setCVList((prev) => (Array.isArray(prev) ? prev.filter((cv) => cv.id !== cvId) : prev));
         }
     };
 
@@ -39,21 +30,9 @@ function Dashboard() {
                 setisLoad(false);
                 return;
             }
-            try {
-                const result = await selectCVbyUserID(userID);
-
-                if (result.success) {
-                    setCVList(result.data);
-                } else {
-                    console.error(result.error);
-                    setCVList(null);
-                }
-            } catch (err) {
-                setCVList(null);
-                console.error(err);
-            } finally {
-                setisLoad(false);
-            }
+            const result = await selectCVbyUserID(userID);
+            if (result.success && result.data) setCVList(result.data);
+            setisLoad(false);
         };
 
         loadCVList();
