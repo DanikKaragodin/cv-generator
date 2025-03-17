@@ -49,7 +49,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     const [session, setSession] = useState<Session | null | undefined>(null);
     //const [isAuthorized, setIsAuth] = useState<boolean>(!!session);
     const isAuthorized = useMemo(() => {
-        return !!session?.access_token;
+        return !!session;
     }, [session]);
     //const [userID, setUserID] = useState<string>('');
     const userID = useMemo(() => {

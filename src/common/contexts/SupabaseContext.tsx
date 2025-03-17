@@ -68,16 +68,27 @@ export const SupabaseContextProvider = ({ children }: { children: ReactNode }) =
     const { isAuthorized } = UserAuth();
     const navigate = useNavigate();
     // Проверка на авторизированного пользователя
+    // const withAuthCheck = useCallback(
+    //     (fn: Function) =>
+    //         async (...args: any[]) => {
+    //             if (!isAuthorized) {
+    //                 console.error('User is not authenticated');
+    //                 navigate(routes.login.href);
+    //                 return { success: false, error: 'User is not authenticated' };
+    //             }
+    //             return await fn(...args);
+    //         },
+    //     [isAuthorized],
+    // );
     const withAuthCheck = useCallback(
-        (fn: Function) =>
-            async (...args: any[]) => {
-                if (!isAuthorized) {
-                    console.error('User is not authenticated');
-                    navigate(routes.login.href);
-                    return { success: false, error: 'User is not authenticated' };
-                }
-                return await fn(...args);
-            },
+        (request: Function) => {
+            if (!isAuthorized) {
+                console.error('User is not authenticated');
+                navigate(routes.login.href);
+            } else {
+                return request;
+            }
+        },
         [isAuthorized],
     );
 
