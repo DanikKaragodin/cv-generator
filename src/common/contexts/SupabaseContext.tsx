@@ -3,6 +3,8 @@ import supabase from '@common/utils/supabaseClient';
 import { FormData } from '@common/types/Labels';
 import { useFormData } from './FormDataContext';
 import { UserAuth } from './AuthContext';
+// import { useNavigate } from 'react-router';
+// import { routes } from '@common/constants';
 
 type SupabaseContextType = {
     insertCVbyID: (
@@ -25,7 +27,7 @@ type SupabaseContextType = {
     }>;
     selectCVbyUserID: (user_id: string) => Promise<{
         success: boolean;
-        data?: { id: string; cv_name: string }[] | null;
+        data?: { id: string; cv_name: string; created_at: string }[] | null;
         error?: string | unknown;
     }>;
     insertDefaultsbyUserID: (
@@ -65,27 +67,12 @@ export const SupabaseContextProvider = ({ children }: { children: ReactNode }) =
     const { formData: globalFormData, setFormData } = useFormData();
     const { isAuthorized } = UserAuth();
     // const navigate = useNavigate();
-    // Проверка на авторизированного пользователя
-    // const withAuthCheck = useCallback(
-    //     (fn: Function) =>
-    //         async (...args: any[]) => {
-    //             if (!isAuthorized) {
-    //                 console.error('User is not authenticated');
-    //                 navigate(routes.login.href);
-    //                 return { success: false, error: 'User is not authenticated' };
-    //             }
-    //             return await fn(...args);
-    //         },
-    //     [isAuthorized],
-    // );
     const withAuthCheck = useCallback(
         (request: Function) => {
             if (!isAuthorized) {
-                //  console.log('User is not authenticated');
-                // navigate(routes.login.href);
-                return () =>
-                    // navigate(routes.login.href);
-                    ({ success: false, data: null, error: 'User is not authenticated' });
+                //console.log('User is not authenticated');
+                //navigate(routes.login.href);
+                return () => ({ success: false, data: null, error: 'User is not authenticated' });
             } else {
                 return request;
             }
@@ -96,7 +83,7 @@ export const SupabaseContextProvider = ({ children }: { children: ReactNode }) =
     // Выбор всех СV пользователя по id пользователя (так как отключен RLS, access_token пока не используется)
     const selectCVbyUserID = async (user_id: string) => {
         try {
-            const { data, error } = await supabase.from('cv').select('id,cv_name').eq('user_id', user_id);
+            const { data, error } = await supabase.from('cv').select('id,cv_name,created_at').eq('user_id', user_id);
             if (error) {
                 console.error('SelectError:', error.message);
             }

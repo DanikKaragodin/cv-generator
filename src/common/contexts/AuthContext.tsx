@@ -3,6 +3,7 @@ import supabase from '@common/utils/supabaseClient';
 import { Session, User, WeakPassword } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router';
 import { routes } from '@common/constants';
+import Loading from '@common/components/Alerts/Loading';
 
 type AuthResponse = {
     user: User | null;
@@ -46,6 +47,7 @@ export const AuthContext = createContext<AuthContextType>({
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [session, setSession] = useState<Session | null | undefined>(null);
     //const [isAuthorized, setIsAuth] = useState<boolean>(!!session);
     const isAuthorized = useMemo(() => {
@@ -114,6 +116,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
         supabase.auth.getSession().then(({ data: { session } }) => {
             setSession(session);
+            setIsLoading(false);
             if (session === null) {
                 navigate(routes.login.href);
             }
@@ -124,7 +127,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             setSession(session);
         });
     }, []);
-
+    if (isLoading) return <Loading />;
     return (
         <AuthContext.Provider
             value={{

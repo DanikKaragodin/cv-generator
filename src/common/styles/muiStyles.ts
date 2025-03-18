@@ -5,7 +5,7 @@ export const styleFunctionSx = unstable_styleFunctionSx as (params: object) => C
 
 export const UseMUIStyles = makeStyles()({
     loadContainer: styleFunctionSx({
-        sx: { height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' },
+        sx: { height: 'inherit', display: 'flex', justifyContent: 'center', alignItems: 'center' },
     }),
     grid: styleFunctionSx({
         sx: {
