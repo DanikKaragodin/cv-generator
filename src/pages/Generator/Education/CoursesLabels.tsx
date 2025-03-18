@@ -3,81 +3,91 @@ import Button from '@mui/material/Button';
 import Grid2 from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Controller } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { LabelProps, LabelsProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
 import { UseMUIStyles } from '@common/styles/muiStyles';
-const CoursesLabel = ({ index, onRemove, control, errors }: LabelProps) => {
-    const { classes } = UseMUIStyles();
-    return (
-        <Paper className={classes.paperAllWidth}>
-            <Grid2 container className={classes.grid} spacing={2} rowSpacing={4}>
-                <CenteredGrid size={12}>
-                    <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => onRemove()}>
-                        Удалить
-                    </Button>
-                </CenteredGrid>
-                <CenteredGrid size={6}>
-                    <Controller
-                        name={`courseLabels.${index}.name`}
-                        control={control}
-                        rules={validationRules.requiredField('Курс')}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                id={`user-courses-name-${index}`}
-                                label="Название Курса"
-                                error={!!errors.courseLabels?.[index]?.name}
-                                helperText={errors.courseLabels?.[index]?.name?.message}
-                            />
-                        )}
-                    />
-                </CenteredGrid>
-                <CenteredGrid size={6}>
-                    <></>
-                </CenteredGrid>
-                <CenteredGrid size={6}>
-                    <Controller
-                        name={`courseLabels.${index}.dataStart`}
-                        control={control}
-                        render={({ field }) => (
-                            <DatePicker
-                                {...field}
-                                value={field.value ? dayjs(field.value) : null}
-                                onAccept={(date) => {
-                                    field.onChange(date?.format('YYYY-MM-DD') || '');
-                                }}
-                                data-id={`user-courses-dataStart-${index}`}
-                                label="Дата начало"
-                            />
-                        )}
-                    />
-                </CenteredGrid>
-                <CenteredGrid size={6}>
-                    <Controller
-                        name={`courseLabels.${index}.dataEnd`}
-                        control={control}
-                        render={({ field }) => (
-                            <DatePicker
-                                {...field}
-                                value={field.value ? dayjs(field.value) : null}
-                                onAccept={(date) => {
-                                    field.onChange(date?.format('YYYY-MM-DD') || '');
-                                }}
-                                data-id={`user-courses-dataEnd-${index}`}
-                                label="Дата окончания"
-                            />
-                        )}
-                    />
-                </CenteredGrid>
-            </Grid2>
-        </Paper>
-    );
-};
-export const CoursesLabels = ({ fields, append, remove, control, errors }: LabelsProps) => {
+import IconButton from '@mui/material/IconButton';
+import { ArrowDownward, ArrowUpward, Delete } from '@mui/icons-material';
+import { memo } from 'react';
+const CoursesLabel = memo(
+    ({ control, errors, index, onRemove, onMoveUp, onMoveDown, canMoveUp, canMoveDown }: LabelProps) => {
+        const { classes } = UseMUIStyles();
+        return (
+            <Paper className={classes.paperAllWidth}>
+                <Grid2 container className={classes.grid} spacing={2} rowSpacing={4}>
+                    <CenteredGrid size={12}>
+                        <IconButton onClick={onMoveUp} disabled={!canMoveUp} aria-label="Move up" color="primary">
+                            <ArrowUpward />
+                        </IconButton>
+                        <IconButton onClick={onMoveDown} disabled={!canMoveDown} aria-label="Move down" color="primary">
+                            <ArrowDownward />
+                        </IconButton>
+                        <IconButton onClick={onRemove} aria-label="Delete" color="primary">
+                            <Delete />
+                        </IconButton>
+                    </CenteredGrid>
+                    <CenteredGrid size={6}>
+                        <Controller
+                            name={`courseLabels.${index}.name`}
+                            control={control}
+                            rules={validationRules.requiredField('Курс')}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    id={`user-courses-name-${index}`}
+                                    label="Название Курса"
+                                    error={!!errors.courseLabels?.[index]?.name}
+                                    helperText={errors.courseLabels?.[index]?.name?.message}
+                                />
+                            )}
+                        />
+                    </CenteredGrid>
+                    <CenteredGrid size={6}>
+                        <></>
+                    </CenteredGrid>
+                    <CenteredGrid size={6}>
+                        <Controller
+                            name={`courseLabels.${index}.dataStart`}
+                            control={control}
+                            render={({ field }) => (
+                                <DatePicker
+                                    {...field}
+                                    value={field.value ? dayjs(field.value) : null}
+                                    onAccept={(date) => {
+                                        field.onChange(date?.format('YYYY-MM-DD') || '');
+                                    }}
+                                    data-id={`user-courses-dataStart-${index}`}
+                                    label="Дата начало"
+                                />
+                            )}
+                        />
+                    </CenteredGrid>
+                    <CenteredGrid size={6}>
+                        <Controller
+                            name={`courseLabels.${index}.dataEnd`}
+                            control={control}
+                            render={({ field }) => (
+                                <DatePicker
+                                    {...field}
+                                    value={field.value ? dayjs(field.value) : null}
+                                    onAccept={(date) => {
+                                        field.onChange(date?.format('YYYY-MM-DD') || '');
+                                    }}
+                                    data-id={`user-courses-dataEnd-${index}`}
+                                    label="Дата окончания"
+                                />
+                            )}
+                        />
+                    </CenteredGrid>
+                </Grid2>
+            </Paper>
+        );
+    },
+);
+export const CoursesLabels = ({ fields, append, remove, move, control, errors }: LabelsProps) => {
     return (
         <>
             <CenteredGrid size={12}>
@@ -90,9 +100,13 @@ export const CoursesLabels = ({ fields, append, remove, control, errors }: Label
                 <CoursesLabel
                     control={control}
                     errors={errors}
-                    key={field.id}
+                    key={`${field.id}-${index}`}
                     index={index}
                     onRemove={() => remove(index)}
+                    onMoveUp={() => move(index, index - 1)}
+                    onMoveDown={() => move(index, index + 1)}
+                    canMoveUp={index > 0}
+                    canMoveDown={index < fields.length - 1}
                 />
             ))}
         </>

@@ -18,7 +18,7 @@ function Login() {
         handleSubmit,
         formState: { errors },
     } = useForm<LoginData>({ mode: 'all', defaultValues: emptyLabels.login });
-    const { session, signInUser, signUpNewUser } = UserAuth();
+    const { isAuthorized, signInUser, signUpNewUser } = UserAuth();
 
     const handleGoogleLogin = () => {
         // Потом сделать (по возможности) логику Google Sign-In
@@ -26,27 +26,15 @@ function Login() {
     };
 
     const onSubmit = async (data: LoginData) => {
-        try {
-            const result = isLogin
-                ? await signInUser(data.email, data.password)
-                : await signUpNewUser(data.email, data.password);
-
-            if (result.success) {
-                console.log('Session', isLogin, session); // отладочная информация по входу (бывает показывает null, но навбар показывает обратное)
-                navigate(routes.dashboard.href);
-            } else {
-                console.error(result.error);
-            }
-        } catch (err) {
-            console.error('An unexpected error occurred: ', err);
-        }
+        const result = isLogin
+            ? await signInUser(data.email, data.password)
+            : await signUpNewUser(data.email, data.password);
+        if (result.success) navigate(routes.dashboard.href);
     };
 
     useEffect(() => {
-        if (session) {
-            navigate(routes.dashboard.href);
-        }
-    }, [session, navigate]);
+        if (isAuthorized) navigate(routes.dashboard.href);
+    }, [isAuthorized, navigate]);
 
     return (
         <Container className={classes.root}>

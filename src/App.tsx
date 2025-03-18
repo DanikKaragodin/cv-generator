@@ -8,14 +8,20 @@ import { FormDataProvider } from '@common/contexts/FormDataContext';
 import 'dayjs/locale/ru.js';
 import './App.css';
 import { AuthContextProvider } from '@common/contexts/AuthContext';
+import { SupabaseContextProvider } from '@common/contexts/SupabaseContext';
+import AuthGuard from '@common/components/AuthGuard/AuthGuard';
 function App() {
     return (
         <div className="app-root" data-testid={TEST_IDS.root}>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
                 <AuthContextProvider>
-                    <Navigation />
                     <FormDataProvider>
-                        <Routes>{renderRoutes(Object.values(routes))}</Routes>
+                        <AuthGuard>
+                            <SupabaseContextProvider>
+                                <Navigation />
+                                <Routes>{renderRoutes(Object.values(routes))}</Routes>
+                            </SupabaseContextProvider>
+                        </AuthGuard>
                     </FormDataProvider>
                 </AuthContextProvider>
             </LocalizationProvider>

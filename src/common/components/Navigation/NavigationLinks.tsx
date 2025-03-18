@@ -14,7 +14,7 @@ function NavigationLinks({
     keySuffix: string;
     handleCloseNavMenu: () => void;
 }) {
-    const { session, signOut } = UserAuth();
+    const { isAuthorized, signOut } = UserAuth();
     const navigate = useNavigate();
 
     const handleMenuClick = useCallback(
@@ -23,13 +23,13 @@ function NavigationLinks({
 
             if (href === routes.login.href) {
                 handleCloseNavMenu();
-                if (session) signOut();
+                if (isAuthorized) signOut();
             } else {
                 handleCloseNavMenu();
                 navigate(href);
             }
         },
-        [handleCloseNavMenu, session, signOut, navigate],
+        [handleCloseNavMenu, isAuthorized, signOut, navigate],
     );
 
     return Object.values(routes)

@@ -4,7 +4,6 @@ export const validationRules = {
     }),
 
     email: {
-        required: 'E-mail обязателен',
         pattern: {
             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
             message: 'Некорректный email',
@@ -45,7 +44,6 @@ export const validationRules = {
     }),
 
     aboutMe: {
-        required: 'Поле О себе обязательно',
         maxLength: {
             value: 500,
             message: 'Максимум 500 символов',

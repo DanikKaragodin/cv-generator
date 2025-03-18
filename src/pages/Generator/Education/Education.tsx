@@ -22,6 +22,7 @@ function Education({ control, errors, fieldArray, fieldArray2 }: CVsectionProps)
                         fields={fieldArray.fields}
                         append={() => fieldArray.append(emptyLabels.educationLabel)}
                         remove={fieldArray.remove}
+                        move={fieldArray.move}
                         control={control}
                         errors={errors}
                     />
@@ -34,6 +35,7 @@ function Education({ control, errors, fieldArray, fieldArray2 }: CVsectionProps)
                             fields={fieldArray2.fields}
                             append={() => fieldArray2.append(emptyLabels.courseLabel)}
                             remove={fieldArray2.remove}
+                            move={fieldArray2.move}
                             control={control}
                             errors={errors}
                         />

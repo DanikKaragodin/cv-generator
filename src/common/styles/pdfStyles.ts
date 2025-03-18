@@ -12,7 +12,11 @@ Font.register({
         { src: robotoItalic, fontWeight: 400, fontStyle: 'italic' },
     ],
 });
+//884
 export const pdfStyles = StyleSheet.create({
+    container: {
+        width: 'calc(100%-100px)',
+    },
     pdfView: {
         border: 'none',
         marginTop: '10px',

@@ -28,12 +28,14 @@ interface PositionLabel {
     dataEnd: string;
 }
 export interface FormData {
+    id: string;
+    CVname: string;
     name: string;
     lastName: string;
     email: string;
     telephone: string;
     aboutMe: string;
-    avatar: File;
+    avatar: File | string;
     technicalSkills: string[];
     socialLabels: SocialLabel[];
     languageLabels: LanguageLabel[];

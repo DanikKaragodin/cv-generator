@@ -11,10 +11,34 @@ import { CVsectionProps } from '@common/types/Props';
 import { validationRules } from '@common/validation';
 import { UseMUIStyles } from '@common/styles/muiStyles';
 import { emptyLabels } from '@common/constants';
+import Avatar from '@common/components/Avatar/Avatar';
 function About({ control, errors, fieldArray }: CVsectionProps) {
     const { classes } = UseMUIStyles();
     return (
         <Container maxWidth="sm">
+            <Paper elevation={4} className={classes.paper}>
+                <CardHeader title="Имя резюме" />
+                <Divider />
+                <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={classes.grid}>
+                    <CenteredGrid size={6}>
+                        <Controller
+                            name="CVname"
+                            control={control}
+                            rules={validationRules.requiredField('Имя Резюме')}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    error={!!errors.CVname}
+                                    helperText={errors.CVname?.message}
+                                    required
+                                    id="cv-name"
+                                    label="Имя Резюме"
+                                />
+                            )}
+                        />
+                    </CenteredGrid>
+                </Grid2>
+            </Paper>
             <Paper elevation={4} className={classes.paper}>
                 <CardHeader title="О себе" />
                 <Divider />
@@ -59,7 +83,7 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                         <Controller
                             name="email"
                             control={control}
-                            rules={validationRules.email}
+                            rules={{ ...validationRules.email, ...validationRules.requiredField('E-mail') }}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -95,7 +119,7 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                         <Controller
                             name="aboutMe"
                             control={control}
-                            rules={validationRules.aboutMe}
+                            rules={{ ...validationRules.aboutMe, ...validationRules.requiredField('О себе') }}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -110,34 +134,12 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                             )}
                         />
                     </CenteredGrid>
-                    <CenteredGrid size={12}>
-                        <Controller
-                            name="avatar"
-                            control={control}
-                            render={({ field }) => (
-                                <TextField
-                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                        const file = event.target?.files;
-                                        if (file) {
-                                            field.onChange(file[0]);
-                                            console.log('Выбранный файл:', file[0]);
-                                        }
-                                    }}
-                                    InputProps={{
-                                        inputProps: { accept: 'image/*' },
-                                    }}
-                                    helperText="Выбери фото (рекомендуется фото в формате 1:1)"
-                                    type="file"
-                                    id="user-avatar"
-                                    fullWidth
-                                />
-                            )}
-                        />
-                    </CenteredGrid>
+                    <Avatar control={control} />
                     <LinkLabels
                         fields={fieldArray.fields}
                         append={() => fieldArray.append(emptyLabels.linkLabel)}
                         remove={fieldArray.remove}
+                        move={fieldArray.move}
                         control={control}
                         errors={errors}
                     />
