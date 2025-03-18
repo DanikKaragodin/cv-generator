@@ -186,3 +186,101 @@ export const pdfStyles = StyleSheet.create({
         fontWeight: 600,
     },
 });
+export const styles = StyleSheet.create({
+    page: {
+        padding: 30,
+        fontFamily: 'Roboto',
+        fontSize: 9,
+        lineHeight: 1.3,
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 15,
+    },
+    headerInfo: {
+        flex: 1,
+    },
+    avatar: {
+        width: 70,
+        height: 70,
+        objectFit: 'cover',
+        objectPosition: 'center',
+        borderRadius: 100,
+    },
+    name: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 17,
+    },
+    contacts: {
+        marginBottom: 8,
+    },
+    contactItem: {
+        flexDirection: 'row',
+        gap: 4,
+        marginBottom: 2,
+    },
+    socialLinks: {
+        flexDirection: 'column',
+        gap: 2,
+    },
+    sectionTitle: {
+        fontSize: 11,
+        fontWeight: 'bold',
+        marginBottom: 6,
+        borderBottom: '0.5px solid #333',
+        paddingBottom: 2,
+    },
+    section: {
+        marginBottom: 12,
+    },
+    educationGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 8,
+        marginBottom: 10,
+    },
+    educationItem: {
+        width: '24%',
+        marginBottom: 6,
+    },
+    languageList: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 6,
+    },
+    skillsList: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 4,
+        color: '#666',
+    },
+    experienceGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 12,
+    },
+    experienceColumn: {
+        width: '48%',
+    },
+    positionItem: {
+        marginBottom: 8,
+    },
+    dateRange: {
+        color: '#666',
+        fontSize: 8,
+        marginBottom: 2,
+    },
+    courseList: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 6,
+    },
+    bold: {
+        fontWeight: 'bold',
+    },
+    italic: {
+        fontStyle: 'italic',
+    },
+});

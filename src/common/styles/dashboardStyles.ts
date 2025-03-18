@@ -4,51 +4,73 @@ export const UseDashboardStyles = makeStyles()((theme) => ({
     root: {
         padding: theme.spacing(4),
     },
-    gridItem: {
-        position: 'relative',
-        cursor: 'pointer',
+    divider: {
+        height: 24,
+        width: 1,
+        backgroundColor: theme.palette.divider,
+        margin: theme.spacing(0, 1),
+    },
+    emptyState: {
+        textAlign: 'center',
+        padding: theme.spacing(4),
     },
     paper: {
-        aspectRatio: '1 / 1',
+        position: 'relative',
         padding: theme.spacing(2),
-        transition: 'all 0.3s ease',
-        '&:hover': {
-            transform: 'translateY(-4px)',
+        marginBottom: theme.spacing(2),
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        gap: theme.spacing(2),
+        [theme.breakpoints.down('sm')]: {
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
         },
     },
     indexNumber: {
         position: 'absolute',
         top: theme.spacing(1),
         left: theme.spacing(1),
-        opacity: 0.3,
-        fontSize: '2rem',
-        fontWeight: 'bold',
+        opacity: 0.7,
+        fontSize: '1.25rem',
+        fontWeight: 400,
     },
-    cvName: {
+    cvItemContent: {
         display: 'flex',
-        justifyContent: 'center',
         alignItems: 'center',
-        height: '100%',
+        gap: theme.spacing(2),
+        flexWrap: 'wrap',
+        flexGrow: 1,
+        marginLeft: theme.spacing(4),
+        [theme.breakpoints.down('sm')]: {
+            marginLeft: 0,
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '100%',
+        },
     },
-    overlay: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    cvItemText: {
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
         alignItems: 'center',
         gap: theme.spacing(2),
     },
-    button: {
-        textTransform: 'none',
-        boxShadow: theme.shadows[2],
-        transition: 'all 0.2s ease',
-        '&:hover': {
-            transform: 'translateY(-2px)',
+    buttonGroup: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: theme.spacing(1),
+        marginLeft: 'auto',
+        [theme.breakpoints.down('sm')]: {
+            marginLeft: 0,
+            width: '100%',
+            justifyContent: 'center',
         },
+    },
+    createButton: {
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(3),
+        display: 'block',
+        marginLeft: 'auto',
+        marginRight: 'auto',
     },
 }));
