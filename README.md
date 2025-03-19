@@ -1,50 +1,68 @@
-# React + TypeScript + Vite
+# CV Generator
+![CV Generator Logo](https://github.com/user-attachments/assets/2134193c-fcf1-4128-8b76-196a2e225d9e)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**CV Generator** — это современное веб-приложение, которое позволяет пользователям легко создавать, редактировать и управлять своими резюме. С помощью нашего приложения вы можете быстро создать профессиональное резюме, которое поможет вам выделиться среди других кандидатов.
 
-Currently, two official plugins are available:
+## Основные возможности
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Логин и регистрация:** Защищенная система аутентификации для управления вашими резюме.
+- **Создание и редактирование резюме:** Интуитивно понятный интерфейс для создания и редактирования резюме.
+- **Настройки по умолчанию:** Составьте настройки по умолчанию и обновляйте их во время редактирования или создания резюме.
+- **Просмотр резюме:** Просматривайте свои резюме в удобном формате.
+- **Скачивание резюме:** Скачивайте резюме в формате PDF для распечатки или отправки работодателю.
 
-## Expanding the ESLint configuration
+## Демо
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Попробуйте CV Generator в действии: [Демо-версия](https://danikkaragodin.github.io/cv-generator/)
 
-- Configure the top-level `parserOptions` property like this:
+## Установка
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1. Клонируйте репозиторий:
+   ```bash
+   git clone https://github.com/DanikKaragodin/cv-generator.git
+   ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. Установите зависимости:
+   ```bash
+   cd cv-generator
+   npm install
+   ```
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+3. Запустите приложение:
+   ```bash
+   npm start
+   ```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## Использование
+
+1. Зарегистрируйтесь или войдите в систему.
+2. Создайте новое резюме или отредактируйте существующее.
+3. Настройте параметры по умолчанию для быстрого создания новых резюме.
+4. Просматривайте и скачивайте свои резюме в формате PDF.
+
+## Технологии
+
+- **Frontend:** React, TypeScript, MUI, react-pdf
+- **Backend:** Node.js, Express
+- **База данных:** Supabase
+- **Аутентификация:** Supabase Auth
+- **Хостинг:** GitHub Pages
+
+## Вклад в проект
+
+Мы всегда рады вкладу сообщества! Если у вас есть идеи по улучшению или вы нашли баг, пожалуйста, создайте issue или отправьте pull request.
+
+## Лицензия
+
+Этот проект лицензирован под лицензией MIT. Подробнее см. в файле [LICENSE](LICENSE).
+
+## Контакты
+
+Если у вас есть вопросы или предложения, свяжитесь с нами:
+
+- Email: [your-email@example.com](mailto:karagodin.danik@example.com)
+- GitHub: [DanikKaragodin](https://github.com/DanikKaragodin)
+
+---
+
+Спасибо, что используете CV Generator! Мы надеемся, что наше приложение поможет вам создать идеальное резюме. 🚀
