@@ -1,5 +1,5 @@
 # CV Generator
-![CV Generator Logo](https://github.com/user-attachments/assets/2134193c-fcf1-4128-8b76-196a2e225d9e)
+![CV Generator Logo](https://github.com/user-attachments/assets/d0989fce-6c0e-4ffc-a101-05358e3239c8)
 
 **CV Generator** — это современное веб-приложение, которое позволяет пользователям легко создавать, редактировать и управлять своими резюме. С помощью нашего приложения вы можете быстро создать профессиональное резюме, которое поможет вам выделиться среди других кандидатов.
 
@@ -60,7 +60,7 @@
 
 Если у вас есть вопросы или предложения, свяжитесь с нами:
 
-- Email: [your-email@example.com](mailto:karagodin.danik@example.com)
+- Email: [karagodin.danik@gmail.com](mailto:karagodin.danik@gmail.com)
 - GitHub: [DanikKaragodin](https://github.com/DanikKaragodin)
 
 ---
