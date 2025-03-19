@@ -186,12 +186,27 @@ export const pdfStyles = StyleSheet.create({
         fontWeight: 600,
     },
 });
+
+const avatar_size = 70;
+const light_text_color = '#666';
+const dark_text_color = '#333';
+const medium_text_color = '#444';
+const font_family = 'Roboto';
+const font_size_small = 8;
+const font_size_medium = 9;
+const font_size_large = 11;
+const font_size_extra_large = 20;
+const line_height_small = 1.2;
+const line_height_medium = 1.3;
+const border_radius = 100;
+const border_bottom = '0.5px solid #333';
+
 export const styles = StyleSheet.create({
     page: {
         padding: 30,
-        fontFamily: 'Roboto',
-        fontSize: 9,
-        lineHeight: 1.3,
+        fontFamily: font_family,
+        fontSize: font_size_medium,
+        lineHeight: line_height_medium,
     },
     header: {
         flexDirection: 'row',
@@ -202,14 +217,14 @@ export const styles = StyleSheet.create({
         flex: 1,
     },
     avatar: {
-        width: 70,
-        height: 70,
+        width: avatar_size,
+        height: avatar_size,
         objectFit: 'cover',
         objectPosition: 'center',
-        borderRadius: 100,
+        borderRadius: border_radius,
     },
     name: {
-        fontSize: 20,
+        fontSize: font_size_extra_large,
         fontWeight: 'bold',
         marginBottom: 17,
     },
@@ -225,16 +240,21 @@ export const styles = StyleSheet.create({
         flexDirection: 'column',
         gap: 2,
     },
+    socialLink: {
+        color: dark_text_color,
+    },
     sectionTitle: {
-        fontSize: 11,
+        fontSize: font_size_large,
         fontWeight: 'bold',
         marginBottom: 6,
-        borderBottom: '0.5px solid #333',
+        borderBottom: border_bottom,
         paddingBottom: 2,
     },
     section: {
         marginBottom: 12,
     },
+    aboutMeText: { color: medium_text_color },
+    languageAndCourseSection: { flexDirection: 'row', justifyContent: 'space-between' },
     educationGrid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
@@ -254,22 +274,30 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         gap: 4,
-        color: '#666',
+        color: light_text_color,
     },
     experienceGrid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         gap: 12,
     },
-    experienceColumn: {
+    column: {
         width: '48%',
     },
     positionItem: {
         marginBottom: 8,
+        maxWidth: '100%',
     },
+    description: {
+        color: medium_text_color,
+        marginBottom: 4,
+        fontSize: font_size_small,
+        lineHeight: line_height_small,
+    },
+    positionStack: { color: light_text_color, marginTop: 2 },
     dateRange: {
-        color: '#666',
-        fontSize: 8,
+        color: light_text_color,
+        fontSize: font_size_small,
         marginBottom: 2,
     },
     courseList: {

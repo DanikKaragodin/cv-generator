@@ -6,6 +6,11 @@ import { UserAuth } from '@common/contexts/AuthContext';
 import { routes } from '@common/constants';
 import { UserSupabase } from '@common/contexts/SupabaseContext';
 import Loading from '@common/components/Alerts/Loading';
+import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { IconButton, Tooltip } from '@mui/material';
+import { usePDF } from '@pages/PDFview/usePDF';
 
 function Dashboard() {
     const [CVList, setCVList] = useState<{ id: string; cv_name: string; created_at: string }[] | undefined | null>(
@@ -13,11 +18,22 @@ function Dashboard() {
     );
     const { isAuthorized, userID } = UserAuth();
     const [isLoad, setisLoad] = useState<boolean>(true);
-    const { selectCVbyUserID, deleteCVbyID } = UserSupabase();
+    const { selectCVbyUserID, selectCVbyID, deleteCVbyID } = UserSupabase();
     const { classes } = UseDashboardStyles();
     const navigate = useNavigate();
-    // const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+    const { previewPDF } = usePDF();
 
+    const handlePreview = async (cvId: string) => {
+        try {
+            const { data, error } = await selectCVbyID(cvId);
+            if (error) throw error;
+            if (data) {
+                await previewPDF(data);
+            }
+        } catch (err) {
+            console.error('Ошибка при предпросмотре:', err);
+        }
+    };
     const handleDeleteCV = async (cvId: string) => {
         if (window.confirm('Вы уверены, что хотите удалить это резюме?')) {
             const result = await deleteCVbyID(cvId);
@@ -40,69 +56,8 @@ function Dashboard() {
         loadCVList();
     }, [isAuthorized]);
     if (isLoad) return <Loading />;
-    // return (
-    //     <Container maxWidth="lg" className={classes.root}>
-    //         <Grid2 container spacing={3}>
-    //             {CVList &&
-    //                 Array.isArray(CVList) &&
-    //                 CVList.map((cv, index: number) => (
-    //                     <Grid2
-    //                         size={{ xs: 12, sm: 6, md: 4 }}
-    //                         key={cv.id}
-    //                         className={classes.gridItem}
-    //                         onMouseEnter={() => setHoveredItem(cv.id)}
-    //                         onMouseLeave={() => setHoveredItem(null)}
-    //                     >
-    //                         <Paper elevation={4} className={classes.paper}>
-    //                             <Typography variant="h3" color="textSecondary" className={classes.indexNumber}>
-    //                                 {index + 1}.
-    //                             </Typography>
-    //                             <Typography variant="h6" className={classes.cvName}>
-    //                                 {cv.cv_name}
-    //                             </Typography>
-
-    //                             {hoveredItem === cv.id && (
-    //                                 <Fade in>
-    //                                     <div className={classes.overlay}>
-    //                                         <Button
-    //                                             variant="contained"
-    //                                             color="primary"
-    //                                             className={classes.button}
-    //                                             onClick={() => {
-    //                                                 navigate(generatePath(routes.editCV.href, { id: cv.id }));
-    //                                             }}
-    //                                         >
-    //                                             Редактировать
-    //                                         </Button>
-    //                                         <Button
-    //                                             variant="text"
-    //                                             color="primary"
-    //                                             className={classes.button}
-    //                                             onClick={() => {
-    //                                                 navigate(generatePath(routes.finishedPDF.href, { id: cv.id }));
-    //                                             }}
-    //                                         >
-    //                                             Просмотреть
-    //                                         </Button>
-    //                                         <Button
-    //                                             variant="contained"
-    //                                             color="error"
-    //                                             className={classes.button}
-    //                                             onClick={() => handleDeleteCV(cv.id)}
-    //                                         >
-    //                                             Удалить
-    //                                         </Button>
-    //                                     </div>
-    //                                 </Fade>
-    //                             )}
-    //                         </Paper>
-    //                     </Grid2>
-    //                 ))}
-    //         </Grid2>
-    //     </Container>
-    // );
     return (
-        <Container maxWidth="lg" className={classes.root}>
+        <Container maxWidth="md" className={classes.root}>
             {CVList?.length ? (
                 <Grid2 container spacing={3}>
                     {CVList.map((cv, index) => (
@@ -124,34 +79,42 @@ function Dashboard() {
                                     </div>
 
                                     <div className={classes.buttonGroup}>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            size="small"
-                                            onClick={() => {
-                                                navigate(generatePath(routes.editCV.href, { id: cv.id }));
-                                            }}
-                                        >
-                                            Редактировать
-                                        </Button>
-                                        <Button
-                                            variant="outlined"
-                                            color="primary"
-                                            size="small"
-                                            onClick={() => {
-                                                navigate(generatePath(routes.finishedPDF.href, { id: cv.id }));
-                                            }}
-                                        >
-                                            Просмотреть
-                                        </Button>
-                                        <Button
-                                            variant="contained"
-                                            color="error"
-                                            size="small"
-                                            onClick={() => handleDeleteCV(cv.id)}
-                                        >
-                                            Удалить
-                                        </Button>
+                                        <Tooltip title="Редактировать">
+                                            <IconButton
+                                                color="primary"
+                                                size="small"
+                                                onClick={() => {
+                                                    navigate(generatePath(routes.editCV.href, { id: cv.id }));
+                                                }}
+                                            >
+                                                <EditIcon />
+                                            </IconButton>
+                                        </Tooltip>
+
+                                        <Tooltip title="Просмотреть">
+                                            <IconButton
+                                                color="primary"
+                                                size="small"
+                                                onClick={
+                                                    () => handlePreview(cv.id)
+                                                    //     {
+                                                    //     navigate(generatePath(routes.finishedPDF.href, { id: cv.id }));
+                                                    // }
+                                                }
+                                            >
+                                                <VisibilityIcon />
+                                            </IconButton>
+                                        </Tooltip>
+
+                                        <Tooltip title="Удалить">
+                                            <IconButton
+                                                color="error"
+                                                size="small"
+                                                onClick={() => handleDeleteCV(cv.id)}
+                                            >
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Tooltip>
                                     </div>
                                 </div>
                             </Paper>

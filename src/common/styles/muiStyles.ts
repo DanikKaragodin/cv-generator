@@ -44,4 +44,20 @@ export const UseMUIStyles = makeStyles()({
             marginBottom: 3,
         },
     }),
+    navigationLink: styleFunctionSx({
+        sx: {
+            textAlign: 'center',
+            fontWeight: 'normal',
+            borderBottom: 'none',
+            borderColor: 'primary.contrastText',
+        },
+    }),
+    navigationLinkActive: styleFunctionSx({
+        sx: {
+            textAlign: 'center',
+            fontWeight: 'bold',
+            borderBottom: '2px solid',
+            borderColor: 'primary.contrastText',
+        },
+    }),
 });
