@@ -39,10 +39,8 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                         />
                     </CenteredGrid>
                 </Grid2>
-            </Paper>
-            <Paper elevation={4} className={classes.paper}>
-                <CardHeader title="О себе" />
                 <Divider />
+                <CardHeader title="О себе" />
                 <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={classes.grid}>
                     <CenteredGrid size={6}>
                         <Controller
