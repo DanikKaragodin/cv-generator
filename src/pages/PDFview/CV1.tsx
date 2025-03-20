@@ -16,7 +16,7 @@ const CV1 = ({ formData }: { formData: FormData }) => (
     //     </Page>
     // </Document>
     <Document key={Math.random().toString(30)}>
-        <Page key={formData.CVname} size="A4" style={styles.page}>
+        <Page size="A4" style={styles.page}>
             <View style={styles.header}>
                 <View style={styles.headerInfo}>
                     <Text style={styles.name}>
@@ -50,7 +50,14 @@ const CV1 = ({ formData }: { formData: FormData }) => (
 
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>О СЕБЕ</Text>
-                <Text style={styles.aboutMeText}>{formData.aboutMe}</Text>
+                <View>
+                    {formData.aboutMe.match(/.{1,120}/g)?.map((row) => (
+                        <Text key={row} style={styles.description}>
+                            {row}
+                        </Text>
+                    ))}
+                </View>
+                {/* <Text style={styles.aboutMeText}>{formData.aboutMe}</Text> */}
             </View>
 
             <View style={styles.section}>
@@ -69,31 +76,27 @@ const CV1 = ({ formData }: { formData: FormData }) => (
             </View>
 
             <View style={styles.section}>
-                <View style={styles.languageAndCourseSection}>
-                    <View style={styles.column}>
-                        <Text style={styles.sectionTitle}>ЯЗЫКИ</Text>
-                        <View style={styles.languageList}>
-                            {formData.languageLabels.map((lang, i) => (
-                                <Text key={lang.name + i}>
-                                    {lang.name} ({lang.degree}){i < formData.languageLabels.length - 1 ? ', ' : ''}
-                                </Text>
-                            ))}
-                        </View>
-                    </View>
+                <Text style={styles.sectionTitle}>ЯЗЫКИ</Text>
+                <View style={styles.languageList}>
+                    {formData.languageLabels.map((lang, i) => (
+                        <Text key={lang.name + i}>
+                            {lang.name} ({lang.degree}){i < formData.languageLabels.length - 1 ? ', ' : ''}
+                        </Text>
+                    ))}
+                </View>
+            </View>
 
-                    <View style={styles.column}>
-                        <Text style={styles.sectionTitle}>КУРСЫ</Text>
-                        <View style={styles.courseList}>
-                            {formData.courseLabels.map((course, i) => (
-                                <View key={course.name + i} style={styles.educationItem}>
-                                    <Text style={styles.italic}>{course.name}</Text>
-                                    <Text style={styles.dateRange}>
-                                        {course.dataStart} - {course.dataEnd}
-                                    </Text>
-                                </View>
-                            ))}
+            <View style={styles.section}>
+                <Text style={styles.sectionTitle}>КУРСЫ</Text>
+                <View style={styles.courseList}>
+                    {formData.courseLabels.map((course, i) => (
+                        <View key={course.name + i} style={styles.educationItem}>
+                            <Text style={styles.italic}>{course.name}</Text>
+                            <Text style={styles.dateRange}>
+                                {course.dataStart} - {course.dataEnd}
+                            </Text>
                         </View>
-                    </View>
+                    ))}
                 </View>
             </View>
 
@@ -113,47 +116,25 @@ const CV1 = ({ formData }: { formData: FormData }) => (
                 <Text style={styles.sectionTitle}>ОПЫТ РАБОТЫ</Text>
                 <View style={styles.experienceGrid}>
                     <View style={styles.column}>
-                        {formData.positionLabels
-                            .filter((_, i) => i % 2 === 0)
-                            .map((position, i) => (
-                                <View key={position.name + i} style={styles.positionItem}>
-                                    <Text style={styles.bold}>{position.name}</Text>
-                                    <Text style={styles.dateRange}>
-                                        {position.dataStart} - {position.dataEnd}
-                                    </Text>
-                                    <View>
-                                        {position.description
-                                            .match(/.{1,50}/g)
-                                            ?.map((desc) => <Text style={styles.description}>{desc}</Text>)}
-                                    </View>
-                                    {position.tasks.map((task, j) => (
-                                        <Text key={position.name + task + j}>• {task}</Text>
+                        {formData.positionLabels.map((position, i) => (
+                            <View key={position.name + i} style={styles.positionItem}>
+                                <Text style={styles.positionName}>{position.name}</Text>
+                                <Text style={styles.dateRange}>
+                                    {position.dataStart} - {position.dataEnd}
+                                </Text>
+                                <View>
+                                    {position.description.match(/.{1,120}/g)?.map((desc) => (
+                                        <Text key={desc} style={styles.description}>
+                                            {desc}
+                                        </Text>
                                     ))}
-                                    <Text style={styles.positionStack}>Стек: {position.stack.join(', ')}</Text>
                                 </View>
-                            ))}
-                    </View>
-
-                    <View style={styles.column}>
-                        {formData.positionLabels
-                            .filter((_, i) => i % 2 === 1)
-                            .map((position, i) => (
-                                <View key={position.name + i} style={styles.positionItem}>
-                                    <Text style={styles.bold}>{position.name}</Text>
-                                    <Text style={styles.dateRange}>
-                                        {position.dataStart} - {position.dataEnd}
-                                    </Text>
-                                    <View style={styles.description}>
-                                        {position.description
-                                            .match(/.{1,50}/g)
-                                            ?.map((desc) => <Text style={styles.description}>{desc}</Text>)}
-                                    </View>
-                                    {position.tasks.map((task, j) => (
-                                        <Text key={position.name + task + j}>• {task}</Text>
-                                    ))}
-                                    <Text style={styles.positionStack}>Стек: {position.stack.join(', ')}</Text>
-                                </View>
-                            ))}
+                                {position.tasks.map((task, j) => (
+                                    <Text key={position.name + task + j}>• {task}</Text>
+                                ))}
+                                <Text style={styles.positionStack}>Стек: {position.stack.join(', ')}</Text>
+                            </View>
+                        ))}
                     </View>
                 </View>
             </View>

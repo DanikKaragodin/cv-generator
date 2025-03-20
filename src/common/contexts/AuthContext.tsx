@@ -90,7 +90,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 return { success: false, error: error.message };
             }
 
-            console.log('Sign-in success:', data);
+            //   console.log('Sign-in success:', data);
             return { success: true, data };
         } catch (error) {
             console.error('Unexpected error during sign-in:', error);
@@ -114,10 +114,10 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         // используется для получения текущей сессии пользователя из БД
 
-        supabase.auth.getSession().then(({ data: { session } }) => {
+        supabase.auth.getSession().then(({ data: { session }, error }) => {
             setSession(session);
             setIsLoading(false);
-            if (session === null) {
+            if (session === null || error) {
                 navigate(routes.login.href);
             }
         });

@@ -9,8 +9,10 @@ import Loading from '@common/components/Alerts/Loading';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
+import DownloadIcon from '@mui/icons-material/Download';
 import { IconButton, Tooltip } from '@mui/material';
 import { usePDF } from '@pages/PDFview/usePDF';
+import ConfirmationDialog from '@common/components/Alerts/ConfirmationDialog';
 
 function Dashboard() {
     const [CVList, setCVList] = useState<{ id: string; cv_name: string; created_at: string }[] | undefined | null>(
@@ -21,8 +23,9 @@ function Dashboard() {
     const { selectCVbyUserID, selectCVbyID, deleteCVbyID } = UserSupabase();
     const { classes } = UseDashboardStyles();
     const navigate = useNavigate();
-    const { previewPDF } = usePDF();
-
+    const { previewPDF, downloadPDF } = usePDF();
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [cvIdToDelete, setCvIdToDelete] = useState<string | null>(null);
     const handlePreview = async (cvId: string) => {
         try {
             const { data, error } = await selectCVbyID(cvId);
@@ -34,10 +37,34 @@ function Dashboard() {
             console.error('Ошибка при предпросмотре:', err);
         }
     };
-    const handleDeleteCV = async (cvId: string) => {
-        if (window.confirm('Вы уверены, что хотите удалить это резюме?')) {
-            const result = await deleteCVbyID(cvId);
-            if (result.success) setCVList((prev) => (Array.isArray(prev) ? prev.filter((cv) => cv.id !== cvId) : prev));
+    const handleDownloadCV = async (cvId: string, cvName: string) => {
+        try {
+            const { data, error } = await selectCVbyID(cvId);
+            if (error) throw error;
+            if (data) {
+                await downloadPDF(data, `${cvName}.pdf`);
+            }
+        } catch (err) {
+            console.error('Ошибка при скачивании:', err);
+        }
+    };
+
+    const handleDeleteCV = (cvId: string) => {
+        setCvIdToDelete(cvId);
+        setDeleteDialogOpen(true);
+    };
+    const handleCancelDelete = () => {
+        setDeleteDialogOpen(false);
+        setCvIdToDelete(null);
+    };
+    const handleConfirmDelete = async () => {
+        if (cvIdToDelete) {
+            const result = await deleteCVbyID(cvIdToDelete);
+            if (result.success) {
+                setCVList((prev) => (Array.isArray(prev) ? prev.filter((cv) => cv.id !== cvIdToDelete) : prev));
+            }
+            setDeleteDialogOpen(false);
+            setCvIdToDelete(null);
         }
     };
 
@@ -55,11 +82,12 @@ function Dashboard() {
 
         loadCVList();
     }, [isAuthorized]);
+
     if (isLoad) return <Loading />;
     return (
         <Container maxWidth="md" className={classes.root}>
             {CVList?.length ? (
-                <Grid2 container spacing={3}>
+                <Grid2 container spacing={1}>
                     {CVList.map((cv, index) => (
                         <Grid2 size={12} key={cv.id}>
                             <Paper elevation={4} className={classes.paper}>
@@ -95,17 +123,20 @@ function Dashboard() {
                                             <IconButton
                                                 color="primary"
                                                 size="small"
-                                                onClick={
-                                                    () => handlePreview(cv.id)
-                                                    //     {
-                                                    //     navigate(generatePath(routes.finishedPDF.href, { id: cv.id }));
-                                                    // }
-                                                }
+                                                onClick={() => handlePreview(cv.id)}
                                             >
                                                 <VisibilityIcon />
                                             </IconButton>
                                         </Tooltip>
-
+                                        <Tooltip title="Скачать">
+                                            <IconButton
+                                                color="primary"
+                                                size="small"
+                                                onClick={() => handleDownloadCV(cv.id, cv.cv_name)}
+                                            >
+                                                <DownloadIcon />
+                                            </IconButton>
+                                        </Tooltip>
                                         <Tooltip title="Удалить">
                                             <IconButton
                                                 color="error"
@@ -139,6 +170,13 @@ function Dashboard() {
                     </Button>
                 </Paper>
             )}
+            <ConfirmationDialog
+                open={deleteDialogOpen}
+                title="Удаление резюме"
+                message="Вы уверены, что хотите удалить это резюме?"
+                onConfirm={handleConfirmDelete}
+                onCancel={handleCancelDelete}
+            />
         </Container>
     );
 }

@@ -23,6 +23,7 @@ export const UseMUIStyles = makeStyles()({
             marginTop: 5,
             paddingBottom: 3,
             width: '100%',
+            ['& .MuiCardHeader-root']: { justifySelf: 'flex-start' },
         },
     }),
     paperAllWidth: styleFunctionSx({
@@ -30,6 +31,7 @@ export const UseMUIStyles = makeStyles()({
             width: '100%',
         },
     }),
+
     autocomplete: styleFunctionSx({
         sx: {
             width: '95%',

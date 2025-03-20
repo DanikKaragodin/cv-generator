@@ -2,7 +2,7 @@ import { Control, FieldArrayPath, FieldArrayWithId, FieldErrors, UseFieldArrayRe
 import { FormData } from './Labels';
 export interface LabelsProps {
     fields: FieldArrayWithId<FormData, FieldArrayPath<FormData>, 'id'>[];
-    append: () => void;
+    prepend: () => void;
     remove: (index: number) => void;
     move: (from: number, to: number) => void; // Добавляем тип для move
     control: Control<FormData, unknown>;

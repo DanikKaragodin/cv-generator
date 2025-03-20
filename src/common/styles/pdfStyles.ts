@@ -259,7 +259,6 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         gap: 8,
-        marginBottom: 10,
     },
     educationItem: {
         width: '24%',
@@ -288,6 +287,10 @@ export const styles = StyleSheet.create({
         marginBottom: 8,
         maxWidth: '100%',
     },
+    positionName: {
+        fontWeight: 'bold',
+        fontSize: font_size_medium + 1,
+    },
     description: {
         color: medium_text_color,
         marginBottom: 4,
@@ -298,7 +301,6 @@ export const styles = StyleSheet.create({
     dateRange: {
         color: light_text_color,
         fontSize: font_size_small,
-        marginBottom: 2,
     },
     courseList: {
         flexDirection: 'row',
