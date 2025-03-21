@@ -36,7 +36,7 @@ function Generator() {
         defaultValues: defaultState,
     });
 
-    // интересуют параметры fields , append, remove
+    // интересуют параметры fields , prepend, remove
     const links = useFieldArray({
         control: control,
         name: 'socialLabels',
@@ -101,7 +101,7 @@ function Generator() {
             <Skills control={control} errors={errors} fieldArray={languages}></Skills>
             <Education control={control} errors={errors} fieldArray={educations} fieldArray2={courses}></Education>
             <Positions control={control} errors={errors} fieldArray={positions}></Positions>
-            <Container maxWidth="sm" className={classes.sumbitCVcontainer}>
+            <Container maxWidth="md" className={classes.sumbitCVcontainer}>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -115,7 +115,7 @@ function Generator() {
                     />
                 </FormGroup>
             </Container>
-            <Container maxWidth="sm" className={classes.sumbitCVcontainer}>
+            <Container maxWidth="md" className={classes.sumbitCVcontainer}>
                 <Button type="submit" variant="contained">
                     {isEditMode ? 'Обновить резюме' : 'Собрать резюме'}
                 </Button>

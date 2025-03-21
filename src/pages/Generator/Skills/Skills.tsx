@@ -13,18 +13,28 @@ import Chip from '@mui/material/Chip';
 import { validationRules } from '@common/validation';
 import { UseMUIStyles } from '@common/styles/muiStyles';
 import { emptyLabels } from '@common/constants';
+import AddButton from '@common/components/AddButton/AddButton';
 function Skills({ control, errors, fieldArray }: CVsectionProps) {
     const { classes } = UseMUIStyles();
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="md">
             <Paper elevation={4} className={classes.paper}>
                 <CardHeader title="Основные Навыки" />
                 <Divider />
-                <CardHeader title="Знание языков" />
+                <CardHeader
+                    title="Знание языков"
+                    action={
+                        <AddButton
+                            fieldArray={fieldArray}
+                            ariaLabel="Добавить язык"
+                            emptyLabel={emptyLabels.languageLabel}
+                        />
+                    }
+                />
                 <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={classes.grid}>
                     <LanguageLabels
                         fields={fieldArray.fields}
-                        append={() => fieldArray.append(emptyLabels.languageLabel)}
+                        prepend={() => fieldArray.prepend(emptyLabels.languageLabel)}
                         remove={fieldArray.remove}
                         move={fieldArray.move}
                         control={control}
@@ -46,7 +56,11 @@ function Skills({ control, errors, fieldArray }: CVsectionProps) {
                                 options={[]}
                                 value={field.value || []}
                                 freeSolo
-                                onChange={(_, newValue) => field.onChange(newValue)} // такой формат для добавления тегов в массив
+                                onChange={(_, newValue) => {
+                                    const trimmedValues = newValue.map((tag) => tag.trim()); // Обрезаем пробелы
+                                    const uniqueValues = Array.from(new Set(trimmedValues)); // Удаляем дубликаты
+                                    field.onChange(uniqueValues);
+                                }} // такой формат для добавления тегов в массив
                                 renderTags={(value, getTagProps) =>
                                     value.map((option: string, index: number) => (
                                         <Chip

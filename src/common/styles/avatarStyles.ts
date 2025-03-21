@@ -15,7 +15,7 @@ export const avatarStyles = makeStyles()({
         marginBottom: 10,
     },
     button: {
-        margin: '0px 2px',
+        margin: '5px 2px',
     },
     inputHidden: { display: 'none' },
     textRecomendation: { mt: 1 },

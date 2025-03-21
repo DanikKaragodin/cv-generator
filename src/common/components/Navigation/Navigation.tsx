@@ -83,7 +83,11 @@ function Navigation() {
                         </Box>
 
                         <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
-                            <Typography variant="body1" component="p" sx={{ mr: 1 }}>
+                            <Typography
+                                variant="body1"
+                                component="p"
+                                sx={{ display: { xs: 'none', sm: 'initial' }, mr: 1 }}
+                            >
                                 {email}
                             </Typography>
                             <Tooltip title="Open settings">

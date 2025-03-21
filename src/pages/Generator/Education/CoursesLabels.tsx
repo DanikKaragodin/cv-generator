@@ -1,5 +1,5 @@
 import { CenteredGrid } from '@common/components/CenteredGrid/CenteredGrid';
-import Button from '@mui/material/Button';
+//import Button from '@mui/material/Button';
 import Grid2 from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
@@ -52,6 +52,7 @@ const CoursesLabel = memo(
                         <Controller
                             name={`courseLabels.${index}.dataStart`}
                             control={control}
+                            rules={validationRules.requiredField('Дата')}
                             render={({ field }) => (
                                 <DatePicker
                                     {...field}
@@ -61,6 +62,16 @@ const CoursesLabel = memo(
                                     }}
                                     data-id={`user-courses-dataStart-${index}`}
                                     label="Дата начало"
+                                    slots={{
+                                        textField: TextField,
+                                    }}
+                                    slotProps={{
+                                        textField: {
+                                            error: !!errors.courseLabels?.[index]?.dataStart,
+                                            helperText: errors.courseLabels?.[index]?.dataStart?.message,
+                                            fullWidth: true,
+                                        },
+                                    }}
                                 />
                             )}
                         />
@@ -69,6 +80,7 @@ const CoursesLabel = memo(
                         <Controller
                             name={`courseLabels.${index}.dataEnd`}
                             control={control}
+                            rules={validationRules.requiredField('Дата')}
                             render={({ field }) => (
                                 <DatePicker
                                     {...field}
@@ -78,6 +90,16 @@ const CoursesLabel = memo(
                                     }}
                                     data-id={`user-courses-dataEnd-${index}`}
                                     label="Дата окончания"
+                                    slots={{
+                                        textField: TextField,
+                                    }}
+                                    slotProps={{
+                                        textField: {
+                                            error: !!errors.courseLabels?.[index]?.dataEnd,
+                                            helperText: errors.courseLabels?.[index]?.dataEnd?.message,
+                                            fullWidth: true,
+                                        },
+                                    }}
                                 />
                             )}
                         />
@@ -87,15 +109,15 @@ const CoursesLabel = memo(
         );
     },
 );
-export const CoursesLabels = ({ fields, append, remove, move, control, errors }: LabelsProps) => {
+export const CoursesLabels = ({ fields, remove, move, control, errors }: LabelsProps) => {
     return (
         <>
-            <CenteredGrid size={12}>
-                <Button variant="outlined" onClick={append}>
+            {/* <CenteredGrid size={12}>
+                <Button variant="outlined" onClick={prepend}>
                     {' '}
                     Добавить Курс{' '}
                 </Button>
-            </CenteredGrid>
+            </CenteredGrid> */}
             {fields.map((field, index) => (
                 <CoursesLabel
                     control={control}

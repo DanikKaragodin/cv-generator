@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "npm run test",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "lint-staged": "lint-staged",

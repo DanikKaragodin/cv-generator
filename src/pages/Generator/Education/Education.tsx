@@ -8,19 +8,29 @@ import Grid2 from '@mui/material/Grid2';
 import { CVsectionProps } from '@common/types/Props';
 import { UseMUIStyles } from '@common/styles/muiStyles';
 import { emptyLabels } from '@common/constants';
+import AddButton from '@common/components/AddButton/AddButton';
 
 function Education({ control, errors, fieldArray, fieldArray2 }: CVsectionProps) {
     const { classes } = UseMUIStyles();
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="md">
             <Paper elevation={4} className={classes.paper}>
                 <CardHeader title="Образование" />
                 <Divider />
-                <CardHeader title="Образование" />
+                <CardHeader
+                    title="Учреждения"
+                    action={
+                        <AddButton
+                            fieldArray={fieldArray}
+                            ariaLabel="Добавить учреждение"
+                            emptyLabel={emptyLabels.educationLabel}
+                        />
+                    }
+                />
                 <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={classes.grid}>
                     <EducationLabels
                         fields={fieldArray.fields}
-                        append={() => fieldArray.append(emptyLabels.educationLabel)}
+                        prepend={() => fieldArray.prepend(emptyLabels.educationLabel)}
                         remove={fieldArray.remove}
                         move={fieldArray.move}
                         control={control}
@@ -28,12 +38,21 @@ function Education({ control, errors, fieldArray, fieldArray2 }: CVsectionProps)
                     />
                 </Grid2>
                 <Divider />
-                <CardHeader title="Курсы" />
+                <CardHeader
+                    title="Курсы"
+                    action={
+                        <AddButton
+                            fieldArray={fieldArray2 ? fieldArray2 : fieldArray}
+                            ariaLabel="Добавить Курс"
+                            emptyLabel={emptyLabels.courseLabel}
+                        />
+                    }
+                />
                 {fieldArray2 !== undefined ? (
                     <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={classes.grid}>
                         <CoursesLabels
                             fields={fieldArray2.fields}
-                            append={() => fieldArray2.append(emptyLabels.courseLabel)}
+                            prepend={() => fieldArray2.prepend(emptyLabels.courseLabel)}
                             remove={fieldArray2.remove}
                             move={fieldArray2.move}
                             control={control}
