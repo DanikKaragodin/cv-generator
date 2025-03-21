@@ -4,7 +4,7 @@ import { FormData } from '@common/types/Labels';
 // import PDFheader from './PDFheader';
 // import PDFleftColumn from './PDFleftColumn';
 // import PDFrightColumn from './PDFrightColumn';
-
+const MAX_STRING_SIZE_REGEX = /.{1,120}/g;
 const CV1 = ({ formData }: { formData: FormData }) => (
     // <Document>
     //     <Page size="A4" style={pdfStyles.page}>
@@ -51,7 +51,7 @@ const CV1 = ({ formData }: { formData: FormData }) => (
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>О СЕБЕ</Text>
                 <View>
-                    {formData.aboutMe.match(/.{1,120}/g)?.map((row) => (
+                    {formData.aboutMe.match(MAX_STRING_SIZE_REGEX)?.map((row) => (
                         <Text key={row} style={styles.description}>
                             {row}
                         </Text>
@@ -123,7 +123,7 @@ const CV1 = ({ formData }: { formData: FormData }) => (
                                     {position.dataStart} - {position.dataEnd}
                                 </Text>
                                 <View>
-                                    {position.description.match(/.{1,120}/g)?.map((desc) => (
+                                    {position.description.match(MAX_STRING_SIZE_REGEX)?.map((desc) => (
                                         <Text key={desc} style={styles.description}>
                                             {desc}
                                         </Text>
