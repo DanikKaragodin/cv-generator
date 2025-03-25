@@ -3,7 +3,7 @@ import Generator from '@pages/Generator/Generator.tsx';
 import Settings from '@pages/Settings/Settings.tsx';
 import Login from '@pages/Login/Login.tsx';
 import { IRoute } from '@common/types/Route.tsx';
-import PDFView from '@pages/PDFview/PDFview';
+import PDF from '@pages/PDFview/PDF';
 import { FormData } from './types/Labels';
 export const routes: Record<string, IRoute> = {
     dashboard: {
@@ -46,14 +46,14 @@ export const routes: Record<string, IRoute> = {
         href: '/pdf-view',
         isSettings: true,
         isVisible: false,
-        component: <PDFView />,
+        component: <PDF />,
     },
     finishedPDF: {
         page: 'Просмотр готового PDF',
         href: '/pdf-view/:id',
         isSettings: true,
         isVisible: false,
-        component: <PDFView />,
+        component: <PDF />,
     },
 };
 

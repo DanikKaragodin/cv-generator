@@ -3,6 +3,8 @@ import supabase from '@common/utils/supabaseClient';
 import { FormData } from '@common/types/Labels';
 import { useFormData } from './FormDataContext';
 import { UserAuth } from './AuthContext';
+// import { useNavigate } from 'react-router';
+// import { routes } from '@common/constants';
 
 type SupabaseContextType = {
     insertCVbyID: (
@@ -25,7 +27,7 @@ type SupabaseContextType = {
     }>;
     selectCVbyUserID: (user_id: string) => Promise<{
         success: boolean;
-        data?: { id: string; cv_name: string }[] | null;
+        data?: { id: string; cv_name: string; created_at: string }[] | null;
         error?: string | unknown;
     }>;
     insertDefaultsbyUserID: (
@@ -62,45 +64,33 @@ const SupabaseContext = createContext<SupabaseContextType>({
 });
 
 export const SupabaseContextProvider = ({ children }: { children: ReactNode }) => {
-    const { formData: globalFormData, setFormData } = useFormData();
+    const { setFormData } = useFormData();
     const { isAuthorized } = UserAuth();
     // const navigate = useNavigate();
-    // Проверка на авторизированного пользователя
-    // const withAuthCheck = useCallback(
-    //     (fn: Function) =>
-    //         async (...args: any[]) => {
-    //             if (!isAuthorized) {
-    //                 console.error('User is not authenticated');
-    //                 navigate(routes.login.href);
-    //                 return { success: false, error: 'User is not authenticated' };
-    //             }
-    //             return await fn(...args);
-    //         },
-    //     [isAuthorized],
-    // );
     const withAuthCheck = useCallback(
-        (request: Function) => {
-            if (!isAuthorized) {
-                //  console.log('User is not authenticated');
-                // navigate(routes.login.href);
-                return () =>
-                    // navigate(routes.login.href);
-                    ({ success: false, data: null, error: 'User is not authenticated' });
-            } else {
-                return request;
-            }
+        <T extends (...args: any[]) => Promise<any>>(request: T): T => {
+            return ((...args: Parameters<T>) => {
+                if (!isAuthorized) {
+                    return Promise.resolve({ success: false, data: null, error: 'User is not authenticated' });
+                } else {
+                    return request(...args);
+                }
+            }) as T;
         },
         [isAuthorized],
     );
-
     // Выбор всех СV пользователя по id пользователя (так как отключен RLS, access_token пока не используется)
     const selectCVbyUserID = async (user_id: string) => {
         try {
-            const { data, error } = await supabase.from('cv').select('id,cv_name').eq('user_id', user_id);
+            const { data, error } = await supabase
+                .from('cv')
+                .select('id,cv_name,created_at')
+                .eq('user_id', user_id)
+                .order('created_at', { ascending: true });
             if (error) {
                 console.error('SelectError:', error.message);
             }
-            console.log('Select:', data);
+            //console.log('Select:', data);
             return { success: true, data };
         } catch (error) {
             console.error('Unexpected error during select:', error);
@@ -133,8 +123,8 @@ export const SupabaseContextProvider = ({ children }: { children: ReactNode }) =
                 positionLabels: cvData.positions || [],
             };
             setFormData(formData);
-            console.log('globalformData', globalFormData);
-            console.log('Select:', formData);
+            // console.log('globalformData', globalFormData);
+            // console.log('Select:', formData);
             return { success: true, data: formData };
         } catch (error) {
             console.error('Unexpected error during select:', error);
@@ -223,7 +213,7 @@ export const SupabaseContextProvider = ({ children }: { children: ReactNode }) =
             if (error) {
                 console.error('UpdateError:', error.message);
             }
-            console.log('update cv: ', data, error);
+            // console.log('update cv: ', data, error);
             return { success: true, data };
         } catch (error) {
             console.error('Unexpected error during update:', error);
@@ -249,7 +239,7 @@ export const SupabaseContextProvider = ({ children }: { children: ReactNode }) =
             let avatar_url: File | string = formData.avatar;
             if (formData.avatar && formData.avatar instanceof File) {
                 avatar_url = await UploadAvatar(formData.avatar, user_id);
-                console.log('insert avatar: ', avatar_url);
+                //   console.log('insert avatar: ', avatar_url);
             }
             const { error } = await supabase.from('contact_info').upsert(
                 {
@@ -283,7 +273,7 @@ export const SupabaseContextProvider = ({ children }: { children: ReactNode }) =
             let avatar_url: File | string = formData.avatar;
             if (formData.avatar && formData.avatar instanceof File) {
                 avatar_url = await UploadAvatar(formData.avatar, user_id);
-                console.log('insert avatar: ', avatar_url);
+                //  console.log('insert avatar: ', avatar_url);
             }
             const { data, error } = await supabase
                 .from('cv')
@@ -310,7 +300,7 @@ export const SupabaseContextProvider = ({ children }: { children: ReactNode }) =
             if (error) {
                 console.error('InsertError:', error.message);
             }
-            console.log('insert cv: ', data, error);
+            //  console.log('insert cv: ', data, error);
             return { success: true, data };
         } catch (error) {
             console.error('Unexpected error during insert:', error);

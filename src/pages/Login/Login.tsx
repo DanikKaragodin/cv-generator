@@ -34,7 +34,7 @@ function Login() {
 
     useEffect(() => {
         if (isAuthorized) navigate(routes.dashboard.href);
-    }, [isAuthorized, navigate]);
+    }, [isAuthorized]);
 
     return (
         <Container className={classes.root}>

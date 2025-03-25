@@ -186,3 +186,131 @@ export const pdfStyles = StyleSheet.create({
         fontWeight: 600,
     },
 });
+
+const avatar_size = 70;
+const light_text_color = '#666';
+const dark_text_color = '#333';
+const medium_text_color = '#444';
+const font_family = 'Roboto';
+const font_size_small = 8;
+const font_size_medium = 9;
+const font_size_large = 11;
+const font_size_extra_large = 20;
+const line_height_small = 1.2;
+const line_height_medium = 1.3;
+const border_radius = 100;
+const border_bottom = '0.5px solid #333';
+
+export const styles = StyleSheet.create({
+    page: {
+        padding: 30,
+        fontFamily: font_family,
+        fontSize: font_size_medium,
+        lineHeight: line_height_medium,
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 15,
+    },
+    headerInfo: {
+        flex: 1,
+    },
+    avatar: {
+        width: avatar_size,
+        height: avatar_size,
+        objectFit: 'cover',
+        objectPosition: 'center',
+        borderRadius: border_radius,
+    },
+    name: {
+        fontSize: font_size_extra_large,
+        fontWeight: 'bold',
+        marginBottom: 17,
+    },
+    contacts: {
+        marginBottom: 8,
+    },
+    contactItem: {
+        flexDirection: 'row',
+        gap: 4,
+        marginBottom: 2,
+    },
+    socialLinks: {
+        flexDirection: 'column',
+        gap: 2,
+    },
+    socialLink: {
+        color: dark_text_color,
+    },
+    sectionTitle: {
+        fontSize: font_size_large,
+        fontWeight: 'bold',
+        marginBottom: 6,
+        borderBottom: border_bottom,
+        paddingBottom: 2,
+    },
+    section: {
+        marginBottom: 12,
+    },
+    aboutMeText: { color: medium_text_color },
+    languageAndCourseSection: { flexDirection: 'row', justifyContent: 'space-between' },
+    educationGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 8,
+    },
+    educationItem: {
+        width: '24%',
+        marginBottom: 6,
+    },
+    languageList: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 6,
+    },
+    skillsList: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 4,
+        color: light_text_color,
+    },
+    experienceGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 12,
+    },
+    column: {
+        width: '48%',
+    },
+    positionItem: {
+        marginBottom: 8,
+        maxWidth: '100%',
+    },
+    positionName: {
+        fontWeight: 'bold',
+        fontSize: font_size_medium + 1,
+    },
+    description: {
+        color: medium_text_color,
+        marginBottom: 4,
+        fontSize: font_size_small,
+        lineHeight: line_height_small,
+    },
+    positionStack: { color: light_text_color, marginTop: 2 },
+    dateRange: {
+        color: light_text_color,
+        fontSize: font_size_small,
+    },
+    courseList: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 6,
+    },
+    bold: {
+        fontWeight: 'bold',
+    },
+    italic: {
+        fontStyle: 'italic',
+    },
+});

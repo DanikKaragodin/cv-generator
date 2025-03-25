@@ -1,5 +1,5 @@
 import { FormData } from '@common/types/Labels';
 export type FormDataContextType = {
-    formData: FormData | null;
+    formData: FormData;
     setFormData: (data: FormData) => void;
 };

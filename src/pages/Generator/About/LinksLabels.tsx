@@ -1,5 +1,5 @@
 import { CenteredGrid } from '@common/components/CenteredGrid/CenteredGrid';
-import Button from '@mui/material/Button';
+//import Button from '@mui/material/Button';
 import Grid2 from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
@@ -12,7 +12,7 @@ import { ArrowDownward, ArrowUpward, Delete } from '@mui/icons-material';
 const LinkLabel = ({ control, errors, index, onRemove, onMoveUp, onMoveDown, canMoveUp, canMoveDown }: LabelProps) => {
     const { classes } = UseMUIStyles();
     return (
-        <Paper>
+        <Paper className={classes.paperAllWidth}>
             <Grid2 container spacing={2} rowSpacing={4} className={classes.grid}>
                 <CenteredGrid size={12}>
                     <IconButton onClick={onMoveUp} disabled={!canMoveUp} aria-label="Move up" color="primary">
@@ -54,14 +54,14 @@ const LinkLabel = ({ control, errors, index, onRemove, onMoveUp, onMoveDown, can
         </Paper>
     );
 };
-export const LinkLabels = ({ fields, append, remove, move, control, errors }: LabelsProps) => {
+export const LinkLabels = ({ fields, remove, move, control, errors }: LabelsProps) => {
     return (
         <>
-            <CenteredGrid size={12}>
-                <Button variant="outlined" onClick={append}>
+            {/* <CenteredGrid size={12}>
+                <Button variant="outlined" onClick={prepend}>
                     Добавить ссылку
                 </Button>
-            </CenteredGrid>
+            </CenteredGrid> */}
             {fields.map((field, index) => (
                 <LinkLabel
                     control={control}

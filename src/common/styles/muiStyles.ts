@@ -5,7 +5,7 @@ export const styleFunctionSx = unstable_styleFunctionSx as (params: object) => C
 
 export const UseMUIStyles = makeStyles()({
     loadContainer: styleFunctionSx({
-        sx: { height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' },
+        sx: { height: 'inherit', display: 'flex', justifyContent: 'center', alignItems: 'center' },
     }),
     grid: styleFunctionSx({
         sx: {
@@ -23,6 +23,7 @@ export const UseMUIStyles = makeStyles()({
             marginTop: 5,
             paddingBottom: 3,
             width: '100%',
+            ['& .MuiCardHeader-root']: { justifySelf: 'flex-start' },
         },
     }),
     paperAllWidth: styleFunctionSx({
@@ -30,6 +31,7 @@ export const UseMUIStyles = makeStyles()({
             width: '100%',
         },
     }),
+
     autocomplete: styleFunctionSx({
         sx: {
             width: '95%',
@@ -42,6 +44,22 @@ export const UseMUIStyles = makeStyles()({
             justifyContent: 'center',
             marginTop: 2,
             marginBottom: 3,
+        },
+    }),
+    navigationLink: styleFunctionSx({
+        sx: {
+            textAlign: 'center',
+            fontWeight: 'normal',
+            borderBottom: 'none',
+            borderColor: 'primary.contrastText',
+        },
+    }),
+    navigationLinkActive: styleFunctionSx({
+        sx: {
+            textAlign: 'center',
+            fontWeight: 'bold',
+            borderBottom: '2px solid',
+            borderColor: 'primary.contrastText',
         },
     }),
 });

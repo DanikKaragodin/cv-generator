@@ -1,5 +1,5 @@
 import { CenteredGrid } from '@common/components/CenteredGrid/CenteredGrid';
-import Button from '@mui/material/Button';
+//import Button from '@mui/material/Button';
 import Grid2 from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
@@ -143,6 +143,7 @@ const PositionsLabel = ({
                         <Controller
                             name={`positionLabels.${index}.dataStart`}
                             control={control}
+                            rules={validationRules.requiredField('Дата')}
                             render={({ field }) => (
                                 <DatePicker
                                     {...field}
@@ -152,6 +153,16 @@ const PositionsLabel = ({
                                     }}
                                     data-id={`user-project-dataStart-${index}-${index}`}
                                     label="Дата начало"
+                                    slots={{
+                                        textField: TextField,
+                                    }}
+                                    slotProps={{
+                                        textField: {
+                                            error: !!errors.positionLabels?.[index]?.dataStart,
+                                            helperText: errors.positionLabels?.[index]?.dataStart?.message,
+                                            fullWidth: true,
+                                        },
+                                    }}
                                 />
                             )}
                         />
@@ -160,6 +171,7 @@ const PositionsLabel = ({
                         <Controller
                             name={`positionLabels.${index}.dataEnd`}
                             control={control}
+                            rules={validationRules.requiredField('Дата')}
                             render={({ field }) => (
                                 <DatePicker
                                     {...field}
@@ -169,6 +181,16 @@ const PositionsLabel = ({
                                     }}
                                     data-id={`user-project-dataEnd-${index}-${index}`}
                                     label="Дата окончания"
+                                    slots={{
+                                        textField: TextField,
+                                    }}
+                                    slotProps={{
+                                        textField: {
+                                            error: !!errors.positionLabels?.[index]?.dataEnd,
+                                            helperText: errors.positionLabels?.[index]?.dataEnd?.message,
+                                            fullWidth: true,
+                                        },
+                                    }}
                                 />
                             )}
                         />
@@ -179,14 +201,14 @@ const PositionsLabel = ({
     );
 };
 
-export const PositionsLabels = ({ fields, append, remove, move, control, errors }: LabelsProps) => {
+export const PositionsLabels = ({ fields, remove, move, control, errors }: LabelsProps) => {
     return (
         <>
-            <CenteredGrid size={12}>
-                <Button variant="outlined" onClick={append}>
+            {/* <CenteredGrid size={12}>
+                <Button variant="outlined" onClick={prepend}>
                     Добавить Позицию
                 </Button>
-            </CenteredGrid>
+            </CenteredGrid> */}
             {fields.map((position, index) => (
                 <PositionsLabel
                     control={control}

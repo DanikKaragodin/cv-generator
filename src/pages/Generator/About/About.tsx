@@ -12,19 +12,20 @@ import { validationRules } from '@common/validation';
 import { UseMUIStyles } from '@common/styles/muiStyles';
 import { emptyLabels } from '@common/constants';
 import Avatar from '@common/components/Avatar/Avatar';
+import AddButton from '@common/components/AddButton/AddButton';
 function About({ control, errors, fieldArray }: CVsectionProps) {
     const { classes } = UseMUIStyles();
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="md">
             <Paper elevation={4} className={classes.paper}>
-                <CardHeader title="Имя резюме" />
+                <CardHeader title="Название резюме" />
                 <Divider />
                 <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={classes.grid}>
                     <CenteredGrid size={6}>
                         <Controller
                             name="CVname"
                             control={control}
-                            rules={validationRules.requiredField('Имя Резюме')}
+                            rules={validationRules.requiredField('Название Резюме')}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -32,16 +33,14 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                                     helperText={errors.CVname?.message}
                                     required
                                     id="cv-name"
-                                    label="Имя Резюме"
+                                    label="Название Резюме"
                                 />
                             )}
                         />
                     </CenteredGrid>
                 </Grid2>
-            </Paper>
-            <Paper elevation={4} className={classes.paper}>
-                <CardHeader title="О себе" />
                 <Divider />
+                <CardHeader title="О себе" />
                 <Grid2 container maxWidth="xs" rowSpacing={4} spacing={2} className={classes.grid}>
                     <CenteredGrid size={6}>
                         <Controller
@@ -135,9 +134,22 @@ function About({ control, errors, fieldArray }: CVsectionProps) {
                         />
                     </CenteredGrid>
                     <Avatar control={control} />
+                </Grid2>
+                <Divider />
+                <CardHeader
+                    title="Социальные сети"
+                    action={
+                        <AddButton
+                            fieldArray={fieldArray}
+                            ariaLabel="Добавить соц.сеть"
+                            emptyLabel={emptyLabels.linkLabel}
+                        />
+                    }
+                />
+                <Grid2 container rowSpacing={4} spacing={2} className={classes.grid}>
                     <LinkLabels
                         fields={fieldArray.fields}
-                        append={() => fieldArray.append(emptyLabels.linkLabel)}
+                        prepend={() => fieldArray.prepend(emptyLabels.linkLabel)}
                         remove={fieldArray.remove}
                         move={fieldArray.move}
                         control={control}
